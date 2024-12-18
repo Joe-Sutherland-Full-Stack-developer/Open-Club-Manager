@@ -22,3 +22,6 @@ urlpatterns = [
     path('', include('dashboard.urls'), name='home'),
 ]
 
+admin.site.site_header = "Open Club Manager"
+admin.site.site_title = "Open Club Manager"
+admin.site.index_title = "Welcome to Your admin portal"

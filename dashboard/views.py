@@ -7,3 +7,10 @@ class HomePage(TemplateView):
     Displays home page"
     """
     template_name = 'index.html'
+
+
+def create_participant(request):
+    if request.method == 'POST':
+        pass
+    else:
+        pass
