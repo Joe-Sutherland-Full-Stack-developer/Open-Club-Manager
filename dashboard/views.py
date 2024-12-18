@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from .forms import ParticipantForm
 # Create your views here.
 
 class HomePage(TemplateView):
@@ -11,6 +12,15 @@ class HomePage(TemplateView):
 
 def create_participant(request):
     if request.method == 'POST':
-        pass
+        form = ParticipantForm(request.POST)
+        if form.is_valid():
+            participant = form.save(commit=False)
+            participant.user = request.user
+            participant.save()
+            return redirect('home')
     else:
-        pass
+        form = ParticipantForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'dashboard/create_participant.html', context)

@@ -20,6 +20,8 @@ class ClassType(models.Model):
     duration = models.IntegerField(choices = duration_choices)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     default_capacity = models.IntegerField(default=0)
+    def __str__(self):
+        return self.name
 
 class Timetable(models.Model):
     day_choices = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
@@ -33,6 +35,8 @@ class Timetable(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     notes = models.TextField(blank=True)
+    def __str__(self):
+        return self.name
 
 class ClassInstance(models.Model):
     class_type = models.ForeignKey('ClassType', on_delete=models.CASCADE)
@@ -41,6 +45,8 @@ class ClassInstance(models.Model):
     finish_time = models.DateTimeField()
     capacity = models.IntegerField(0)
     attendees = models.ManyToManyField('Booking')
+    def __str__(self):
+        return str(self.id)
 
 class Booking(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -50,8 +56,11 @@ class Booking(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+    def __str__(self):
+        return str(self.id)
 
 class Participant(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='participants')
     name = models.CharField(max_length=200)
     date_of_birth = models.DateField()
     is_member = models.BooleanField(default=False)
@@ -60,4 +69,6 @@ class Participant(models.Model):
     emergency_contact_name = models.CharField(max_length=200)
     emergency_contact_number = models.CharField(max_length=15)
     additional_info = models.TextField(null=True, blank=True)
+    def __str__(self):
+        return self.name
     
