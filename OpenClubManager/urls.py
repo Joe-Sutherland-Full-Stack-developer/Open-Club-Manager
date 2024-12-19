@@ -20,6 +20,7 @@ from dashboard import views as dashboard_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('dashboard.urls'), name='home'),
+    path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/new_participant', dashboard_views.create_participant, name="create_participant")
 ]
 
