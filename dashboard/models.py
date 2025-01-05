@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+
 # Create your models here.
 
 class ClassType(models.Model):
@@ -24,11 +25,17 @@ class ClassType(models.Model):
         return self.name
 
 class Timetable(models.Model):
-    day_choices = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
+    day_choices = [('MON', 'Monday'),
+        ('TUE', 'Tuesday'),
+        ('WED', 'Wednesday'),
+        ('THU', 'Thursday'),
+        ('FRI', 'Friday'),
+        ('SAT', 'Saturday'),
+        ('SUN', 'Sunday'),
+    ]
     name = models.CharField(max_length=200)
     active = models.BooleanField(default=False)
-    selected_days = models.JSONField(
-    default=list,
+    selected_days = models.JSONField( verbose_name= ("Timetabled days"), blank=True, null=True,
     help_text="Store selected days of the week as a JSON array (e.g., ['MON', 'TUE'])"
     )
 
