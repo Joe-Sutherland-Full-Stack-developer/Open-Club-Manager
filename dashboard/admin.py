@@ -1,3 +1,4 @@
+from bootstrap_datepicker_plus.widgets import DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -40,12 +41,27 @@ class TimetableForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple(),
     )
 
-    start_time = forms.TimeInput()
-
     class Meta:
         model = Timetable
         fields = ['name', 'active', 'selected_days','start_time', 'end_time', 'notes'] 
-
+        widgets = {
+            "start_time": TimePickerInput(options={
+                    "format": "HH:mm",
+                    "stepping": 15,
+                    "showClose": True,
+                    "showClear": True,
+                }
+            ),
+            "end_time": TimePickerInput(options={
+                    "format": "HH:mm",
+                    "stepping": 15,
+                    "showClose": True,
+                    "showClear": True,
+                }
+            )
+        }
+            
+        
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
