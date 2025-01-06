@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <h1>Time Slots for {{ timetable.name }}</h1>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                {% for day in timetable.selected_days %}
+                    <th scope="col">{{ day }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for slot in timetable.time_slots %}
+            
+                <tr>
+                    <td>{{ slot }}</td>  <!-- Display time slot -->
+                    {% for day in timetable.selected_days %}
+                        <td class="event-cell" data-slot="{{ slot }}" data-day="{{ day }}" data-toggle="modal" data-target="#eventModal"
+                        {% for instance in class_instances %}
+                            {% if instance.start_time|time:"H:i" <= slot and slot < instance.finish_time|time:"H:i" and instance.instance_date|date:"D"|upper == day %}
+                               
+                                style="background-color: grey;"
+                            {% endif %}
+                            
+                        {% endfor %}>
+                        {% for instance in class_instances %}
+                            {% if instance.start_time|time:"H:i" == slot and instance.instance_date|date:"D"|upper == day %}
+                               <p>{{instance.class_type}}</p>
+                               <p>Start time: {{instance.start_time}}</p>
+                               <p>Finish time: {{instance.finish_time}}</p>
+                               
+                            {% endif %}
+                            
+                        {% endfor %}
+                        
+                        {% if not instance %} 
+                                &nbsp; <!-- Clickable empty cell -->
+                        {% endif %}
+                            
+                        </td>  
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% for instance in class_instances %}
+    
+       
+       <p> {{instance.start_time|time:"H:i"}}</p>
+       <p> {{instance.instance_date|date:"D"|upper}}</p>
+    
+{% endfor %}>
+    <a href="{% url 'admin:dashboard_timetable_changelist' %}" class="btn btn-secondary">Back to Timetables</a>
+</div>
+
+
+
+<!-- Include Bootstrap JS (optional) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.4.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Modal -->
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">Add Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ form.media }}
+                <form id="eventForm" method="POST" action="{% url 'timetable_view' timetable_id=timetable.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p}}
+                    <button type="submit" class="btn btn-primary">Add to timetable</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/script.js' %}"></script> 
+
+
+
+{% endblock content%}

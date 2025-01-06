@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-
+from bootstrap_datepicker_plus.widgets import DatePickerInput
+from datetime import timedelta, datetime
 # Create your models here.
 
 class ClassType(models.Model):
@@ -44,14 +45,39 @@ class Timetable(models.Model):
     notes = models.TextField(blank=True)
     def __str__(self):
         return self.name
-
+    @property
+    def time_slots(self):
+        """Generate 15-minute time slots between start_time and end_time."""
+        start_datetime = datetime.combine(datetime.today(), self.start_time)
+        end_datetime = datetime.combine(datetime.today(), self.end_time)
+        
+        slots = []
+        
+        current_time = start_datetime
+        while current_time <= end_datetime:
+            slots.append(current_time.strftime('%H:%M'))
+            current_time += timedelta(minutes=15)
+        
+        return slots
+    
+       
 class ClassInstance(models.Model):
     class_type = models.ForeignKey('ClassType', on_delete=models.CASCADE)
-    instance_date = models.DateTimeField()
-    start_time = models.DateTimeField()
-    finish_time = models.DateTimeField()
-    capacity = models.IntegerField(0)
+    instance_date = models.DateField()
+    day = models.CharField(max_length=3, choices=[
+        ('MON', 'Monday'),
+        ('TUE', 'Tuesday'),
+        ('WED', 'Wednesday'),
+        ('THU', 'Thursday'),
+        ('FRI', 'Friday'),
+        ('SAT', 'Saturday'),
+        ('SUN', 'Sunday'),
+    ])
+    start_time = models.TimeField()
+    finish_time = models.TimeField()
+    capacity = models.IntegerField(default=0)
     attendees = models.ManyToManyField('Booking')
+    
     def __str__(self):
         return str(self.id)
 

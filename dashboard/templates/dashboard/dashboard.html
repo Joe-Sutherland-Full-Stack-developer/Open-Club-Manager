@@ -9,45 +9,22 @@
         <div class="col-3">   
             <h2>Welcome, {{ user }}</h2>
             <div class="accordion accordion-flush" id="side-accordian">
+                <!-- Accordion items go here -->
+                <!-- Example: View all bookings -->
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                       View all bookings
                     </button>
                   </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
                     <div class="accordion-body">
-                        <a href="">{{user.participant}}</a>
+                        <a href="#">{{ user.participant }}</a>
                     </div>
                   </div>
                 </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                      Manage personal information
-                    </button>
-                  </h2>
-                  <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <a href=""> Account information </a>
-                        <a href=""> Participant information </a>
-                        
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                      Manage Memberships
-                    </button>
-                  </h2>
-                  <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <a> {{user.Participant}} </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <!-- More accordion items... -->
+            </div>
         </div> 
         <div class="col-9">
             {% block innerframe %}
@@ -62,14 +39,27 @@
               </ul>
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-                    <div class="row g-0"> There are no upcoming sessions on the currently active timetable</div>
+                    <div class="row g-0">
+                        {% if class_instances %}
+                        <ul class="list-group mt-3">
+                            {% for instance in class_instances %}
+                                <li class="list-group-item">
+                                    {{ instance.class_type }} - {{ instance.start_time|time:"H:i" }} to {{ instance.finish_time|time:"H:i" }} on {{ instance.instance_date|date:"D, d M Y" }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>There are no upcoming sessions on the currently active timetable.</p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">There are no previous session on this timetable yet</div>
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">There are no previous sessions on this timetable yet.</div>
               </div>
             {% endblock innerframe %}
-
         </div>
     </div>
+
+    <!-- Additional content below -->
     <div class="row g-0">
         <div class="col-3">
             <div class="row g-0">

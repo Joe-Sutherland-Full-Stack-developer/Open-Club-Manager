@@ -6,3 +6,12 @@ h1 {
     margin: 0px;
     padding: 0px;
 }
+.event-cell {
+    border-color: black; 
+}
+
+.event-cell[style*='background-color: grey;'] {
+    border-top-color: grey;
+    border-bottom-color: grey;
+    
+}

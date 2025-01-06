@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from .models import Participant, ClassType, Timetable, ClassInstance, Booking
 from django import forms
+from .forms import AddEvent
 
 class ParticipantInline(admin.StackedInline):
     model = Participant
@@ -24,7 +25,7 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Participant)
 admin.site.register(ClassType)
 
-admin.site.register(ClassInstance)
+
 admin.site.register(Booking)
 
 
@@ -79,3 +80,10 @@ class TimetableAdmin(admin.ModelAdmin):
     form = TimetableForm
     list_display = ["__str__"]
     fields = ['name', 'active', 'selected_days','start_time', 'end_time', 'notes']
+
+
+@admin.register(ClassInstance)
+class ClassInstAdmin(admin.ModelAdmin):
+    form = AddEvent
+    list_display = ["__str__"]
+    fields = ['class_type', 'instance_date', 'day', 'start_time', 'finish_time', 'capacity', 'attendees']
