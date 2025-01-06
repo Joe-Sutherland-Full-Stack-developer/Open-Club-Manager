@@ -24,7 +24,7 @@ class AddEvent(forms.ModelForm):
         fields = ['class_type', 'start_time', 'finish_time', 'day', 'repeat']  # Include 'day' if needed
         widgets = {
             "start_time": TimePickerInput(
-                attrs={'class': 'form-control'},
+                attrs={'class': 'form-control',},
                 options=FlatpickrOptions(
                     time_24hr=True,
                     minuteIncrement=15

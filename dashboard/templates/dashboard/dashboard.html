@@ -5,8 +5,8 @@
 
 {% block content %}
 <div id="dashboard" class="container-fluid g-0">
-    <div id="side-panel" class="row g-0">
-        <div class="col-3">   
+    <div class="row g-0">
+        <div id="side-panel" class="col-3">   
             <h2>Welcome, {{ user }}</h2>
             <div class="accordion accordion-flush" id="side-accordian">
                 <!-- Accordion items go here -->
@@ -26,7 +26,7 @@
                 <!-- More accordion items... -->
             </div>
         </div> 
-        <div class="col-9">
+        <div id="main-box" class="col-9">
             {% block innerframe %}
             <header id="page-header">Timetable</header>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -40,17 +40,33 @@
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                     <div class="row g-0">
-                        {% if class_instances %}
-                        <ul class="list-group mt-3">
-                            {% for instance in class_instances %}
-                                <li class="list-group-item">
-                                    {{ instance.class_type }} - {{ instance.start_time|time:"H:i" }} to {{ instance.finish_time|time:"H:i" }} on {{ instance.instance_date|date:"D, d M Y" }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        {% else %}
-                        <p>There are no upcoming sessions on the currently active timetable.</p>
-                        {% endif %}
+                      <h2>This Week</h2>
+                      {% for day, events in this_week_by_day.items %}
+                          <h3>{{ day }}</h3>
+                          <ul>
+                              {% for event in events %}
+                                  <li class="ct{{ event.class_type|cut:' '|cut:'+' }}">{{ event.age_group }} {{ event.class_type }} - {{ event.start_time|time:"H:i" }} to {{ event.end_time|time:"H:i" }} on {{ event.instance_date }}</li>
+                              {% endfor %}
+                          </ul>
+                      {% endfor %}
+                      
+                      <h2>Later This Month</h2>
+                      <ul>
+                          {% for event in later_this_month %}
+                              <li class="{{ event.class_type }}">{{ event.age_group }} {{ event.class_type }} - {{ event.start_time|time:"H:i" }} to {{ event.end_time|time:"H:i" }} on {{ event.instance_date }}</li>
+                          {% empty %}
+                              <li>No events later this month.</li>
+                          {% endfor %}
+                      </ul>
+                      
+                      <h2>Later This Year</h2>
+                      <ul>
+                          {% for event in later_this_year %}
+                              <li class="{{ event.class_type }}">{{ event.age_group }} {{ event.class_type }} - {{ event.start_time|time:"H:i" }} to {{ event.end_time|time:"H:i" }} on {{ event.instance_date }}</li>
+                          {% empty %}
+                              <li>No events later this year.</li>
+                          {% endfor %}
+                      </ul>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">There are no previous sessions on this timetable yet.</div>

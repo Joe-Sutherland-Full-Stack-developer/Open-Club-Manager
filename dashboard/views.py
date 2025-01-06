@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import ParticipantForm, AddEvent
 from .models import ClassInstance, Timetable
 from bootstrap_datepicker_plus.widgets import TimePickerInput
+from datetime import datetime, timedelta
+from django.utils.timezone import now
 
 # Create your views here.
 
@@ -18,15 +20,41 @@ class HomePage(TemplateView):
 
 @login_required(login_url='/login/')
 def dashboard(request):
-    timetable_instance = get_object_or_404(Timetable, active = True)
-    class_instances = ClassInstance.objects.filter()
+    today = now().date()
+    start_of_week = today - timedelta(days=today.weekday())  # Monday of the current week
+    end_of_week = start_of_week + timedelta(days=6)  # Sunday of the current week
+    end_of_month = (today.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+
+    class_instances = ClassInstance.objects.order_by('instance_date', 'start_time')
+
+    # Group events into categories
+    this_week = []
+    later_this_month = []
+    later_this_year = []
+
+    for instance in class_instances:
+        if start_of_week <= instance.instance_date <= end_of_week:
+            this_week.append(instance)
+        elif instance.instance_date <= end_of_month:
+            later_this_month.append(instance)
+        else:
+            later_this_year.append(instance)
+
+    # Organize this week's events by day
+    this_week_by_day = {}
+    for instance in this_week:
+        day_name = instance.instance_date.strftime('%A')  # e.g., "Tuesday"
+        if day_name not in this_week_by_day:
+            this_week_by_day[day_name] = []
+        this_week_by_day[day_name].append(instance)
 
     context = {
         'user': request.user,
-        'timetable': timetable_instance,
-        'class_instances': class_instances,
-    }   
-        
+        'this_week_by_day': this_week_by_day,
+        'later_this_month': later_this_month,
+        'later_this_year': later_this_year,
+    }
+
     return render(request, 'dashboard/dashboard.html', context)
 
 def create_participant(request):

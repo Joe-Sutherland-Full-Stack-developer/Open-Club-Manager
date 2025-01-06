@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 from datetime import timedelta, datetime
-# Create your models here.
+from colorfield.fields import ColorField
 
 class ClassType(models.Model):
     duration_choices = ((15, '15 Minutes'), (30, '30 Minutes'),
@@ -22,6 +22,7 @@ class ClassType(models.Model):
     duration = models.IntegerField(choices = duration_choices)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     default_capacity = models.IntegerField(default=0)
+    color_value = ColorField(default='#FF0000')
     def __str__(self):
         return self.name
 
@@ -79,7 +80,7 @@ class ClassInstance(models.Model):
     attendees = models.ManyToManyField('Booking')
     
     def __str__(self):
-        return str(self.id)
+        return str(f"{self.class_type} | {self.start_time.strftime('%H:%M')} | {self.instance_date.strftime("%A %d %B")}")
 
 class Booking(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

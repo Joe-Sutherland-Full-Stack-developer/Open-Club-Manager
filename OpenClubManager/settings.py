@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'localhost', 'https://*.herokuapp.com', 'openclubmanager-fbf0e93c3ef0.herokuapp.com']
+ALLOWED_HOSTS = [ 'localhost', '8000-joesuth13-openclubmanag-wf8lig7ea43.ws.codeinstitute-ide.net', 'https://*.herokuapp.com', 'openclubmanager-fbf0e93c3ef0.herokuapp.com']
 
 CSRF_TRUSTED_ORIGINS = ['https://*.codeinstitute-ide.net', 'https://*.herokuapp.com']
 # Application definition
@@ -49,11 +49,11 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'bootstrap5',
-    "django_flatpickr", 
+    'colorfield',
     'crispy_forms',
     'crispy_bootstrap4',
     'bootstrap_datepicker_plus',
-    
+    "django_flatpickr", 
     'dashboard',
 ]
 
