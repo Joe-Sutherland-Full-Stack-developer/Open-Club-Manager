@@ -3,8 +3,6 @@ h1 {
 }
 li{
     list-style: none;
-    
-    
 }
 #dashboard {
     margin: 0px;
@@ -20,7 +18,7 @@ li{
     border: 3px solid #71A5DE ;
     font-size: 1.2rem;
     min-height: 5vh;
-    margin-top: 2vh;
+    margin-top: 1vh;
 }
 #myTab > .nav-item {
     border: none;
@@ -34,6 +32,4 @@ li{
     border-bottom-color: grey;
     
 }
-.ct16yrsOpensession{
-    background-color: #71A5DE;
-}
+
