@@ -11,8 +11,12 @@
     <li><strong>Class Instance:</strong> {{ booking.class_instance }}</li>
     <li><strong>Paid or Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
     <li><strong>Created On:</strong> {{ booking.created_on }}</li>
-    <li><strong>Updated On:</strong> {{ booking.updated_on }}</li>
-    <li><strong>Active:</strong> {% if booking.active %}Yes{% else %}No{% endif %}</li>
+    {% if booking.updated_on != booking.created_on %}
+    <li><strong>Last updated On:</strong> {{ booking.updated_on }}</li>
+    {% endif %}
+   {% if booking.active == False %}
+   <li><strong>This Booking was cancelled</strong> </li>
+   {% endif %}
 </ul>
 
 <a href="{% url 'dashboard' %}" class="btn btn-primary">Return to Dashboard</a>

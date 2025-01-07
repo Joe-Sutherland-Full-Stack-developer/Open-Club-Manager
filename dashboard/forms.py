@@ -45,9 +45,11 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = [ 'participant',]
+
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+        
         if user:
             self.fields['participant'].queryset = Participant.objects.filter(user=user)
   

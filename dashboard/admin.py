@@ -26,7 +26,17 @@ admin.site.register(Participant)
 admin.site.register(ClassType)
 
 
-admin.site.register(Booking)
+
+
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'participant', 'class_instance', 'paid_or_member', 'created_on', 'updated_on', 'active']
+    list_filter = ['paid_or_member', 'active', 'created_on', 'updated_on']
+    search_fields = ['id','user__username', 'participant__first_name', 'participant__last_name']
+    readonly_fields = ['id', 'created_on', 'updated_on']
+    fields = ['user', 'participant', 'class_instance', 'paid_or_member', 'active', 'created_on', 'updated_on']
+
+    
+admin.site.register(Booking, BookingAdmin)
 
 
 #Custom Forms

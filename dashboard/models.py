@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.conf import settings
 from bootstrap_datepicker_plus.widgets import DatePickerInput
@@ -83,6 +84,7 @@ class ClassInstance(models.Model):
         return str(f"{self.class_type} | {self.start_time.strftime('%H:%M')} | {self.instance_date.strftime("%A %d %B")}")
 
 class Booking(models.Model):
+    id = models.IntegerField(primary_key=True, editable=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     participant = models.ForeignKey('Participant', on_delete=models.CASCADE)
     class_instance = models.ForeignKey('ClassInstance', on_delete=models.CASCADE)
@@ -90,6 +92,22 @@ class Booking(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
+   
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Get the maximum ID from the database
+            max_id = Booking.objects.all().aggregate(models.Max('id'))['id__max']
+            
+            # If there are no existing records, start from 100000
+            self.id = 100000 if max_id is None else max_id + 1
+            
+            # Ensure the ID is always 6 digits
+            if self.id > 999999:
+                raise ValidationError("Maximum ID limit reached")
+        
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return str(self.id)
 
