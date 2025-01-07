@@ -2,6 +2,7 @@ from bootstrap_datepicker_plus.widgets import DatePickerInput, TimePickerInput, 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from django.utils import timezone
 from .models import Participant, ClassType, Timetable, ClassInstance, Booking
 from django import forms
 from .forms import AddEvent
@@ -34,14 +35,27 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ['id','user__username', 'participant__first_name', 'participant__last_name']
     readonly_fields = ['id', 'created_on', 'updated_on']
     fields = ['user', 'participant', 'class_instance', 'paid_or_member', 'active', 'created_on', 'updated_on']
-    actions = ['set_inactive']
+    actions = ['set_inactive','set_active','mark_as_paid', 'mark_as_not_paid']
 
     def set_inactive(self, request, queryset):
-        queryset.update(active=False)
+        queryset.update(active=False, updated_on=timezone.now())
     set_inactive.short_description = "Mark selected bookings as inactive (Use this to cancel bookings without deleting them)"
-    
-admin.site.register(Booking, BookingAdmin)
 
+    def set_active(self, request, queryset):
+        # Update the active field to True and set updated_on to now
+        queryset.update(active=True, updated_on=timezone.now())
+    set_active.short_description = "Mark selected bookings as active"
+
+
+    def mark_as_paid(self, request, queryset):
+        queryset.update(paid_or_member=True, updated_on=timezone.now())
+    mark_as_paid.short_description = "Mark selected bookings as paid"
+       
+    def mark_as_not_paid(self, request, queryset):
+        queryset.update(paid_or_member=False, updated_on=timezone.now())
+    mark_as_not_paid.short_description = "Mark selected bookings as not paid"
+
+admin.site.register(Booking, BookingAdmin)
 
 #Custom Forms
 
