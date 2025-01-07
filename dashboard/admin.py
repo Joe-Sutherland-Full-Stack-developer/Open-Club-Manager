@@ -3,9 +3,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.utils import timezone
-from .models import Participant, ClassType, Timetable, ClassInstance, Booking
+from .models import Participant, ClassType, Timetable, ClassInstance, Booking, Customization
 from django import forms
 from .forms import AddEvent
+
 
 class ParticipantInline(admin.StackedInline):
     model = Participant
@@ -26,17 +27,17 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Participant)
 admin.site.register(ClassType)
 
-
-
+admin.site.register(Customization)
 
 class BookingAdmin(admin.ModelAdmin):
+    
     list_display = ['id', 'user', 'participant', 'class_instance', 'paid_or_member', 'created_on', 'updated_on', 'active']
     list_filter = ['paid_or_member', 'active', 'created_on', 'updated_on']
     search_fields = ['id','user__username', 'participant__first_name', 'participant__last_name']
     readonly_fields = ['id', 'created_on', 'updated_on']
     fields = ['user', 'participant', 'class_instance', 'paid_or_member', 'active', 'created_on', 'updated_on']
     actions = ['set_inactive','set_active','mark_as_paid', 'mark_as_not_paid']
-
+    autocomplete_fields = ['user']
     def set_inactive(self, request, queryset):
         queryset.update(active=False, updated_on=timezone.now())
     set_inactive.short_description = "Mark selected bookings as inactive (Use this to cancel bookings without deleting them)"
@@ -58,6 +59,9 @@ class BookingAdmin(admin.ModelAdmin):
 admin.site.register(Booking, BookingAdmin)
 
 #Custom Forms
+
+
+
 
 class TimetableForm(forms.ModelForm):
     # Define the available choices for selection

@@ -1,0 +1,81 @@
+{% extends "dashboard/dashboard.html" %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+
+{% block innerframe %}
+
+<div class="bg-color-light">
+    <header id="page-header">Your Bookings</header>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming-tab-pane" type="button" role="tab" aria-controls="upcoming-tab-pane" aria-selected="true">Upcoming Bookings</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="previous-tab" data-bs-toggle="tab" data-bs-target="#previous-tab-pane" type="button" role="tab" aria-controls="previous-tab-pane" aria-selected="false">Previous Bookings</button>
+        </li>
+    </ul>
+</div>
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="upcoming-tab-pane" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
+        <div class="accordion" id="accordionUpcoming">
+            {% for booking in upcoming_bookings %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingUpcoming{{ forloop.counter }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">
+                            Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }}
+                        </button>
+                    </h2>
+                    <div id="collapseUpcoming{{ forloop.counter }}" class="accordion-collapse collapse show" aria-labelledby="headingUpcoming{{ forloop.counter }}" data-bs-parent="#accordionUpcoming">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Date:</strong> {{ booking.class_instance.instance_date }}</li>
+                                <li><strong>Start Time:</strong> {{ booking.class_instance.start_time }}</li>
+                                <li><strong>Finish Time:</strong> {{ booking.class_instance.finish_time }}</li>
+                                <li><strong>Participant:</strong> {{ booking.participant }}</li>
+                                <li><strong>Session Price:</strong> {{ customization.currency_symbol }} {{ booking.class_instance.class_type.price }}</li>
+                                <li><strong>Paid/Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
+                            </ul>
+                            <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>You have no upcoming bookings.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="previous-tab-pane" role="tabpanel" aria-labelledby="previous-tab" tabindex="0">
+        <div class="accordion" id="accordionPrevious">
+            {% for booking in previous_bookings %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingPrevious{{ forloop.counter }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrevious{{ forloop.counter }}" aria-expanded="false" aria-controls="collapsePrevious{{ forloop.counter }}">
+                            Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }}
+                        </button>
+                    </h2>
+                    <div id="collapsePrevious{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingPrevious{{ forloop.counter }}" data-bs-parent="#accordionPrevious">
+                        <div class="accordion-body">
+                            <ul>
+                                <li><strong>Date:</strong> {{ booking.class_instance.date }}</li>
+                                <li><strong>Start Time:</strong> {{ booking.class_instance.start_time }}</li>
+                                <li><strong>Finish Time:</strong> {{ booking.class_instance.finish_time }}</li>
+                                <li><strong>Participant:</strong> {{ booking.participant }}</li>
+                                <li><strong>Session Price:</strong> ${{ booking.class_instance.class_type.session_price }}</li>
+                                <li><strong>Paid/Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
+                            </ul>
+                            <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary">Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>You have no previous bookings.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock innerframe %}

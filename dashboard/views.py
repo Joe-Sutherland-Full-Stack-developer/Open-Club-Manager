@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from datetime import timedelta, datetime
@@ -10,7 +10,7 @@ from .models import ClassInstance, Timetable, Booking
 from bootstrap_datepicker_plus.widgets import TimePickerInput
 from datetime import datetime, timedelta
 from django.utils.timezone import now
-
+from weasyprint import HTML
 # Create your views here.
 
 class HomePage(TemplateView):
@@ -26,7 +26,7 @@ def dashboard(request):
     start_of_week = today - timedelta(days=today.weekday())  # Monday of the current week
     end_of_week = start_of_week + timedelta(days=6)  # Sunday of the current week
     end_of_month = (today.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
-
+    
     class_instances = ClassInstance.objects.order_by('instance_date', 'start_time')
     timetables = Timetable.objects.filter(active=True)
     # Group events into categories
@@ -97,6 +97,16 @@ def booking_confirmation(request, booking_id):
         return HttpResponseForbidden("You do not have permission to view this booking.")
 
     return render(request, 'dashboard/booking_confirmation.html', {'booking': booking})
+
+
+def view_bookings(request):
+    current_date = timezone.now().date()
+    upcoming_bookings = Booking.objects.filter(user=request.user, class_instance__instance_date__gte=current_date)
+    previous_bookings = Booking.objects.filter(user=request.user, class_instance__instance_date__lt=current_date)
+
+    return render(request, 'dashboard/view_bookings.html', {'upcoming_bookings': upcoming_bookings,
+        'previous_bookings': previous_bookings,})
+
 
 def create_participant(request):
     if request.method == 'POST':
@@ -192,4 +202,10 @@ def timetable_view(request, timetable_id):
     
     return render(request, 'dashboard/timetable.html', context)
 
-
+def booking_confirmation_pdf(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    html_string = render_to_string('booking_confirmation_pdf.html', {'booking': booking})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="booking_confirmation_{booking.id}.pdf"'
+    HTML(string=html_string).write_pdf(response)
+    return response

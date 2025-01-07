@@ -125,4 +125,36 @@ class Participant(models.Model):
     additional_info = models.TextField(null=True, blank=True)
     def __str__(self):
         return f"{self.first_name}  {self.last_name}"
+
+class Customization(models.Model):
+    currency_symbol = models.CharField(max_length=5, default='£')  # e.g., '£', '$', '€'
+    brand_colour_1 = ColorField(default='#FF0000')
+    brand_colour_2 = ColorField(default='#00FF00')
+    brand_colour_3 = ColorField(default='#0000FF')  
+    default_country = models.CharField(max_length=200, default='United Kingdom')
+    default_language = models.CharField(max_length=200, default='English')
+    logo = models.ImageField(upload_to='logos/', null=True, blank=True)
+    favicon = models.ImageField(upload_to='favicons/', null=True, blank=True)
+    custom_font = models.CharField(max_length=200, default='Arial')
+    smtp_server = models.CharField(max_length=255, blank=True)
+    smtp_port = models.IntegerField(default=587)
+    smtp_username = models.CharField(max_length=255, blank=True)
+    smtp_password = models.CharField(max_length=255, blank=True)
+    site_title = models.CharField(max_length=200, default="Open Club Manager")
+    site_tagline = models.CharField(max_length=200, blank=True)
+    contact_email = models.EmailField(blank=True)
+    contact_phone = models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return "Customization Settings"
+   
+    @classmethod
+    def get_solo(cls):
+        obj, created = cls.objects.get_or_create(id=1)
+        return obj
     
+    def save(self, *args, **kwargs):
+        # Ensure only one instance exists
+        if not self.pk and Customization.objects.exists():
+            raise ValidationError("Only one instance of Customization is allowed.")
+        super().save(*args, **kwargs)

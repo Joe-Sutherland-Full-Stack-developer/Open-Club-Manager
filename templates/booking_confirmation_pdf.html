@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h2 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Booking Confirmation</h2>
+    <ul>
+        <li><strong>Class Type:</strong> {{ booking.class_instance.class_type.name }}</li>
+        <li><strong>Class Instance Date:</strong> {{ booking.class_instance.date }}</li>
+        <li><strong>Start Time:</strong> {{ booking.class_instance.start_time }}</li>
+        <li><strong>Finish Time:</strong> {{ booking.class_instance.finish_time }}</li>
+        <li><strong>Participant:</strong> {{ booking.participant }}</li>
+        <li><strong>Session Price:</strong> {{ customization.currency_symbol }}{{ booking.class_instance.class_type.session_price }}</li>
+        <li><strong>Paid/Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
+    </ul>
+</body>
+</html>

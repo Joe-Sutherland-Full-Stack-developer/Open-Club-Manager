@@ -28,6 +28,8 @@ urlpatterns = [
     path('load-booking-form/<int:event_id>/', dashboard_views.load_booking_form, name='load_booking_form'),
     path('create-booking/', dashboard_views.create_booking, name='create_booking'),
     path('booking-confirmation/<int:booking_id>/', dashboard_views.booking_confirmation, name='booking_confirmation'),
+    path('view-bookings/', dashboard_views.view_bookings, name='view_bookings'),
+    path('booking-confirmation/pdf/<int:booking_id>/', dashboard_views.booking_confirmation_pdf, name='booking_confirmation_pdf'),
 ]
 
 admin.site.site_header = "Open Club Manager"

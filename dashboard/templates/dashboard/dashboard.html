@@ -10,7 +10,7 @@
             <h2 class="pl-2">Welcome, {{ user }}</h2>
             <div class="accordion accordion-flush" id="side-accordian">
                 <!-- Accordion items go here -->
-                <!-- Example: View all bookings -->
+                
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -28,12 +28,19 @@
                   <div class="accordion-item">
                     <h2 class="accordion-header">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        View all bookings
+                        <a href="{% url 'view_bookings' %}">View Your Bookings</a>
                       </button>
                     </h2>
-                  <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+                  <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
                     <div class="accordion-body">
-                        <a href="#">{{ user.participant }}</a>
+                        <a class="side-nav-link" href="#">Upcoming Bookings</a>
+                        
+                    </div>
+                  </div>
+                  <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+                    <div class="accordion-body">
+                        <a class="side-nav-link" href="#">Previous Bookings</a>
+                        
                     </div>
                   </div>
                 </div>

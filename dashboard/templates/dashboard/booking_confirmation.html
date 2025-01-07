@@ -5,19 +5,16 @@
 <p>Your booking has been confirmed with the following details:</p>
 
 <ul>
-    <li><strong>Booking ID:</strong> {{ booking.id }}</li>
-    <li><strong>User:</strong> {{ booking.user }}</li>
+    <li><strong>Class Type:</strong> {{ booking.class_instance.class_type.name }}</li>
+    <li><strong>Class Instance Date:</strong> {{ booking.class_instance.instance_date }}</li>
+    <li><strong>Start Time:</strong> {{ booking.class_instance.start_time }}</li>
+    <li><strong>Finish Time:</strong> {{ booking.class_instance.finish_time }}</li>
     <li><strong>Participant:</strong> {{ booking.participant }}</li>
-    <li><strong>Class Instance:</strong> {{ booking.class_instance }}</li>
-    <li><strong>Paid or Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
-    <li><strong>Created On:</strong> {{ booking.created_on }}</li>
-    {% if booking.updated_on != booking.created_on %}
-    <li><strong>Last updated On:</strong> {{ booking.updated_on }}</li>
-    {% endif %}
-   {% if booking.active == False %}
-   <li><strong>This Booking was cancelled</strong> </li>
-   {% endif %}
+    <li><strong>Session Price:</strong> {{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</li>
+    <li><strong>Paid/Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
 </ul>
+
+<a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary">Download PDF</a>
 
 <a href="{% url 'dashboard' %}" class="btn btn-primary">Return to Dashboard</a>
 {% endblock %}
