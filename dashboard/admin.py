@@ -34,7 +34,11 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ['id','user__username', 'participant__first_name', 'participant__last_name']
     readonly_fields = ['id', 'created_on', 'updated_on']
     fields = ['user', 'participant', 'class_instance', 'paid_or_member', 'active', 'created_on', 'updated_on']
+    actions = ['set_inactive']
 
+    def set_inactive(self, request, queryset):
+        queryset.update(active=False)
+    set_inactive.short_description = "Mark selected bookings as inactive (Use this to cancel bookings without deleting them)"
     
 admin.site.register(Booking, BookingAdmin)
 

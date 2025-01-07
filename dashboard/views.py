@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponseForbidden
 from django.template.loader import render_to_string
 from django.utils import timezone
 from datetime import timedelta, datetime
@@ -87,10 +87,16 @@ def create_booking(request):
             return redirect('booking_confirmation')
     return redirect('dashboard')  # or wherever you want to redirect on failure
 
+def booking_owner_or_admin(user, booking):
+    return user == booking.user or user.is_staff
 
+# Check if the user is the owner of the booking or an admin
 def booking_confirmation(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
-    return render(request, 'booking_confirmation.html', {'booking': booking})
+    if not booking_owner_or_admin(request.user, booking):
+        return HttpResponseForbidden("You do not have permission to view this booking.")
+
+    return render(request, 'dashboard/booking_confirmation.html', {'booking': booking})
 
 def create_participant(request):
     if request.method == 'POST':
