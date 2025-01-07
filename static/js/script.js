@@ -73,3 +73,28 @@ function setFlatpickrValue(inputId, value) {
         console.error(`Element with ID "${inputId}" not found.`);
     }
 }
+
+// dashboard scripts
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const classLinks = document.querySelectorAll('.class-instance-link');
+    classLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const eventId = this.dataset.eventId;
+        if (eventId) {
+          fetch(`/load-booking-form/${eventId}/`)
+            .then(response => response.text())
+            .then(html => {
+              document.querySelector('#bookingModal .modal-body').innerHTML = html;
+              new bootstrap.Modal(document.getElementById('bookingModal')).show();
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+          console.error('Event ID not found');
+        }
+      });
+    });
+  });
+  

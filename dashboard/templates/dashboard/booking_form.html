@@ -1,0 +1,16 @@
+<form method="post" action="{% url 'create_booking' %}">
+  
+    <p class="modal-form"><strong>Class Type:</strong> {{ event.class_type }}</p>
+    <p class="modal-form"><strong>Booking Date:</strong> {{ event.instance_date|date:"l, j F Y" }}</p>
+    <p class="modal-form"><strong>Start Time:</strong> {{ event.start_time|time:"H:i" }}</p>
+    <p class="modal-form"><strong>Finish Time:</strong> {{ event.finish_time|time:"H:i" }}</p>
+    
+  
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <input type="hidden" name="class_instance_id" value="{{ event.id }}">
+
+    <button type="submit" class="btn btn-primary">Book</button>
+  </form>
+  

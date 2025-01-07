@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Booking Confirmation</h2>
+<p>Your booking has been confirmed with the following details:</p>
+
+<ul>
+    <li><strong>Booking ID:</strong> {{ booking.id }}</li>
+    <li><strong>User:</strong> {{ booking.user }}</li>
+    <li><strong>Participant:</strong> {{ booking.participant }}</li>
+    <li><strong>Class Instance:</strong> {{ booking.class_instance }}</li>
+    <li><strong>Paid or Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
+    <li><strong>Created On:</strong> {{ booking.created_on }}</li>
+    <li><strong>Updated On:</strong> {{ booking.updated_on }}</li>
+    <li><strong>Active:</strong> {% if booking.active %}Yes{% else %}No{% endif %}</li>
+</ul>
+
+<a href="{% url 'dashboard' %}" class="btn btn-primary">Return to Dashboard</a>
+{% endblock %}

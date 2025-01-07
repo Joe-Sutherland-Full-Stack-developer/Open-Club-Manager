@@ -1,5 +1,5 @@
 from django import forms
-from .models import Participant, ClassInstance, ClassType
+from .models import Participant, ClassInstance, ClassType, Booking
 from .models import Timetable
 from django_flatpickr.widgets import DatePickerInput, TimePickerInput, DateTimePickerInput
 from django_flatpickr.schemas import FlatpickrOptions
@@ -40,5 +40,14 @@ class AddEvent(forms.ModelForm):
         }
 
 
-  
+class BookingForm(forms.ModelForm):
+    participant = forms.ModelChoiceField(queryset=None)
+    class Meta:
+        model = Booking
+        fields = [ 'participant',]
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['participant'].queryset = Participant.objects.filter(user=user)
   

@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.utils import timezone
 from datetime import timedelta, datetime
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
-from .forms import ParticipantForm, AddEvent
-from .models import ClassInstance, Timetable
+from .forms import ParticipantForm, AddEvent, BookingForm
+from .models import ClassInstance, Timetable, Booking
 from bootstrap_datepicker_plus.widgets import TimePickerInput
 from datetime import datetime, timedelta
 from django.utils.timezone import now
@@ -26,7 +28,7 @@ def dashboard(request):
     end_of_month = (today.replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
 
     class_instances = ClassInstance.objects.order_by('instance_date', 'start_time')
-
+    timetables = Timetable.objects.filter(active=True)
     # Group events into categories
     this_week = []
     later_this_month = []
@@ -53,9 +55,42 @@ def dashboard(request):
         'this_week_by_day': this_week_by_day,
         'later_this_month': later_this_month,
         'later_this_year': later_this_year,
+        'timetables' : timetables,
+        
     }
 
     return render(request, 'dashboard/dashboard.html', context)
+
+
+
+@login_required(login_url='/login/')
+def load_booking_form(request, event_id):
+    event = get_object_or_404(ClassInstance, id=event_id)
+    user = request.user
+    form = BookingForm( user=request.user, initial={
+        'class_instance': event,
+        'participant': user.participants.first,
+        
+      
+    })
+    return render(request, 'dashboard/booking_form.html', {'form': form, 'event': event})
+
+
+def create_booking(request):
+    if request.method == 'POST':
+        form = BookingForm(request.POST, user=request.user)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user
+            booking.class_instance_id = request.POST.get('class_instance_id')
+            booking.save()
+            return redirect('booking_confirmation')
+    return redirect('dashboard')  # or wherever you want to redirect on failure
+
+
+def booking_confirmation(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    return render(request, 'booking_confirmation.html', {'booking': booking})
 
 def create_participant(request):
     if request.method == 'POST':

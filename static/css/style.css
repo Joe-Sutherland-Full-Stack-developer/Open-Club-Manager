@@ -10,18 +10,44 @@ li{
 }
 #side-panel{
     background-color: #AECBEB;
+    font-size:2rem ;
 }
-#main-box{
-    padding-left: 2rem;
+.side-nav-link{
+    font-size: 1rem;
+}
+#page-header{
+    font-size: 2.5rem;
+    
+}
+#main-content{
+background-color:#f8f9fb ;
+color:#061a40
 }
 .tab-pane li{
-    border: 3px solid #71A5DE ;
-    font-size: 1.2rem;
+    border: 3px solid #0353A4 ;
+    font-size: 2vw;
+    
     min-height: 5vh;
     margin-top: 1vh;
+    display: flex;
+    align-items: center;
 }
 #myTab > .nav-item {
     border: none;
+}
+.class-instance-link{
+    text-decoration: none;
+    color: #061a40;
+    display:flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    min-height: 5vh;
+}   
+.class-instance-link:hover{
+    text-decoration: none;
+    color:#ffffff;
+    background-color: #172d6b46 ;
 }
 .event-cell {
     border-color: black; 
@@ -32,4 +58,23 @@ li{
     border-bottom-color: grey;
     
 }
-
+.left-padding{
+    padding-left: 2rem;
+}
+.no-padding{
+    padding: 0px;
+}
+/* .monday{background-color: #47749e5b ;}
+.tuesday{background-color: #61aaaa62;}
+.wednesday{background-color: #70aa8665;}
+.thursday{background-color: #92ac7575;}
+.friday{background-color: #9fa56e71;}
+.saturday{background-color: #a7927369;}
+.sunday{background-color: #976a6a65;}
+*/
+.bg-color-light{
+    background-color: #172d6b2c;
+}
+.bg-color-dark{
+    background-color: #1d4e7c85; 
+}
