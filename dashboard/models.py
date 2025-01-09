@@ -5,7 +5,7 @@ from django.conf import settings
 from bootstrap_datepicker_plus.widgets import DatePickerInput
 from datetime import timedelta, datetime
 from colorfield.fields import ColorField
-
+from cloudinary.models import CloudinaryField
 class ClassType(models.Model):
     duration_choices = ((15, '15 Minutes'), (30, '30 Minutes'),
                         (45, '45 Minutes'), (60, '1 Hour'),
@@ -137,8 +137,8 @@ class Customization(models.Model):
     confirmation_message = models.CharField(max_length=200, default='See you soon!')
     default_country = models.CharField(max_length=200, default='United Kingdom')
     default_language = models.CharField(max_length=200, default='English')
-    logo = models.ImageField(upload_to='logos/', null=True, blank=True)
-    favicon = models.ImageField(upload_to='favicons/', null=True, blank=True)
+    logo = CloudinaryField('image', null=True, blank=True)
+    favicon = CloudinaryField('image', null=True, blank=True)
     custom_font = models.CharField(max_length=200, default='Arial')
     smtp_server = models.CharField(max_length=255, blank=True)
     smtp_port = models.IntegerField(default=587)
@@ -165,7 +165,15 @@ class Customization(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    contact_number = models.TextField(max_length=500, blank=True)
+    contact_number = models.CharField(max_length=15, blank=True)
     
     def __str__(self):
         return f"{self.user.username}"
+    
+class ContactRequest(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=15)
+    email = models.EmailField()
+    message = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
