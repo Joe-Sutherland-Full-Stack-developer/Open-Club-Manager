@@ -21,7 +21,7 @@ from dashboard import views as dashboard_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path('', include('dashboard.urls'), name='home'),
+    path('', dashboard_views.home, name='home'),
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/new_participant', dashboard_views.create_participant, name="create_participant"),
     path('timetable/<int:timetable_id>/', dashboard_views.timetable_view, name='timetable_view'),
@@ -30,6 +30,10 @@ urlpatterns = [
     path('booking-confirmation/<int:booking_id>/', dashboard_views.booking_confirmation, name='booking_confirmation'),
     path('view-bookings/', dashboard_views.view_bookings, name='view_bookings'),
     path('booking-confirmation/pdf/<int:booking_id>/', dashboard_views.booking_confirmation_pdf, name='booking_confirmation_pdf'),
+    path('account/', dashboard_views.account_details, name='account_details'),
+    path('create-participant/', dashboard_views.create_participant, name='create_participant'),
+    path('delete-participant/<int:participant_id>/', dashboard_views.delete_participant, name='delete_participant'),
+
 ]
 
 admin.site.site_header = "Open Club Manager"

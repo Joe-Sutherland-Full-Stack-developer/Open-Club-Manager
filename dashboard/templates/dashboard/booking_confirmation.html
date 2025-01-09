@@ -10,7 +10,7 @@
     <li><strong>Start Time:</strong> {{ booking.class_instance.start_time }}</li>
     <li><strong>Finish Time:</strong> {{ booking.class_instance.finish_time }}</li>
     <li><strong>Participant:</strong> {{ booking.participant }}</li>
-    <li><strong>Session Price:</strong> {{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</li>
+    <li><strong>Session Price:</strong>  {{ customization.currency_symbol }}{{ booking.class_instance.class_type.price|floatformat:2 }}</li>
     <li><strong>Paid/Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
 </ul>
 

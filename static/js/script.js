@@ -98,3 +98,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
+// Account details
+document.addEventListener('DOMContentLoaded', function() {
+    const editButtons = document.querySelectorAll('.edit-field');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Find the closest row to the clicked button
+            const row = button.closest('.row.mb-3');
+            // Find the input field in the same row
+            const formInput = row.querySelector('.edit-form-input');
+            const saveButton = row.querySelector('.save-field');
+            const plainText = row.querySelector('.form-control-plaintext');
+            // Toggle the visibility of the input field and save button
+            if (formInput) {
+                formInput.classList.toggle('d-none'); // Add or remove 'd-none' class
+                plainText.classList.toggle('d-none'); //Toggle plain text visibility
+                saveButton.classList.toggle('d-none'); // Toggle save button visibility
+            }
+        });
+    });
+});
+
+
+
+

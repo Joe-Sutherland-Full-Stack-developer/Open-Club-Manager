@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block content %}
+
+<div class="row p-4">
+<h2> Welcome to Open Club Manager </h2>
+<p>The site you are about to see is a demo version of the Open source app, populated with example data. 
+</p>
+<p>You will need to create an account to view a majority of the features. If you do not wish to use a real email address, you can use test@test.com. </p>
+</div>
+
+<div class="row">
+    <div class="col"></div>
+    <Button id="begin-button" type="button" class="btn btn-primary"><a href="{% url 'dashboard' %}">Click here to begin</a></Button>
+</div>
+
+
+{% endblock content %}

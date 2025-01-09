@@ -1,0 +1,145 @@
+{% extends "dashboard/dashboard.html" %}
+{% load bootstrap5 %}
+{% load crispy_forms_tags %}
+{% bootstrap_css %}
+
+
+{% block innerframe %}
+
+<div class="bg-color-light">
+    <header id="page-header">Your Account details</header>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if request.GET.tab != 'participants' %}active{% endif %}" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming-tab-pane" type="button" role="tab" aria-controls="upcoming-tab-pane" aria-selected="{% if request.GET.tab != 'participants' %}true{% else %}false{% endif %}">Your Personal Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if request.GET.tab == 'participants' %}active{% endif %}" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants-tab-pane" type="button" role="tab" aria-controls="participants-tab-pane" aria-selected="{% if request.GET.tab == 'participants' %}true{% else %}false{% endif %}">Manage Participants</button>
+        </li>
+    </ul>
+</div>
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade {% if request.GET.tab != 'participants' %}show active{% endif %}" id="upcoming-tab-pane" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
+        <h2>Your Personal Details</h2>
+        <form method="post" id="user-edit-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3 row">
+                    <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
+                    <div class="col-sm-4">
+                        <span class="form-control-plaintext">{{ field.value|default_if_none:'' }}</span>
+                    </div>
+                    <div class="col-sm-4">
+                        {{ field }}
+                        <input class="edit-form-input" type="hidden" name="field_name" value="{{ field.name }}">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-primary btn-sm edit-field" data-field="{{ field.name }}">Edit</button>
+                        <button type="submit" class="btn btn-success btn-sm save-field d-none" data-field="{{ field.name }}">Save</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </form>
+    </div>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade {% if request.GET.tab == 'participants' %}show active{% endif %}" id="participants-tab-pane" role="tabpanel" aria-labelledby="participants-tab" tabindex="1">
+            <div class="row">
+                <div class="col-9">
+                    <h2>Manage Participants</h2>
+                </div> 
+                <div class="col-3 d-flex justify-content-end">
+                    
+                        <button type="button" class="btn btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#createParticipantModal">
+                            Add New Participant
+                        </button>
+                    
+                </div>
+            </div>
+            
+            <div class="accordion" id="accordionParticipants">
+                {% for participant in participants %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingParticipants{{ forloop.counter }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParticipant{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseParticipant{{ forloop.counter }}">
+                            Participant: {{ participant.first_name }} {{ participant.last_name }}
+                        </button>
+                    </h2>
+                    <div id="collapseParticipant{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingParticipant{{ forloop.counter }}" data-bs-parent="#accordionParticipants">
+                        <div class="accordion-body">
+                            {% for participant_form in participant_forms %}
+                            {% if participant.id == participant_form.instance.id %}
+                            <form class="participant-form" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="participant_id" value="{{ participant.id }}">
+                                {% for field in participant_form %}
+                                <div class="row mb-3">
+                                    <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
+                                    <div class="col-sm-6">
+                                        <span class="form-control-plaintext">{{ field.value|default_if_none:'' }}</span>
+                                        {{ field }} 
+                                        <input class="edit-form-input" type="hidden" name="field_name" value="{{ field.name }}"> <!-- Render input field -->
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-primary edit-field" data-field="{{ field.name }}">Edit</button>
+                                        <button type="submit" class="btn btn-success save-field d-none" data-field="{{ field.name }}">Save</button>  <!-- Ensure this button is visible -->
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </form>
+                                <!-- Delete Button -->
+                                <form method="post" action="{% url 'delete_participant' participant.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete Participant</button>
+                                </form>
+                            
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+        
+        </div>
+    </div>
+
+
+
+<div class="modal fade" id="createParticipantModal" tabindex="-1" aria-labelledby="createParticipantModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createParticipantModalLabel">Create Participant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="NewParticipant" method="POST" action ="{% url 'create_participant' %}">
+
+                    {% csrf_token %}
+                    {{ new_parti_form|crispy }}
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="NewParticipant">Save Participant</button>  <!-- Add functionality as needed -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock innerframe %}
+    
+
+{% block extrajs %}
+<script>
+    {% for message in messages %}
+        alert("{{ message }}");
+    {% endfor %}
+</script>
+{% endblock %}

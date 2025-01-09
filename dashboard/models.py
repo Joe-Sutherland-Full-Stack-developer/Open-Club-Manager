@@ -128,9 +128,10 @@ class Participant(models.Model):
 
 class Customization(models.Model):
     currency_symbol = models.CharField(max_length=5, default='£')  # e.g., '£', '$', '€'
-    brand_colour_1 = ColorField(default='#FF0000')
-    brand_colour_2 = ColorField(default='#00FF00')
-    brand_colour_3 = ColorField(default='#0000FF')  
+    brand_color_1 = ColorField(default='#FF0000', blank=True)
+    brand_color_2 = ColorField(default='#00FF00', blank=True)
+    brand_color_3 = ColorField(default='#0000FF', blank=True)
+    confirmation_message = models.CharField(max_length=200, default='See you soon!')
     default_country = models.CharField(max_length=200, default='United Kingdom')
     default_language = models.CharField(max_length=200, default='English')
     logo = models.ImageField(upload_to='logos/', null=True, blank=True)
@@ -158,3 +159,10 @@ class Customization(models.Model):
         if not self.pk and Customization.objects.exists():
             raise ValidationError("Only one instance of Customization is allowed.")
         super().save(*args, **kwargs)
+
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    contact_number = models.TextField(max_length=500, blank=True)
+    
+    def __str__(self):
+        return f"{self.user.username}"

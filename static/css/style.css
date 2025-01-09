@@ -9,8 +9,11 @@ li{
     padding: 0px;
 }
 #side-panel{
-    background-color: #AECBEB;
+    /* background-color: #AECBEB; */
     font-size:2rem ;
+    border-right: 2px solid #0353a43b;
+    box-shadow: 5px 0px 5px -2px rgba(26, 76, 184, 0.295);
+    z-index: 1;
 }
 .side-nav-link{
     font-size: 1rem;
@@ -20,10 +23,30 @@ li{
     
 }
 #main-content{
-background-color:#f8f9fb ;
-color:#061a40
+    background-color:#f8f9fb ;
+    color:#061a40
 }
-.tab-pane li{
+.booking-info li{
+    border: none;
+}
+.booking-confirm-text{
+    font-size: 2rem;
+    flex-direction: column;
+    align-items: center;
+}
+#confirmation-message{
+    font-size: 1.5rem;
+}
+.session-list{
+    border: 2px solid #0353a43b ;
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+    min-height: 5vh;
+    margin-top: 1vh;
+    display: flex;
+    align-items: center;
+}
+/* .tab-pane li{
     border: 3px solid #0353A4 ;
     font-size: 2vw;
     
@@ -31,7 +54,7 @@ color:#061a40
     margin-top: 1vh;
     display: flex;
     align-items: center;
-}
+} */
 #myTab > .nav-item {
     border: none;
 }
@@ -73,8 +96,17 @@ color:#061a40
 .sunday{background-color: #976a6a65;}
 */
 .bg-color-light{
-    background-color: #172d6b2c;
+    background-color: #172d6b18;
 }
 .bg-color-dark{
     background-color: #1d4e7c85; 
 }
+/*  --------------------------------------------------------Testing area: */
+
+/* .participant-form input[type="text"],
+.participant-form input[type="email"],
+.participant-form select,
+#user-edit-form input[type="text"],
+#user-edit-form input[type="email"] {
+    display: none;
+} */
