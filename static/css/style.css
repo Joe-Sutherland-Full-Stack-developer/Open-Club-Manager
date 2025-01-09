@@ -179,7 +179,10 @@ li{
     font-weight: 600;
     color: #061a40;
 }
+#add-participant-btn:hover{
+    border: 3px solid #00000073;
 
+}
 
 /*  --------------------------------------------------------Testing area: */
 

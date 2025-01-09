@@ -42,15 +42,15 @@
         </form>
     </div>
 
-    <div class="tab-content" id="myTabContent">
+    <div class="tab-content " id="myTabContent">
         <div class="tab-pane fade {% if request.GET.tab == 'participants' %}show active{% endif %}" id="participants-tab-pane" role="tabpanel" aria-labelledby="participants-tab" tabindex="1">
             <div class="row">
                 <div class="col-9">
-                    <h2>Manage Participants</h2>
+                    <h3 class="pt-4">Manage Participants</h3>
                 </div> 
                 <div class="col-3 d-flex justify-content-end">
                     
-                        <button type="button" class="btn btn-primary align-self-center" data-bs-toggle="modal" data-bs-target="#createParticipantModal">
+                        <button id="add-participant-btn" type="button" class="btn brand-color-3 brand-text-white align-self-center" data-bs-toggle="modal" data-bs-target="#createParticipantModal">
                             Add New Participant
                         </button>
                     

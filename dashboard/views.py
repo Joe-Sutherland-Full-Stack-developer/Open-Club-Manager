@@ -246,21 +246,25 @@ def account_details(request):
             participant_id = request.POST.get('participant_id')
             field_name = request.POST.get('field_name')  # Get field name from POST data
             value = request.POST.get(field_name)  # Get the value for the specific field
-
+            form = ParticipantForm(request.POST)
             print("Updating participant:", participant_id, "Field:", field_name, "Value:", value)  # Debugging output
+            if form.is_valid():
+                try:
+                    # Get the existing participant instance
+                    participant = Participant.objects.get(id=participant_id, user=request.user)
+                    # Update participant fields with cleaned data from the form
+                    for field in form.cleaned_data:
+                        setattr(participant, field, form.cleaned_data[field])
 
-            try:
-                # Get the existing participant instance
-                participant = Participant.objects.get(id=participant_id, user=request.user)
-                setattr(participant, field_name, value)  # Update the specific field
-                participant.save()  # Save changes to the existing participant
-                messages.success(request, "Participant updated successfully.")  # Optional success message
-            except Participant.DoesNotExist:
-                messages.error(request, "Participant does not exist.")  # Handle error case
-            except Exception as e:
-                messages.error(request, f"Error updating participant: {str(e)}")  # Catch any other exceptions
+                    participant.save()  # Save changes to the existing participant
 
-            return redirect('account_details')  # Redirect back after processing
+                    messages.success(request, "Participant updated successfully.")
+                except Participant.DoesNotExist:
+                    messages.error(request, "Participant does not exist.")
+                except Exception as e:
+                    messages.error(request, f"Error updating participant: {str(e)}")  # Catch any other exceptions
+
+                return redirect('account_details')  # Redirect back after processing
 
         else:  # Handle user form submission
             form = UserEditForm(request.POST, instance=request.user)
