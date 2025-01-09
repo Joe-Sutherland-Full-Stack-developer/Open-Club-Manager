@@ -127,10 +127,13 @@ class Participant(models.Model):
         return f"{self.first_name}  {self.last_name}"
 
 class Customization(models.Model):
+    business_name = models.CharField(default='Open Club Manager')
     currency_symbol = models.CharField(max_length=5, default='£')  # e.g., '£', '$', '€'
-    brand_color_1 = ColorField(default='#FF0000', blank=True)
-    brand_color_2 = ColorField(default='#00FF00', blank=True)
-    brand_color_3 = ColorField(default='#0000FF', blank=True)
+    brand_color_1 = ColorField(default='#AECBEB', blank=True)
+    brand_color_2 = ColorField(default='#71A5DE', blank=True)
+    brand_color_3 = ColorField(default='#0353A4', blank=True)
+    brand_color_white = ColorField(default='#f8f9fb', blank=True)
+    brand_color_dark = ColorField(default='#061A40', blank=True)
     confirmation_message = models.CharField(max_length=200, default='See you soon!')
     default_country = models.CharField(max_length=200, default='United Kingdom')
     default_language = models.CharField(max_length=200, default='English')

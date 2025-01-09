@@ -79,24 +79,34 @@ function setFlatpickrValue(inputId, value) {
 
 document.addEventListener('DOMContentLoaded', function() {
     const classLinks = document.querySelectorAll('.class-instance-link');
+    let bookingModal;
+
     classLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const eventId = this.dataset.eventId;
-        if (eventId) {
-          fetch(`/load-booking-form/${eventId}/`)
-            .then(response => response.text())
-            .then(html => {
-              document.querySelector('#bookingModal .modal-body').innerHTML = html;
-              new bootstrap.Modal(document.getElementById('bookingModal')).show();
-            })
-            .catch(error => console.error('Error:', error));
-        } else {
-          console.error('Event ID not found');
-        }
-      });
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const eventId = this.dataset.eventId;
+            if (eventId) {
+                fetch(`/load-booking-form/${eventId}/`)
+                    .then(response => response.text())
+                    .then(html => {
+                        document.querySelector('#bookingModal .modal-body').innerHTML = html;
+                        bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+                        bookingModal.show();
+
+                        // Add event listener for the close button
+                        document.querySelector('#bookingModal .btn-close').addEventListener('click', function() {
+                            bookingModal.hide();
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                console.error('Event ID not found');
+            }
+        });
     });
-  });
+});
+
+
   
 // Account details
 document.addEventListener('DOMContentLoaded', function() {

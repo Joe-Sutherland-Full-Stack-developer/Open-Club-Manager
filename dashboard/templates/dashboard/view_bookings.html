@@ -5,8 +5,10 @@
 
 {% block innerframe %}
 
-<div class="bg-color-light">
-    <header id="page-header">Your Bookings</header>
+<div class="brand-color-1">
+    
+        <header class="pl-4" id="page-header">Your Bookings</header>
+      
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link {% if request.GET.tab != 'previous' %}active{% endif %}" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming-tab-pane" type="button" role="tab" aria-controls="upcoming-tab-pane" aria-selected="{% if request.GET.tab != 'previous' %}true{% else %}false{% endif %}">Upcoming Bookings</button>
@@ -22,8 +24,8 @@
         <div class="accordion" id="accordionUpcoming">
             {% for booking in upcoming_bookings %}
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingUpcoming{{ forloop.counter }}">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">
+                    <h2 class="accordion-header " id="headingUpcoming{{ forloop.counter }}">
+                        <button class="accordion-button brand-color-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">
                             Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }}
                         </button>
                     </h2>
