@@ -20,7 +20,7 @@ class home(TemplateView):
     template_name = 'dashboard/home.html'
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='/accounts/login/')
 def dashboard(request):
     today = now().date()
     start_of_week = today - timedelta(days=today.weekday())  # Monday of the current week
