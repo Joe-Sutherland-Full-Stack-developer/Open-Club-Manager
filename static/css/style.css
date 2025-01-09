@@ -142,12 +142,13 @@ li{
 .bg-color-dark{
     background-color: #1d4e7c54; 
 }
+
+/*--------------------------------------------------------------------------Bookings page----------------------------------*/
+#booking-update-time{
+    align-self:flex-end
+}
+
+
 /*  --------------------------------------------------------Testing area: */
 
-/* .participant-form input[type="text"],
-.participant-form input[type="email"],
-.participant-form select,
-#user-edit-form input[type="text"],
-#user-edit-form input[type="email"] {
-    display: none;
-} */
+
