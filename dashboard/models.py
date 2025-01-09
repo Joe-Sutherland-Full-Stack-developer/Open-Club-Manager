@@ -85,7 +85,7 @@ class ClassInstance(models.Model):
 
 class Booking(models.Model):
     id = models.IntegerField(primary_key=True, editable=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     participant = models.ForeignKey('Participant', on_delete=models.CASCADE)
     class_instance = models.ForeignKey('ClassInstance', on_delete=models.CASCADE)
     paid_or_member = models.BooleanField(default=False)

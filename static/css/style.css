@@ -53,9 +53,11 @@ li{
 #side-bottom{
     height: auto;
     width: 100%;
-   display: block;
+   display: flex;
+   flex-direction: column;
    position:sticky;
    top: 83vh;
+   justify-content: center;
 }
 #side-bottom a{
     display: block;
@@ -64,7 +66,7 @@ li{
     border: 1px solid  #ffffff15;
     font-size: 1.5rem;
     text-decoration: none;
-    
+    align-content: center;
 }
 
 #page-header{
@@ -146,7 +148,11 @@ li{
     font-size: 1.5rem;
 }
 
-
+#upcoming-tab,
+#previous-tab{
+    font-size: 1.5rem;
+    color: #061a408e;
+}
 
 
 
@@ -168,7 +174,7 @@ li{
 
 /* -----------------------------------------------------------------------------------account details page */
 
-#upcoming-tab,
+#personal-tab,
 #participants-tab{
     font-size: 1.5rem;
     color: #061a408e;
