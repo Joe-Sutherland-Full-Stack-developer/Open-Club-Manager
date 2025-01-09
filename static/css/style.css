@@ -166,11 +166,19 @@ li{
 
 
 
+/* -----------------------------------------------------------------------------------account details page */
 
+#upcoming-tab,
+#participants-tab{
+    font-size: 1.5rem;
+    color: #061a408e;
+}
 
-
-
-
+#myTab .nav-item  .active,
+#myTab .nav-item  .active{
+    font-weight: 600;
+    color: #061a40;
+}
 
 
 /*  --------------------------------------------------------Testing area: */

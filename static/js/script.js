@@ -131,5 +131,29 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+//Toggle active class on tabs for styling purposes
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('#myTab .nav-link');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function(event) {          
+            // Update active state
+            tabs.forEach(function(t) {
+                t.classList.remove('active-tab');
+                t.setAttribute('aria-selected', 'false');
+            });
+            this.classList.add('active-tab');
+            this.setAttribute('aria-selected', 'true');
+            // Update URL
+            const tabName = this.id.replace('-tab', '');
+            const url = new URL(window.location.href);
+            url.searchParams.set('tab', tabName);
+            history.replaceState(null, null, url.toString());
 
 
+
+        });
+    });
+            
+});

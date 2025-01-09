@@ -6,21 +6,21 @@
 
 {% block innerframe %}
 
-<div class="bg-color-light">
+<div class="brand-color-1 pl-4">
     <header id="page-header">Your Account details</header>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link {% if request.GET.tab != 'participants' %}active{% endif %}" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming-tab-pane" type="button" role="tab" aria-controls="upcoming-tab-pane" aria-selected="{% if request.GET.tab != 'participants' %}true{% else %}false{% endif %}">Your Personal Details</button>
+            <button class="nav-link brand-text-dark {% if request.GET.tab != 'participants' %}active{% endif %}" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming-tab-pane" type="button" role="tab" aria-controls="upcoming-tab-pane" aria-selected="{% if request.GET.tab != 'participants' %}true{% else %}false{% endif %}">Your Personal Details</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link {% if request.GET.tab == 'participants' %}active{% endif %}" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants-tab-pane" type="button" role="tab" aria-controls="participants-tab-pane" aria-selected="{% if request.GET.tab == 'participants' %}true{% else %}false{% endif %}">Manage Participants</button>
+            <button class="nav-link brand-text-dark {% if request.GET.tab == 'participants' %}active{% endif %}" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants-tab-pane" type="button" role="tab" aria-controls="participants-tab-pane" aria-selected="{% if request.GET.tab == 'participants' %}true{% else %}false{% endif %}">Manage Participants</button>
         </li>
     </ul>
 </div>
 
-<div class="tab-content" id="myTabContent">
+<div class="tab-content pl-4" id="myTabContent">
     <div class="tab-pane fade {% if request.GET.tab != 'participants' %}show active{% endif %}" id="upcoming-tab-pane" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
-        <h2>Your Personal Details</h2>
+        <h3 class="pt-4">Your Personal Details</h3>
         <form method="post" id="user-edit-form">
             {% csrf_token %}
             {% for field in form %}
