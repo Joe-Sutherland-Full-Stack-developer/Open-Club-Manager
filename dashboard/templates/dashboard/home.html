@@ -2,17 +2,36 @@
 {% load bootstrap5 %}
 {% block content %}
 
-<div class="row p-4">
+<div class="row p-4 brand-color-1">
 <h2> Welcome to Open Club Manager </h2>
-<p>The site you are about to see is a demo version of the Open source app, populated with example data. 
+</div>
+<div class="row p-4 brand-color-white">
+<h2>This build is for demonstation purposes.</h2>
+<p>The site you are about to see is a demo version of the Open source app, populated with example data.</p>
+<p> Instructions on how to Install and use Open Club Manager in your own website will be available shortly <a> here: </a>
 </p>
-<p>You will need to create an account to view a majority of the features. If you do not wish to use a real email address, you can use test@test.com. </p>
+<p>This demo will give allow you to experience OpenClubManager from the customer's perspective. When prompted, you can use 'test@test.com' to create an account if you do not wish to use a real email address.</p>
+<p> *bear in mind that you will not be able to reset your password without a valid email address</p>
+<p> View the ReadMe on github for any further information, including admin panel features, which are not available in this demo.</p>
+
 </div>
 
-<div class="row">
-    <div class="col"></div>
+
+
+
+<div class="row brand-color-white">
+    <div class="col d-flex justify-content-center">
     <Button id="begin-button" type="button" class="btn btn-primary"><a href="{% url 'dashboard' %}">Click here to begin</a></Button>
 </div>
-
+</div>
+<div class="row p-4 brand-color-white">
+    <h4>Meet the dev</h4>
+    <p>Open Club manager was created as a capstone project for the coding skills bootcamp I attended. The project was made over the course of 3 weeks at the end of the 16 week course.</p>
+    <p> Before this, I had no software development experience whatsoever</p>
+    <p> If you would like to see some of my other projects:<a href="https://github.com/Joesuth13"></a></p>
+    <p> If you love Open Club Manager and want to buy me a coffee: <a></a> </p>
+    <p> This project is still under development and there will be many bugs. I will create a bug report form after the initial development is done.</p>
+    
+</div>
 
 {% endblock content %}

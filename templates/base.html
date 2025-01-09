@@ -17,7 +17,30 @@
     <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.7.1.min.js"></script>
     <script src="https://kit.fontawesome.com/8f74b31cfd.js" crossorigin="anonymous"></script>
     {% block additional_styles %}
-    {% endblock additional_styles %}
+<style>
+  .brand-color-1{
+    background-color: {{ customization.brand_color_1 }};
+  }
+  .brand-color-2{
+    background-color: {{ customization.brand_color_2 }};
+  }
+  .brand-color-3{
+    background-color: {{ customization.brand_color_3 }};
+  }
+  .brand-color-white{ 
+    background-color: {{ customization.brand_color_white }};
+  }
+  .brand-color-dark{
+    background-color: {{ customization.brand_color_dark }};
+  }
+  .brand-text-white{
+    color:  {{ customization.brand_color_white }};
+  }
+  .brand-text-dark{
+    color: {{ customization.brand_color_dark }};
+  }
+</style>
+{% endblock additional_styles %}
 
 </head>
 

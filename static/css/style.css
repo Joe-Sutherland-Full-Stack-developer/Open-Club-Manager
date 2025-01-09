@@ -75,17 +75,7 @@ li{
     background-color:#f8f9fb ;
     color:#061a40
 }
-.booking-info li{
-    border: none;
-}
-.booking-confirm-text{
-    font-size: 2rem;
-    flex-direction: column;
-    align-items: center;
-}
-#confirmation-message{
-    font-size: 1.5rem;
-}
+
 .session-list{
     border: 2px solid #0353a43b ;
     font-size: 1.25rem;
@@ -128,14 +118,7 @@ li{
 .no-padding{
     padding: 0px;
 }
-/* .monday{background-color: #47749e5b ;}
-.tuesday{background-color: #61aaaa62;}
-.wednesday{background-color: #70aa8665;}
-.thursday{background-color: #92ac7575;}
-.friday{background-color: #9fa56e71;}
-.saturday{background-color: #a7927369;}
-.sunday{background-color: #976a6a65;}
-*/
+
 .bg-color-light{
     background-color: #1d4e7c23;
 }
@@ -145,8 +128,49 @@ li{
 
 /*--------------------------------------------------------------------------Bookings page----------------------------------*/
 #booking-update-time{
-    align-self:flex-end
+    font-size: 0.85rem;
+    align-self:flex-end;
+   
+    text-align: end;
 }
+
+.booking-info li{
+    border: none;
+}
+.booking-confirm-text{
+    font-size: 2rem;
+    flex-direction: column;
+    align-items: center;
+}
+#confirmation-message{
+    font-size: 1.5rem;
+}
+
+
+
+
+
+
+/*-------------------------------------------------------------------------home page*/
+
+
+#begin-button{
+    width: 20vh;
+    height: 10vh;
+    justify-self: center;
+}
+
+#begin-button a {
+    color:#061a40
+}
+
+
+
+
+
+
+
+
 
 
 /*  --------------------------------------------------------Testing area: */
