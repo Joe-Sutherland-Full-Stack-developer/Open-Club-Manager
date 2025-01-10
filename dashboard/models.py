@@ -1,4 +1,5 @@
 from django.db import models
+
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -7,6 +8,8 @@ from datetime import timedelta, datetime
 from colorfield.fields import ColorField
 from cloudinary.models import CloudinaryField
 # from encrypted_model_fields.fields import EncryptedCharField
+
+
 
 class ClassType(models.Model):
     duration_choices = ((15, '15 Minutes'), (30, '30 Minutes'),
@@ -150,7 +153,12 @@ class Customization(models.Model):
     site_tagline = models.CharField(max_length=200, blank=True)
     contact_email = models.EmailField(blank=True)
     contact_phone = models.CharField(max_length=20, blank=True)
-
+    contact_other = models.CharField(max_length=20, blank=True)
+    contact_address_1 = models.CharField(max_length=200, blank=True)
+    contact_address_2 = models.CharField(max_length=200, blank=True)
+    contact_address_city = models.CharField(max_length=200, blank=True)
+    contact_address_state = models.CharField(max_length=200, blank=True)
+    contact_address_zip = models.CharField(max_length=200, blank=True)
     def __str__(self):
         return "Customization Settings"
    
@@ -164,6 +172,9 @@ class Customization(models.Model):
         if not self.pk and Customization.objects.exists():
             raise ValidationError("Only one instance of Customization is allowed. Please edit the existing instance instead")
         super().save(*args, **kwargs)
+
+
+
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

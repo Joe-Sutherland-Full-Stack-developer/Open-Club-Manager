@@ -16,12 +16,13 @@
         .booking-confirm-text{font-size: 1.4rem;flex-direction: column;align-items: center;}
         #confirmation-message{font-size: 1.1rem;}
         #booking-update-time{ font-size: 0.65rem; align-self:flex-end; text-align: end;}
+        #booking-confirmed{ text-align: center;}
     </style>
     <script src="https://kit.fontawesome.com/8f74b31cfd.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="booking-confirmation-container"class="accordion-body">
-        <div class="img-container d-flex justify-content-sm-center">
+        <div class="img-container d-flex justify-content-center">
             <img class="align-self-center"src="https://res.cloudinary.com/dyjgm6n1a/image/upload/v1736279027/Confirmed-tick-remove-bg-io_rroa9z.png" alt="green checkmark icon">
 
         </div>
@@ -31,14 +32,14 @@
                 
             </div>
             <ul>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-hashtag"></i>       Booking number: </strong> <span>{{ booking.id }}</span></li>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span>{{ booking.class_instance.class_type }}</span></li>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-calendar-days"></i>         Date:</strong> <span>{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-clock"></i>        Start Time:</strong><span> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-regular fa-clock"></i>     Finish Time:</strong> <span>{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-user"></i>       Participant:</strong><span> {{ booking.participant }}</span></li>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span>{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
-                <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span>{% if booking.paid_or_member %}Yes{% else %}No{% endif %}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-hashtag"></i>       Booking number: </strong> <span>{{ booking.id }}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span>{{ booking.class_instance.class_type }}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-calendar-days"></i>         Date:</strong> <span>{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-clock"></i>        Start Time:</strong><span> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-regular fa-clock"></i>     Finish Time:</strong> <span>{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-user"></i>       Participant:</strong><span> {{ booking.participant }}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span>{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
+                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span>{% if booking.paid_or_member %}Yes{% else %}No{% endif %}</span></li>
             </ul>
             <div class="d-flex justify-content-sm-between">
             

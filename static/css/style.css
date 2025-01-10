@@ -9,6 +9,25 @@ li{
     margin: 0px;
     padding: 0px;
 }
+.navbar-toggler {
+    background-color: #007bff; /* Change to your desired color */
+}
+.navbar-toggler-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+.collapse {
+    transition: height 0.35s ease; /* Smooth transition */
+}
+#mobile-nav{
+    height: 7.5vh;
+    padding: 5px;
+    padding-right: 4%;
+    
+}
+
 #side-panel{
     
     font-size:2rem ;
@@ -54,9 +73,9 @@ li{
     height: auto;
     width: 100%;
    display: flex;
-   flex-direction: column;
+   /* flex-direction: column; */
    position:sticky;
-   top: 83vh;
+   top: 92vh;
    justify-content: center;
 }
 #side-bottom a{
@@ -90,6 +109,9 @@ li{
 
 #myTab > .nav-item {
     border: none;
+}
+.nav-tabs .nav-link{
+    max-width: 40vw;
 }
 .class-instance-link{
     text-decoration: none;
@@ -193,3 +215,11 @@ li{
 /*  --------------------------------------------------------Testing area: */
 
 
+/*---------------------------------------------------Media queries---------------------*/
+@media (min-width: 768px) {
+
+    #side-bottom{
+        top: 83vh
+    }
+
+}

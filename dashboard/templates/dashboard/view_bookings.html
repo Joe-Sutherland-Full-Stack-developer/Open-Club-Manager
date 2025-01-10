@@ -10,10 +10,10 @@
         <header class="pl-4" id="page-header">Your Bookings</header>
       
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
+        <li class="nav-item " role="presentation">
             <button class="nav-link {% if request.GET.tab != 'previous' %}active{% endif %}" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming-tab-pane" type="button" role="tab" aria-controls="upcoming-tab-pane" aria-selected="{% if request.GET.tab != 'previous' %}true{% else %}false{% endif %}">Upcoming Bookings</button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item " role="presentation">
             <button class="nav-link {% if request.GET.tab == 'previous' %}active{% endif %}" id="previous-tab" data-bs-toggle="tab" data-bs-target="#previous-tab-pane" type="button" role="tab" aria-controls="previous-tab-pane" aria-selected="{% if request.GET.tab == 'previous' %}true{% else %}false{% endif %}">Previous Bookings</button>
         </li>
     </ul>
@@ -31,7 +31,7 @@
                     </h2>
                     <div id="collapseUpcoming{{ forloop.counter }}" class="accordion-collapse collapse show" aria-labelledby="headingUpcoming{{ forloop.counter }}" data-bs-parent="#accordionUpcoming">
                         <div id="booking-confirmation-container"class="accordion-body">
-                            <div class="img-container d-flex justify-content-sm-center">
+                            <div class="img-container d-flex justify-content-center">
                                 <img class="align-self-center"src="https://res.cloudinary.com/dyjgm6n1a/image/upload/v1736279027/Confirmed-tick-remove-bg-io_rroa9z.png" alt="green checkmark icon">
 
                             </div>
@@ -41,14 +41,14 @@
                                     <p id="confirmation-message">{{customization.confirmation_message}}</p>
                                 </div>
                                 <ul>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-hashtag"></i>      Booking number: </strong> <span>{{ booking.id }}</span></li>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span>{{ booking.class_instance.class_type }}</span></li>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-calendar-days"></i>        Date:</strong> <span>{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-clock"></i>        Start Time:</strong><span> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-regular fa-clock"></i>     Finish Time:</strong> <span>{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-user"></i>      Participant:</strong><span> {{ booking.participant }}</span></li>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span>{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
-                                    <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span>{% if booking.paid_or_member %}Yes{% else %}No{% endif %}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-hashtag"></i>      Booking number: </strong> <span>{{ booking.id }}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span>{{ booking.class_instance.class_type }}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-calendar-days"></i>        Date:</strong> <span>{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-clock"></i>        Start Time:</strong><span> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-regular fa-clock"></i>     Finish Time:</strong> <span>{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-user"></i>      Participant:</strong><span> {{ booking.participant }}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span>{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
+                                    <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span>{% if booking.paid_or_member %}Yes{% else %}No{% endif %}</span></li>
                                 </ul>
                                 <div class="d-flex justify-content-sm-between">
                                 <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary"><i class="fa-solid fa-download"></i>Download PDF</a>
@@ -67,31 +67,44 @@
     <div class="tab-pane fade {% if request.GET.tab == 'previous' %}show active{% endif %}" id="previous-tab-pane" role="tabpanel" aria-labelledby="previous-tab" tabindex="1">
         <div class="accordion" id="accordionPrevious">
             {% for booking in previous_bookings %}
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingPrevious{{ forloop.counter }}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrevious{{ forloop.counter }}" aria-expanded="false" aria-controls="collapsePrevious{{ forloop.counter }}">
-                            Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }}
-                        </button>
-                    </h2>
-                    <div id="collapsePrevious{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingPrevious{{ forloop.counter }}" data-bs-parent="#accordionPrevious">
-                        <div class="accordion-body">
-                            <ul>
-                                <li><strong>Date:</strong> {{ booking.class_instance.date }}</li>
-                                <li><strong>Start Time:</strong> {{ booking.class_instance.start_time }}</li>
-                                <li><strong>Finish Time:</strong> {{ booking.class_instance.finish_time }}</li>
-                                <li><strong>Participant:</strong> {{ booking.participant }}</li>
-                                <li><strong>Session Price:</strong> ${{ booking.class_instance.class_type.session_price }}</li>
-                                <li><strong>Paid/Member:</strong> {% if booking.paid_or_member %}Yes{% else %}No{% endif %}</li>
-                            </ul>
-                            <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary">Download PDF</a>
-                            <span id="booking-update-time" class="text-right">This booking was created/last updated on: {{booking.updated_on}}</span>
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="headingUpcoming{{ forloop.counter }}">
+                    <button class="accordion-button brand-color-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">
+                        Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }} | {{ booking.participant }}
+                    </button>
+                </h2>
+                <div id="collapseUpcoming{{ forloop.counter }}" class="accordion-collapse collapse show" aria-labelledby="headingUpcoming{{ forloop.counter }}" data-bs-parent="#accordionUpcoming">
+                    <div id="booking-confirmation-container"class="accordion-body">
+                        <div class="img-container d-flex justify-content-sm-center">
+                            <img class="align-self-center"src="https://res.cloudinary.com/dyjgm6n1a/image/upload/v1736279027/Confirmed-tick-remove-bg-io_rroa9z.png" alt="green checkmark icon">
 
+                        </div>
+                        <div class="booking-info">
+                            <div class="d-flex justify-content-sm-center booking-confirm-text">
+                                <p id="booking-confirmed">Booking Confirmed!</p><br>
+                                <p id="confirmation-message">{{customization.confirmation_message}}</p>
+                            </div>
+                            <ul>
+                                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-hashtag"></i>      Booking number: </strong> <span>{{ booking.id }}</span></li>
+                                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span>{{ booking.class_instance.class_type }}</span></li>
+                                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-calendar-days"></i>        Date:</strong> <span>{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
+                                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-clock"></i>        Start Time:</strong><span> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
+                                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-regular fa-clock"></i>     Finish Time:</strong> <span>{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
+                                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-user"></i>      Participant:</strong><span> {{ booking.participant }}</span></li>
+                                <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span>{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
+                                <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span>{% if booking.paid_or_member %}Yes{% else %}No{% endif %}</span></li>
+                            </ul>
+                            <div class="d-flex justify-content-sm-between">
+                            <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary"><i class="fa-solid fa-download"></i>Download PDF</a>
+                            <span id="booking-update-time" class="text-right">This booking was created/last updated on: {{booking.updated_on}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% empty %}
-                <p>You have no previous bookings.</p>
-            {% endfor %}
+            </div>
+        {% empty %}
+            <p>You have no upcoming bookings.</p>
+        {% endfor %}
         </div>
     </div>
 

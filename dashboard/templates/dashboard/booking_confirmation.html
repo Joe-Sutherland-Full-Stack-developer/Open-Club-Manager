@@ -13,14 +13,14 @@
             <p id="confirmation-message">{{customization.confirmation_message}}</p>
         </div>
         <ul class="pl-5 pr-5">
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-hashtag"></i>      Booking number: </strong> <span>{{ booking.id }}</span></li>
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span>{{ booking.class_instance.class_type }}</span></li>
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-calendar-days"></i>        Date:</strong> <span>{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-clock"></i>        Start Time:</strong><span> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-regular fa-clock"></i>     Finish Time:</strong> <span>{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-solid fa-user"></i>      Participant:</strong><span> {{ booking.participant }}</span></li>
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span>{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
-            <li class="d-flex pl-1 pr-2 justify-content-sm-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span>{% if booking.paid_or_member == True %}Yes{% else %}No{% endif %}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-hashtag"></i>      Booking number: </strong> <span>{{ booking.id }}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span>{{ booking.class_instance.class_type }}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-calendar-days"></i>        Date:</strong> <span>{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-clock"></i>        Start Time:</strong><span> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-regular fa-clock"></i>     Finish Time:</strong> <span>{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-solid fa-user"></i>      Participant:</strong><span> {{ booking.participant }}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span>{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
+            <li class="d-flex pl-1 pr-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span>{% if booking.paid_or_member == True %}Yes{% else %}No{% endif %}</span></li>
         </ul>
         <div class="d-flex justify-content-sm-between">
         <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary ml-3"><i class="fa-solid fa-download"></i>Download PDF</a>

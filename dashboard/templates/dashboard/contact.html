@@ -1,7 +1,63 @@
-{% extends "base.html" %}
+{% extends "dashboard/dashboard.html" %}
 {% load crispy_forms_tags %}
+
+{% block innerframe%}
+<div class="brand-color-1">
+    <header class="pl-4" id="page-header">Get in touch - {{ customization.business_name }}</header>
+  </div> 
+
+<div class="container p-4">
+
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}  <!-- Renders the form fields -->
-    <button type="submit">Submit</button>
+    {{ form|crispy}}  <!-- Renders the form fields -->
+    <button class="btn btn-primary" type="submit">Submit</button>
 </form>
+<div class="row g-0 mt-3">
+    {%if customization.contact_phone.exists or customization.contact_address_1.exists or customization.contact_address_2.exists or customization.contact_email.exists or customization.contact_other.exists %}
+<h3>For urgent enquiries</h3>
+    {% endif %}
+
+
+{%if customization.contact_phone.exists%}
+<div class="col-4">
+    <h4>Phone</h4>
+    <p>{{customization.contact_phone}}</p>
+</div>
+{% endif %}
+{%if customization.contact_address_1.exists or customization.contact_address_2.exists%}
+<div class="col-4">
+    
+    <h4>Address</h4>
+    {%if customization.contact_address_1.exists%}
+    <p>{{customization.contact_address_1 }}</p>
+    {% endif %}
+    {%if customization.contact_address_2.exists%}
+    <p>{{customization.contact_address_2}}</p>
+    {% endif %}
+    {%if customization.contact_address_city.exists%}
+    <p>{{customization.contact_address_city}}</p>
+    {% endif %}
+    {%if customization.contact_address_state.exists%}
+    <p>{{customization.contact_address_state}}</p>
+    {% endif %}
+    {%if customization.contact_address_zip.exists%}
+    <p>{{customization.contact_address_zip}}</p>
+    {% endif %}
+
+</div>
+{% endif %}
+{%if customization.contact_email.exists or customization.contact_other.exists%}
+<div class="col-4">
+    <h4>Message us!</h4>
+    {% if customization.contact_email.exists %}
+    <p>{{customization.contact_email}}</p>
+    {% endif %}
+    {% if customization.contact_other.exists %}
+    <p>{{customization.contact_other}}</p>
+    {% endif %}
+</div>
+{% endif %}
+</div>
+</div>
+{% endblock innerframe%}

@@ -7,7 +7,7 @@ from django.conf import settings
 from datetime import timedelta, datetime
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
-from .forms import ParticipantForm, AddEvent, BookingForm, NewParticipant
+from .forms import ParticipantForm, AddEvent, BookingForm, NewParticipant, ContactForm
 from .models import ClassInstance, Timetable, Booking, Participant, StripeIntegration
 from bootstrap_datepicker_plus.widgets import TimePickerInput
 from datetime import datetime, timedelta
@@ -143,6 +143,7 @@ def create_participant(request):
         form = NewParticipant()  # Initialize an empty form for GET requests
 
     return render(request, 'dashboard/create_participant.html', {'form': form})
+
 def timetable_view(request, timetable_id):
     timetable_instance = get_object_or_404(Timetable, id=timetable_id)
     form = AddEvent()
@@ -374,5 +375,27 @@ def booking_confirmation(request, booking_id):
     return render(request, 'dashboard/booking_confirmation.html', {'booking': booking})
         
 
-    
-   
+def contact(request):
+    form = ContactForm
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        return redirect('contact_success')
+    return render(request, 'dashboard/contact.html', {'form': form})
+
+
+class contact_success(TemplateView):
+    template_name ='dashboard/contact_success.html'
+
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView
+
+class CustomLoginView(LoginView):
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+
+        # Check if the user has any associated Participant instances
+        if not Participant.objects.filter(user=user).exists():
+            return redirect('create_participant')  # Redirect to create participant form
+        
+        return super().form_valid(form)

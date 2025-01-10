@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path('', dashboard_views.home, name='home'),
+    path('login/', dashboard_views.CustomLoginView.as_view(), name='login'),
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     path('dashboard/new_participant', dashboard_views.create_participant, name="create_participant"),
     path('timetable/<int:timetable_id>/', dashboard_views.timetable_view, name='timetable_view'),
@@ -34,6 +35,7 @@ urlpatterns = [
     path('create-participant/', dashboard_views.create_participant, name='create_participant'),
     path('delete-participant/<int:participant_id>/', dashboard_views.delete_participant, name='delete_participant'),
     path('create-checkout-session/', dashboard_views.create_checkout_session, name='create-checkout-session'),
+    path('contact/', dashboard_views.contact, name='contact'),
     
 ]
 

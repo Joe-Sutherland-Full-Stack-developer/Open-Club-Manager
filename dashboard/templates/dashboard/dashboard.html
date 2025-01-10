@@ -33,62 +33,90 @@
 
 {% block content %}
   <div id="dashboard" class="container-fluid g-0">
+    
     <div class="row g-0">
-      <div id="side-panel" class="col-3 pr-0 brand-color-1">
-        <div id="side-sticky">
-        <h2 id="welcome" class="pl-4 pt-4 pb-2 pr-2 brand-color-2">Welcome, {{ user }}</h2>
-       
-        <div class="accordion accordion-flush" id="side-accordian">
+      <!-- Toggle Button for Mobile -->
+      
+        <div id="mobile-nav" class="container-fluid d-flex d-md-none pl-3 justify-content-between align-items-center brand-color-dark">
+            <a class="navbar-brand ml-2 brand-text-white" href="{% url 'home' %}">Open Club Manager - {{ customization.business_name }}</a>
+            
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidePanel" aria-controls="sidePanel" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+        </button>
+      </div>
+<!-- Side Panel Navigation -->
+<div id="sidePanel" class="collapse d-md-block col-md-3 col-lg-3 col-xl-2 pr-0 brand-color-1">
+  <div id="side-sticky">
+      <h2 id="welcome" class="pl-4 pt-4 pb-2 pr-2 brand-color-2">Welcome, {{ user }}</h2>
+      
+      <div class="accordion accordion-flush" id="side-accordian">
           <!-- Accordion items go here -->
 
-          <div class="accordion-item ">
-            <h2 class="accordion-header brand-color-white">
-              <button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Timetable</button>
-              {% for timetable in timetables %}
-                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-                  <div class="accordion-body">
-                    <a class="side-nav-link brand-text-dark" href="{% url 'dashboard' %}">{{ timetable.name }}</a>
-                  </div>
+        <div class="accordion-item ">
+          <h2 class="accordion-header brand-color-white">
+            <button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"><i class="fa-regular fa-calendar-days mr-3"></i> Timetable</button>
+            {% for timetable in timetables %}
+              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+                <div class="accordion-body">
+                  <a class="side-nav-link brand-text-dark" href="{% url 'dashboard' %}">{{ timetable.name }}</a>
                 </div>
-              {% endfor %}
-            </h2>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">View Your Bookings</button></h2>
-            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-              <div class="accordion-body">
-                <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=upcoming">Upcoming Bookings</a>
               </div>
-            </div>
-            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-              <div class="accordion-body">
-                <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=previous">Previous Bookings</a>
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">Manage account info</button></h2>
-            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-              <div class="accordion-body">
-                <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=upcoming">Your personal details</a>
-              </div>
-            </div>
-            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-              <div class="accordion-body">
-                <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=participants">Manage Participants</a>
-              </div>
-            </div>
-           
-          </div>
-          <!-- More accordion items... -->
+            {% endfor %}
+          </h2>
         </div>
-        <div id="side-bottom">
-        <a href="" class="side-bar-item text-center brand-color-2 brand-text-dark d-block">Contact us</a>
-        <a href="" class="side-bar-item text-center brand-color-2 brand-text-dark d-block">Settings</a>
+        <div class="accordion-item">
+          <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"><i class="fa-solid fa-list mr-3"></i> View Your Bookings</button></h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+            <div class="accordion-body">
+              <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=upcoming">Upcoming Bookings</a>
+            </div>
+          </div>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+            <div class="accordion-body">
+              <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=previous">Previous Bookings</a>
+            </div>
+          </div>
         </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"><i class="fa-solid fa-user mr-3"></i>Manage account info</button></h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+            <div class="accordion-body">
+              <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=upcoming">Your personal details</a>
+            </div>
+          </div>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+            <div class="accordion-body">
+              <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=participants">Manage Participants</a>
+            </div>
+          </div>
+         
+        </div>
+        <div class="accordion-item d-md-none">
+          <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> Logout / Exit</button></h2>
+          <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+            <div class="accordion-body">
+              <a class="side-nav-link brand-text-dark" href="{% url 'account_login' %}">Logout</a>
+            </div>
+          </div>
+          <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+            <div class="accordion-body">
+              <a class="side-nav-link brand-text-dark" href="{% url 'home' %}">Exit OpenClubManager</a>
+            </div>
+          </div>
+        </div>
+        <!-- More accordion items... -->
+      </div>
+      <div id="side-bottom" class="flex-row flex-md-column">
+        
+      <a href="{% url 'contact' %}" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-phone justify-self-left col-2"></i><span class="col-10 "> Contact us </span></a>
+        
+      <a href="" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-gear justify-self-left col-2"></i><span class="col-10 ">Settings</span></a>
+      </div>
      </div>
       </div>
-      <div id="main-content" class="col-9 pl-0">
+      
+      
+      <div id="main-content" class="col col-md-9 col-lg-9 col-xl-10 pl-0">
         {% block innerframe %}
           <div class="brand-color-1">
             <header class="pl-4" id="page-header">Upcoming sessions: {{ timetables.instance.name }}</header>
@@ -149,9 +177,15 @@
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">There are no previous sessions on this timetable yet.</div>
           </div>
         {% endblock %}
+       
+        
       </div>
-    </div> 
-  </div>
+     
+    
+
+
+
+  
   <!-- Booking Modal -->
   <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
     <div class="modal-dialog">

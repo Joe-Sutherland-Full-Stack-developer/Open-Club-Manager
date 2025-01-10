@@ -9,6 +9,8 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 from django.contrib.auth import get_user_model
 
 class ParticipantForm(forms.ModelForm):
+
+
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             for field_name, field in self.fields.items():
@@ -34,6 +36,15 @@ class NewParticipant(forms.ModelForm):
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
         }  
+        labels = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
+            'date_of_birth': 'Date of Birth',
+            'address': 'Address (optional)',
+            'email': 'Email Address (optional)',
+            'emergency_contact_name': 'Emergency Contact Name',
+            'emergency_contact_number': 'Emergency Contact Number',
+            'additional_info': 'Additional / Medical Information (optional)'}
 
 
 class AddEvent(forms.ModelForm):
@@ -87,7 +98,7 @@ class UserEditForm(forms.ModelForm):
         fields = ['username', 'first_name', 'last_name', 'email']
 
 
-class ContactRequestForm(forms.ModelForm):
+class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactRequest
         fields = ['name', 'phone', 'email', 'message']  # Exclude 'user' and 'created_on'

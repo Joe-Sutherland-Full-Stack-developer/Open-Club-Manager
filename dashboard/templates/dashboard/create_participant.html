@@ -1,15 +1,20 @@
-{% extends "base.html" %}
+{% extends "dashboard/dashboard.html" %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block innerframe %}
 
-<h2>Add a Participant</h2>
-
-<form method="POST">
+<h2 class = "brand-color-1 p-4">Add a Participant</h2>
+<div class="container brand-color-white p-4 ">
+    <p>Please enter the details of the person who will be participanting in sessions.</p>
+    <p> You can edit these details or add additional Participants on the account details page</p>
+    <p>Use the Navigation bar on the left after you have submitted this form.
+    Participant details can be found under "Manage account info"</P>
+<form method="POST" action="{% url 'create_participant' %}">
 
     {% csrf_token %}
     {{ form|crispy }}
     
+    <button type="submit" class="btn btn-success">Submit</button>
 </form>
-
-{% endblock content %}
+</div>
+{% endblock innerframe %} 
