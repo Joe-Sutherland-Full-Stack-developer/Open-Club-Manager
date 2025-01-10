@@ -14,7 +14,8 @@ from pathlib import Path
 import os
 import dj_database_url
 import cloudinary
-
+from django.apps import apps
+from cryptography.fernet import Fernet
 if os.path.isfile("env.py"):
    import env
 
@@ -28,6 +29,7 @@ LOGIN_URL = '/login/'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY', Fernet.generate_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -91,6 +93,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'dashboard.context_processors.customization_settings',
                 'dashboard.context_processors.timetables',
+                'your_app.context_processors.stripe_context',
             ],
         },
     },
@@ -167,6 +170,8 @@ cloudinary.config(
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
     api_secret=os.environ.get("CLOUDINARY_API_SECRET")
 )
+
+
 
 DJANGO_FLATPICKR = {
     # Name of the theme to use

@@ -6,6 +6,8 @@ from bootstrap_datepicker_plus.widgets import DatePickerInput
 from datetime import timedelta, datetime
 from colorfield.fields import ColorField
 from cloudinary.models import CloudinaryField
+from encrypted_model_fields.fields import EncryptedCharField
+
 class ClassType(models.Model):
     duration_choices = ((15, '15 Minutes'), (30, '30 Minutes'),
                         (45, '45 Minutes'), (60, '1 Hour'),
@@ -93,7 +95,7 @@ class Booking(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
    
-    
+    # Give the booking id 6 digits 
     def save(self, *args, **kwargs):
         if not self.id:
             # Get the maximum ID from the database
@@ -160,7 +162,7 @@ class Customization(models.Model):
     def save(self, *args, **kwargs):
         # Ensure only one instance exists
         if not self.pk and Customization.objects.exists():
-            raise ValidationError("Only one instance of Customization is allowed.")
+            raise ValidationError("Only one instance of Customization is allowed. Please edit the existing instance instead")
         super().save(*args, **kwargs)
 
 class Profile(models.Model):
@@ -177,3 +179,44 @@ class ContactRequest(models.Model):
     email = models.EmailField()
     message = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
+
+class StripeIntegration(models.Model):
+    currency_choices = [
+    ('AUD', 'Australian Dollar'),
+    ('BGN', 'Bulgarian Lev'),
+    ('CAD', 'Canadian Dollar'),
+    ('CHF', 'Swiss Franc'),
+    ('CZK', 'Czech Koruna'),
+    ('DKK', 'Danish Krone'),
+    ('EUR', 'Euro'),
+    ('GBP', 'British Pound'),
+    ('HKD', 'Hong Kong Dollar'),
+    ('JPY', 'Japanese Yen'),
+    ('MXN', 'Mexican Peso'),
+    ('NOK', 'Norwegian Krone'),
+    ('NZD', 'New Zealand Dollar'),
+    ('PLN', 'Polish Złoty'),
+    ('RON', 'Romanian Leu'),
+    ('SEK', 'Swedish Krona'),
+    ('SGD', 'Singapore Dollar'),
+    ('USD', 'United States Dollar'),
+    ]
+
+    stripe_secret_key = EncryptedCharField(max_length=200, blank=True)
+    stripe_publishable_key = models.CharField(max_length=200, blank=True)
+    currency = models.CharField(max_length=3, choices= currency_choices , default='GBP')
+
+    def __str__(self):
+        return "Stripe integration settings"
+   
+    @classmethod
+    def get_solo(cls):
+        obj, created = cls.objects.get_or_create(id=1)
+        return obj
+    
+    def save(self, *args, **kwargs):
+        # Ensure only one instance exists
+        if not self.pk and StripeIntegration.objects.exists():
+            raise ValidationError("Only one instance of Stripe integration is allowed. Please edit the existing instance instead.")
+        super().save(*args, **kwargs)
+        

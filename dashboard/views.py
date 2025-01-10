@@ -2,15 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden, HttpResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
+import stripe
+from django.conf import settings
 from datetime import timedelta, datetime
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from .forms import ParticipantForm, AddEvent, BookingForm, NewParticipant
-from .models import ClassInstance, Timetable, Booking, Participant
+from .models import ClassInstance, Timetable, Booking, Participant, StripeIntegration
 from bootstrap_datepicker_plus.widgets import TimePickerInput
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 from weasyprint import HTML
+from OpenClubManager.stripe_utils import initialize_stripe
 # Create your views here.
 
 class home(TemplateView):
@@ -302,3 +305,44 @@ def delete_participant(request, participant_id):
 
 def home(request):
     return render(request,'dashboard/home.html',)
+
+
+
+def create_checkout_session(request):
+    stripe_publishable_key = initialize_stripe()
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            product_name = form.cleaned_data['product_name']
+            price = int(form.cleaned_data['price'] * 100)  # Convert to pence
+            
+            currency = StripeIntegration.currency
+            try:
+                checkout_session = stripe.checkout.Session.create(
+                    payment_method_types=['card'],
+                    line_items=[
+                        {
+                            'price_data': {
+                                'currency': currency,
+                                'unit_amount': price,
+                                'product_data': {
+                                    'name': product_name,
+                                },
+                            },
+                            'quantity': 1,
+                        },
+                    ],
+                    mode='payment',
+                    success_url=request.build_absolute_uri('/booking-confirmation/'),
+                    cancel_url=request.build_absolute_uri('/booking-cancelled/'),
+                )
+                return redirect(checkout_session.url)
+            except Exception as e:
+                return render(request, 'error.html', {'error': str(e)})
+        else:
+            return render(request, 'booking_form.html', {'form': form})
+    else:
+        form = BookingForm()
+        return render(request, 'booking_form.html', {'form': form})
+
+

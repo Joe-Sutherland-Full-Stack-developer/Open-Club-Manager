@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.utils import timezone
-from .models import Participant, ClassType, Timetable, ClassInstance, Booking, Customization
+from .models import Participant, ClassType, Timetable, ClassInstance, Booking, Customization, StripeIntegration
 from django import forms
 from .forms import AddEvent
 
@@ -119,3 +119,20 @@ class ClassInstAdmin(admin.ModelAdmin):
     form = AddEvent
     list_display = ["__str__"]
     fields = ['class_type', 'instance_date', 'day', 'start_time', 'finish_time', 'capacity', 'attendees']
+
+
+
+
+@admin.register(StripeIntegration)
+class StripeKeysAdmin(admin.ModelAdmin):
+    list_display = ('id', 'stripe_publishable_key')
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['secret_key'].widget.attrs['style'] = 'display: none;'
+        return form
+
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_save_and_continue'] = False
+        return super().changeform_view(request, object_id, form_url, extra_context)

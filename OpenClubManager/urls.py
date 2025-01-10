@@ -33,7 +33,8 @@ urlpatterns = [
     path('account/', dashboard_views.account_details, name='account_details'),
     path('create-participant/', dashboard_views.create_participant, name='create_participant'),
     path('delete-participant/<int:participant_id>/', dashboard_views.delete_participant, name='delete_participant'),
-
+    path('create-checkout-session/', dashboard_views.create_checkout_session, name='create-checkout-session'),
+    
 ]
 
 admin.site.site_header = "Open Club Manager"

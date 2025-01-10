@@ -1,5 +1,5 @@
 # context_processors.py
-from .models import Customization, Timetable
+from .models import Customization, Timetable, StripeIntegration
 
 def customization_settings(request):
     try:
@@ -17,3 +17,6 @@ def timetables(request):
     return {
         'timetables': timetable_instances,
     }
+def stripe_context(request):
+    stripe_instance = StripeIntegration.objects.first()
+    return {'stripe_instance': stripe_instance}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Participant, ClassInstance, ClassType, Booking
+from .models import Participant, ClassInstance, ClassType, Booking, ContactRequest
 from .models import Timetable
 from django_flatpickr.widgets import DatePickerInput, TimePickerInput, DateTimePickerInput
 from django_flatpickr.schemas import FlatpickrOptions
@@ -83,3 +83,15 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
+
+
+class ContactRequestForm(forms.ModelForm):
+    class Meta:
+        model = ContactRequest
+        fields = ['name', 'phone', 'email', 'message']  # Exclude 'user' and 'created_on'
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Your message here...'}),
+            'phone': forms.TextInput(attrs={'placeholder': 'Your phone number'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Your email address'}),
+            'name': forms.TextInput(attrs={'placeholder': 'Your name'}),
+        }
