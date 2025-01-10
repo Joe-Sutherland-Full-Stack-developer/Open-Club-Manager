@@ -1,23 +1,24 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
 
-<form method="post" action="{% url 'create_booking' %}">
+
+<form method="post" action="{% if stripe_instance %}{% url 'create-checkout-session' %}{% else %}{% url 'create_booking' %}{% endif %} ">
   
     <p class="modal-form"><strong>Class Type:</strong> {{ event.class_type }}</p>
     <p class="modal-form"><strong>Booking Date:</strong> {{ event.instance_date|date:"l, j F Y" }}</p>
     <p class="modal-form"><strong>Start Time:</strong> {{ event.start_time|time:"H:i" }}</p>
     <p class="modal-form"><strong>Finish Time:</strong> {{ event.finish_time|time:"H:i" }}</p>
-    
+    <p class="modal-form"><strong>Price:</strong> {{customization.currency_symbol}}{{ event.class_type.price }}</p>
   
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.participant.label }}: {{ form.participant }}
     
     <input type="hidden" name="class_instance_id" value="{{ event.id }}">
-
+    <input type="hidden" name="product_name" value="{{event.class_type}}_{{ event.instance_date|date:'l'}}_{{ event.start_time|time:'H:i' }}">
+    <input type="hidden" name="price" value="{{ event.class_type.price }}">
+    
+  
+  {% if stripe_instance %}
+    <button type="submit" class="btn btn-secondary">Pay Now</button>
+  {% else %}
     <button type="submit" class="btn btn-primary">Book</button>
-  </form>
-  {% if StripeIntegration.objects.exists %}
-  <form action="{% url 'create-checkout-session' %}" method="POST">
-    {% csrf_token %}
-    <button type="submit">Pay Now</button>
-  </form>
+  {% endif %}
+</form>

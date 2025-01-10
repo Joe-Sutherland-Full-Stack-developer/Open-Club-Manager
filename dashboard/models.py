@@ -6,7 +6,7 @@ from bootstrap_datepicker_plus.widgets import DatePickerInput
 from datetime import timedelta, datetime
 from colorfield.fields import ColorField
 from cloudinary.models import CloudinaryField
-from encrypted_model_fields.fields import EncryptedCharField
+# from encrypted_model_fields.fields import EncryptedCharField
 
 class ClassType(models.Model):
     duration_choices = ((15, '15 Minutes'), (30, '30 Minutes'),
@@ -189,7 +189,7 @@ class StripeIntegration(models.Model):
     ('CZK', 'Czech Koruna'),
     ('DKK', 'Danish Krone'),
     ('EUR', 'Euro'),
-    ('GBP', 'British Pound'),
+    ('gbp', 'British Pound'),
     ('HKD', 'Hong Kong Dollar'),
     ('JPY', 'Japanese Yen'),
     ('MXN', 'Mexican Peso'),
@@ -202,7 +202,7 @@ class StripeIntegration(models.Model):
     ('USD', 'United States Dollar'),
     ]
 
-    stripe_secret_key = EncryptedCharField(max_length=200, blank=True)
+    stripe_secret_key = models.CharField(max_length=200, blank=True)
     stripe_publishable_key = models.CharField(max_length=200, blank=True)
     currency = models.CharField(max_length=3, choices= currency_choices , default='GBP')
 

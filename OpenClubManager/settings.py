@@ -29,7 +29,9 @@ LOGIN_URL = '/login/'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-FIELD_ENCRYPTION_KEY = os.environ.get('FIELD_ENCRYPTION_KEY', Fernet.generate_key())
+
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'cloudinary_storage',
     'cloudinary',
+    
     'bootstrap5',
     'colorfield',
     'crispy_forms',
@@ -93,7 +96,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'dashboard.context_processors.customization_settings',
                 'dashboard.context_processors.timetables',
-                'your_app.context_processors.stripe_context',
+                'dashboard.context_processors.stripe_context',
             ],
         },
     },

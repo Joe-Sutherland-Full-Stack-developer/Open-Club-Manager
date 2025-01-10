@@ -122,15 +122,21 @@ class ClassInstAdmin(admin.ModelAdmin):
 
 
 
+class StripeIntegrationForm(forms.ModelForm):
+    class Meta:
+        model = StripeIntegration
+        fields = '__all__'  # Include all fields or specify them explicitly
+
+    stripe_secret_key = forms.CharField(widget=forms.PasswordInput(), required=False)
 
 @admin.register(StripeIntegration)
 class StripeKeysAdmin(admin.ModelAdmin):
-    list_display = ('id', 'stripe_publishable_key')
+    list_display = ('masked_secret_key', 'stripe_publishable_key')
+    form = StripeIntegrationForm  # Use the custom form
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        form.base_fields['secret_key'].widget.attrs['style'] = 'display: none;'
-        return form
+    def masked_secret_key(self, obj):
+        return '*************************************'  # Return a masked string
+    masked_secret_key.short_description = 'Secret Key'  
 
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
         extra_context = extra_context or {}

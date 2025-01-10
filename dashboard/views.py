@@ -13,7 +13,7 @@ from bootstrap_datepicker_plus.widgets import TimePickerInput
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 from weasyprint import HTML
-from OpenClubManager.stripe_utils import initialize_stripe
+from OpenClubManager.stripe_utils import initialize_stripe, get_stripe_secret_key
 # Create your views here.
 
 class home(TemplateView):
@@ -112,12 +112,12 @@ def booking_owner_or_admin(user, booking):
     return user == booking.user or user.is_staff
 
 # Check if the user is the owner of the booking or an admin
-def booking_confirmation(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
-    if not booking_owner_or_admin(request.user, booking):
-        return HttpResponseForbidden("You do not have permission to view this booking.")
+# def booking_confirmation(request, booking_id):
+#     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+#     if not booking_owner_or_admin(request.user, booking):
+#         return HttpResponseForbidden("You do not have permission to view this booking.")
 
-    return render(request, 'dashboard/booking_confirmation.html', {'booking': booking})
+#     return render(request, 'dashboard/booking_confirmation.html', {'booking': booking})
 
 
 def view_bookings(request):
@@ -309,14 +309,28 @@ def home(request):
 
 
 def create_checkout_session(request):
-    stripe_publishable_key = initialize_stripe()
+    stripe_publishable_key = initialize_stripe()  # Initialize and get publishable key
+
     if request.method == 'POST':
-        form = BookingForm(request.POST)
+        form = BookingForm(request.POST, user=request.user)
         if form.is_valid():
             product_name = form.cleaned_data['product_name']
             price = int(form.cleaned_data['price'] * 100)  # Convert to pence
-            
-            currency = StripeIntegration.currency
+            class_instance_id = request.POST.get('class_instance_id')
+
+            # Create a new Booking instance before redirecting to Stripe
+            booking = Booking.objects.create(
+                user=request.user,
+                
+                participant=form.cleaned_data['participant'],
+                
+                class_instance_id=class_instance_id,
+                paid_or_member=False  # Initially set as unpaid
+            )
+            stripe_settings = StripeIntegration.objects.first()  # Get the first instance or filter as needed
+
+            currency = stripe_settings.currency 
+            print(currency)
             try:
                 checkout_session = stripe.checkout.Session.create(
                     payment_method_types=['card'],
@@ -333,16 +347,32 @@ def create_checkout_session(request):
                         },
                     ],
                     mode='payment',
-                    success_url=request.build_absolute_uri('/booking-confirmation/'),
+                    success_url=request.build_absolute_uri(f'/booking-confirmation/{booking.id}/'),
                     cancel_url=request.build_absolute_uri('/booking-cancelled/'),
                 )
                 return redirect(checkout_session.url)
             except Exception as e:
-                return render(request, 'error.html', {'error': str(e)})
+                print(f"Error creating checkout session: {str(e)}")
+                return render(request, 'dashboard/error.html', {'error': str(e)})
         else:
-            return render(request, 'booking_form.html', {'form': form})
+            print(form.errors)
+            return render(request, 'dashboard/booking_form.html', {'form': form})
+
     else:
-        form = BookingForm()
-        return render(request, 'booking_form.html', {'form': form})
+        form = BookingForm(user=request.user)  # Pass user context for GET request
+        return render(request, 'dashboard/booking_form.html', {'form': form})
 
 
+def booking_confirmation(request, booking_id):
+    # Retrieve the booking instance
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Update paid_or_member field to True
+    booking.paid_or_member = True
+    booking.save()  # Save changes to the booking
+
+    return render(request, 'dashboard/booking_confirmation.html', {'booking': booking})
+        
+
+    
+   

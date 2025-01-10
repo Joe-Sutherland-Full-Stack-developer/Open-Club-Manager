@@ -62,10 +62,12 @@ class AddEvent(forms.ModelForm):
 
 
 class BookingForm(forms.ModelForm):
-    participant = forms.ModelChoiceField(queryset=None)
+    participant = forms.ModelChoiceField(queryset=Participant.objects.none())
+    product_name = forms.CharField(max_length=100)  # Ensure this field is defined
+    price = forms.DecimalField(max_digits=10, decimal_places=2)  # Add price field as well
     class Meta:
         model = Booking
-        fields = [ 'participant',]
+        fields = ['product_name', 'price', 'participant',]
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
