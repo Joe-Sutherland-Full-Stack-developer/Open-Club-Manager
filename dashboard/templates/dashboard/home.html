@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
+{% load static %}
 {% block content %}
 
 <div class="row p-4 brand-color-1">
@@ -21,16 +22,16 @@
 
 <div class="row brand-color-white">
     <div class="col d-flex justify-content-center">
-    <Button id="begin-button" type="button" class="btn btn-primary"><a href="{% url 'dashboard' %}">Click here to begin</a></Button>
+    <Button id="begin-button" type="button" class="btn btn-success"><a id="begin" href="{% url 'dashboard' %}">Click here to begin</a></Button>
 </div>
 </div>
 <div class="row p-4 brand-color-white">
     <h4>Meet the dev</h4>
     <p>Open Club manager was created as a capstone project for the coding skills bootcamp I attended. The project was made over the course of 3 weeks at the end of the 16 week course.</p>
     <p> Before this, I had no software development experience whatsoever</p>
-    <p> If you would like to see some of my other projects:<a href="https://github.com/Joesuth13"></a></p>
-    <p> If you love Open Club Manager and want to buy me a coffee: <a></a> </p>
-    <p> This project is still under development and there will be many bugs. I will create a bug report form after the initial development is done.</p>
+    <p> If you would like to see some of my other projects:<a href="https://github.com/Joesuth13">Github</a></p>
+    <p> If you love Open Club Manager and want to buy me a coffee: <a class="btn btn-succed" href="https://www.buymeacoffee.com/joesuth13l"><i class="fa-solid fa-mug-hot"></i> buymeacoffee</a> </p>
+    <p> This project is still under development and there will be some bugs. I will create a bug report form after the initial development is done.</p>
     
 </div>
 
