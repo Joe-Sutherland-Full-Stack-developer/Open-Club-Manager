@@ -157,7 +157,7 @@ class Participant(models.Model):
 
 
 class Customization(models.Model):
-    business_name = models.CharField(default='Open Club Manager')
+    business_name = models.CharField(max_length=200, default='Open Club Manager')
     currency_symbol = models.CharField(max_length=5, default='£')
     brand_color_1 = ColorField(default='#AECBEB', blank=True)
     brand_color_2 = ColorField(default='#71A5DE', blank=True)

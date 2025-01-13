@@ -413,3 +413,7 @@ class CustomLoginView(LoginView):
         if not Participant.objects.filter(user=user).exists():
             return redirect('create_participant')
         return super().form_valid(form)
+    
+
+def contact_success(request):
+    return render(request, 'dashboard/contact_success.html') 

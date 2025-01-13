@@ -1,29 +1,144 @@
-h1 {
-    color: red;
+ body {
+    overflow-x: clip;
 }
+
 li{
     list-style: none;
-    
-    
 }
 #dashboard {
     margin: 0px;
     padding: 0px;
 }
+#no-sessions-message{
+    font-size: 1rem ;
+    
+}
+.navbar-toggler {
+    background-color: #007bff; /* Change to your desired color */
+}
+.navbar-toggler-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+.collapse {
+    transition: height 0.35s ease; /* Smooth transition */
+}
+#mobile-nav{
+    height: 7.5vh;
+    padding: 5px;
+    padding-right: 4%;
+    
+}
+
 #side-panel{
-    background-color: #AECBEB;
+    
+    font-size:2rem ;
+    border-right: 2px solid #0353a43b;
+    box-shadow: 5px 0px 5px -2px rgba(26, 76, 184, 0.295);
+    z-index: 1;
+    
 }
-#main-box{
-    padding-left: 2rem;
+#side-sticky{
+    position: sticky;
+    top:0;
+    height: 110vh;
 }
-.tab-pane li{
-    border: 3px solid #71A5DE ;
+#side-panel-buttons{
+    height: 100%;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0 ;
+}
+#welcome{
+    border-bottom: 3px solid #00000050;
+    margin-bottom: 0px;
+    font-weight: 600;
+    min-height: 9vh;
+}
+#begin{
+    color: #061a40;
+    font-weight: 600;
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+.accordion-item{
+    
     font-size: 1.2rem;
-    min-height: 5vh;
-    margin-top: 2vh;
 }
+.accordion-button{
+    font-size: 1.45rem;
+    min-height: 4.5rem;
+}
+.accordion-item a{
+    text-decoration: none;
+    
+}
+.side-nav-link{
+    font-size: 1.25rem;
+}
+#side-bottom{
+    height: auto;
+    width: 100%;
+   display: flex;
+   /* flex-direction: column; */
+   position:sticky;
+   top: 92vh;
+   justify-content: center;
+}
+#side-bottom a{
+    display: block;
+    width: 100%;
+    min-height: 8.5vh;
+    border: 1px solid  #ffffff15;
+    font-size: 1.5rem;
+    text-decoration: none;
+    align-content: center;
+}
+
+#page-header{
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+#main-content{
+    background-color:#f8f9fb ;
+    color:#061a40
+}
+
+.session-list{
+    border: 2px solid #0353a43b ;
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+    min-height: 5vh;
+    margin-top: 1vh;
+    display: flex;
+    align-items: center;
+}
+
 #myTab > .nav-item {
     border: none;
+}
+.nav-tabs .nav-link{
+    max-width: 40vw;
+}
+.class-instance-link{
+    text-decoration: none;
+    color: #061a40;
+    display:flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    min-height: 5vh;
+}   
+.class-instance-link:hover{
+    text-decoration: none;
+    color:#ffffff;
+    background-color: #172d6b46 ;
 }
 .event-cell {
     border-color: black; 
@@ -34,6 +149,90 @@ li{
     border-bottom-color: grey;
     
 }
-.ct16yrsOpensession{
-    background-color: #71A5DE;
+.left-padding{
+    padding-left: 2rem;
+}
+.no-padding{
+    padding: 0px;
+}
+
+.bg-color-light{
+    background-color: #1d4e7c23;
+}
+.bg-color-dark{
+    background-color: #1d4e7c54; 
+}
+
+/*--------------------------------------------------------------------------Bookings page----------------------------------*/
+#booking-update-time{
+    font-size: 0.85rem;
+    align-self:flex-end;
+   
+    text-align: end;
+}
+
+.booking-info li{
+    border: none;
+}
+.booking-confirm-text{
+    font-size: 2rem;
+    flex-direction: column;
+    align-items: center;
+}
+#confirmation-message{
+    font-size: 1.5rem;
+}
+
+#upcoming-tab,
+#previous-tab{
+    font-size: 1.5rem;
+    color: #061a408e;
+}
+
+
+
+
+/*-------------------------------------------------------------------------home page*/
+
+
+#begin-button{
+    width: 20vh;
+    height: 10vh;
+    justify-self: center;
+}
+
+#begin-button a {
+    color:#061a40
+}
+
+
+
+/* -----------------------------------------------------------------------------------account details page */
+
+#personal-tab,
+#participants-tab{
+    font-size: 1.5rem;
+    color: #061a408e;
+}
+
+#myTab .nav-item  .active,
+#myTab .nav-item  .active{
+    font-weight: 600;
+    color: #061a40;
+}
+#add-participant-btn:hover{
+    border: 3px solid #00000073;
+
+}
+
+/*  --------------------------------------------------------Testing area: */
+
+
+/*---------------------------------------------------Media queries---------------------*/
+@media (min-width: 768px) {
+
+    #side-bottom{
+        top: 83vh
+    }
+
 }

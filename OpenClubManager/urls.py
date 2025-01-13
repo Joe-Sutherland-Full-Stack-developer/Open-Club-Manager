@@ -36,6 +36,7 @@ urlpatterns = [
     path('delete-participant/<int:participant_id>/', dashboard_views.delete_participant, name='delete_participant'),
     path('create-checkout-session/', dashboard_views.create_checkout_session, name='create-checkout-session'),
     path('contact/', dashboard_views.contact, name='contact'),
+    path('contact/success/', dashboard_views.contact_success, name='contact_success'),
     
 ]
 
