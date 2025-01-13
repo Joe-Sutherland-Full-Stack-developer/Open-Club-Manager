@@ -7,7 +7,7 @@ from .models import Participant, ClassType, Timetable, ClassInstance, Booking
 from .models import Customization, StripeIntegration
 from django import forms
 from .forms import AddEvent
-
+from bootstrap_datepicker_plus.widgets import TimePickerInput
 
 class ParticipantInline(admin.StackedInline):
     model = Participant
