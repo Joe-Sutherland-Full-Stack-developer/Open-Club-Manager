@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -260,51 +260,72 @@ def booking_confirmation_pdf(request, booking_id):
     HTML(string=html_string).write_pdf(response)
     return response
 
+def CancelBookingView(request, booking_id):
+    if request.method == 'POST':
+        # Handle the cancellation
+        booking = get_object_or_404(Booking, id=booking_id)
+        booking.active = False
+        booking.save()
+        return redirect('view_bookings')  # Correct the redirect URL as needed
+
+    # Handle GET request
+
 
 @login_required
 def account_details(request):
     if request.method == 'POST':
-        if 'participant_id' in request.POST:
+        if 'participant_id' in request.POST:  
             participant_id = request.POST.get('participant_id')
-            field_name = request.POST.get('field_name')
-            value = request.POST.get(field_name)
+            field_name = request.POST.get(
+                                          'field_name'
+                                          )  # Get field name from POST data
+            value = request.POST.get(
+                                     field_name
+                                     )  # Get the value for the specific field
             form = ParticipantForm(request.POST)
-            print(
-                 f"Updating participant: {participant_id}, "
-                 f"Field: {field_name}, Value: {value}"
-                 )
-
+            print("Updating participant:", participant_id,
+                  "Field:", field_name, "Value:", value)  # Debugging output
             if form.is_valid():
                 try:
+                    # Get the existing participant instance
                     participant = Participant.objects.get(
-                                id=participant_id,
-                                user=request.user
-                                )
-                    setattr(participant, field, form.cleaned_data[field])
+                        id=participant_id, user=request.user
+                        )
+                    # Update participant fields with cleaned data from the form
+                    for field in form.cleaned_data:
+                        setattr(participant, field, form.cleaned_data[field])
+
                     participant.save()
+
                     messages.success(request,
-                                     "Participant updated successfully.")
+                                     "Participant updated successfully."
+                                     )
                 except Participant.DoesNotExist:
                     messages.error(request,
-                                   "Participant does not exist.")
+                                   "Participant does not exist."
+                                   )
                 except Exception as e:
                     messages.error(request,
-                                   f"Error updating participant: {str(e)}")
+                                   f"Error updating participant: {str(e)}"
+                                   )  # Catch any other exceptions
+
                 return redirect('account_details')
-        else:
+
+        else:  # Handle user form submission
             form = UserEditForm(request.POST, instance=request.user)
             if form.is_valid():
                 field_name = request.POST.get('field_name')
                 if field_name in form.fields:
-                    setattr(request.user, field_name,
+                    setattr(request.user, field_name, 
                             form.cleaned_data[field_name])
                     request.user.save()
                 return redirect('account_details')
-    else:
+
+    else:  # GET request: initialize forms and get participants
         form = UserEditForm(instance=request.user)
         participants = request.user.participants.all()
-        participant_forms = [ParticipantForm(instance=p)
-                             for p in participants]
+        participant_forms = [ParticipantForm(instance=participant) 
+                             for participant in participants]
         new_parti_form = NewParticipant()
 
     context = {
@@ -313,6 +334,7 @@ def account_details(request):
         'participants': participants,
         'new_parti_form': new_parti_form,
     }
+
     return render(request, 'dashboard/account_details.html', context)
 
 
@@ -395,12 +417,16 @@ def booking_confirmation(request, booking_id):
 
 
 def contact(request):
-    form = ContactForm
+    form = ContactForm()
     if request.method == 'POST':
         form = ContactForm(request.POST)
-        return redirect('contact_success')
+        if form.is_valid():  # Check if the form is valid
+            contact_request = form.save(commit=False)  # Create an instance but don't save to DB yet
+            if request.user.is_authenticated:
+                contact_request.user = request.user  # Assign the user if logged in
+            contact_request.save()  # Now save the instance to the database
+            return redirect('contact_success')  # Redirect after successful submission
     return render(request, 'dashboard/contact.html', {'form': form})
-
 
 class ContactSuccess(TemplateView):
     template_name = 'dashboard/contact_success.html'

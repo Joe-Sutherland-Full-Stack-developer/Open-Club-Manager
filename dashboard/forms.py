@@ -2,9 +2,9 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django_flatpickr.widgets import TimePickerInput
 from django_flatpickr.schemas import FlatpickrOptions
-# from crispy_forms.helper import FormHelper
-# from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
-# from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
+from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 from .models import (
     Participant,
@@ -132,14 +132,5 @@ class ContactForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs={
                 'rows': 4, 'placeholder': 'Your message here...'
-                }),
-            'phone': forms.TextInput(attrs={
-                'placeholder': 'Your phone number'
-                }),
-            'email': forms.EmailInput(attrs={
-                'placeholder': 'Your email address'
-                }),
-            'name': forms.TextInput(attrs={
-                'placeholder': 'Your name'
                 }),
         }

@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import Participant, ClassType, Timetable, ClassInstance, Booking
-from .models import Customization, StripeIntegration
+from .models import Customization, StripeIntegration,ContactRequest
 from django import forms
 from .forms import AddEvent
 from bootstrap_datepicker_plus.widgets import TimePickerInput
@@ -30,7 +30,7 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Participant)
 admin.site.register(ClassType)
 admin.site.register(Customization)
-
+admin.site.register(ContactRequest)
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'participant',

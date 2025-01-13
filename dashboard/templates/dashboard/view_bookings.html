@@ -39,16 +39,21 @@
       <div class="accordion" id="accordionUpcoming">
         {% for booking in upcoming_bookings %}
           <div class="accordion-item">
-            <h2 class="accordion-header" id="headingUpcoming{{ forloop.counter }}"><button class="accordion-button brand-color-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }} | {{ booking.participant }}</button></h2>
+            <h2 class="accordion-header" id="headingUpcoming{{ forloop.counter }}"><button class="accordion-button brand-color-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">
+              {% if booking.active == False %}CANCELLED:{%endif%} Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }} | {{ booking.participant }}</button></h2>
             <div id="collapseUpcoming{{ forloop.counter }}" class="accordion-collapse collapse show" aria-labelledby="headingUpcoming{{ forloop.counter }}" data-bs-parent="#accordionUpcoming">
               <div id="booking-confirmation-container" class="accordion-body">
                 <div class="img-container d-flex justify-content-center">
-                  <img class="align-self-center" src="https://res.cloudinary.com/dyjgm6n1a/image/upload/v1736279027/Confirmed-tick-remove-bg-io_rroa9z.png" alt="green checkmark icon" />
+                  <img class="align-self-center {% if booking.active == False %} d-none{% endif %}" src="https://res.cloudinary.com/dyjgm6n1a/image/upload/v1736279027/Confirmed-tick-remove-bg-io_rroa9z.png" alt="green checkmark icon" />
                 </div>
                 <div class="booking-info">
                   <div class="d-flex justify-content-sm-center booking-confirm-text">
-                    <p id="booking-confirmed">Booking Confirmed!</p><br />
+                    {% if booking.active == False %}
+                    <p id="booking-cancelled">Booking cancelled</p>
+                    {% else %}
+                    <p id="booking-confirmed">Booking Confirmed!</p><br/>
                     <p id="confirmation-message">{{ customization.confirmation_message }}</p>
+                    {% endif %}
                   </div>
                   <ul>
                     <li class="d-flex pl-1 pr-2 justify-content-between bg-color-light">
@@ -82,9 +87,19 @@
                         {% endif %}
                       </span>
                     </li>
+                    {% if booking.active == False %}
+                    <li class="d-flex pl-1 pr-2 justify-content-between">
+                      <strong><i class="fa-regular fa-credit-card"></i> THIS BOOKING HAS BEEN CANCELLED</strong>
+                    </li>
+                    {% endif %}
                   </ul>
                   <div class="d-flex justify-content-sm-between">
                     <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="btn btn-secondary"><i class="fa-solid fa-download"></i>Download PDF</a>
+                    <form action="{% url 'cancel_booking' booking.id %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger ml-3"><i class="fa-solid fa-xmark"></i>Cancel Booking</button>
+                    </form>
+                   
                     <span id="booking-update-time" class="text-right">This booking was created/last updated on: {{ booking.updated_on }}</span>
                   </div>
                 </div>
