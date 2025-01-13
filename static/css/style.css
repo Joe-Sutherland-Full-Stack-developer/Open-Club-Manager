@@ -9,6 +9,10 @@ li{
     margin: 0px;
     padding: 0px;
 }
+#no-sessions-message{
+    font-size: 1rem ;
+    
+}
 .navbar-toggler {
     background-color: #007bff; /* Change to your desired color */
 }
@@ -56,13 +60,12 @@ li{
 #begin{
     color: #061a40;
     font-weight: 600;
-    width: 100%;
+    width: 20%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none
-    ;
+    text-decoration: none;
 }
 .accordion-item{
     

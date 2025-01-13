@@ -37,149 +37,155 @@
     <div class="row g-0">
       <!-- Toggle Button for Mobile -->
       
-        <div id="mobile-nav" class="container-fluid d-flex d-md-none pl-3 justify-content-between align-items-center brand-color-dark">
+      <div id="mobile-nav" class="container-fluid d-flex d-md-none pl-3 justify-content-between align-items-center brand-color-dark">
             <a class="navbar-brand ml-2 brand-text-white" href="{% url 'home' %}">Open Club Manager - {{ customization.business_name }}</a>
             
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidePanel" aria-controls="sidePanel" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
         </button>
       </div>
-<!-- Side Panel Navigation -->
-<div id="sidePanel" class="collapse d-md-block col-md-3 col-lg-3 col-xl-2 pr-0 brand-color-1">
-  <div id="side-sticky">
-      <h2 id="welcome" class="pl-4 pt-4 pb-2 pr-2 brand-color-2">Welcome, {{ user }}</h2>
       
-      <div class="accordion accordion-flush" id="side-accordian">
-          <!-- Accordion items go here -->
+      <!-- Side Panel Navigation -->
+      <div id="sidePanel" class="collapse d-md-block col-md-3 col-lg-3 col-xl-2 pr-0 brand-color-1">
+          <div id="side-sticky">
+            <h2 id="welcome" class="pl-4 pt-4 pb-2 pr-2 brand-color-2">Welcome, {{ user }}</h2>
+            
+            <div class="accordion accordion-flush" id="side-accordian">
+                <!-- Accordion items go here -->
 
-        <div class="accordion-item ">
-          <h2 class="accordion-header brand-color-white">
-            <button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"><i class="fa-regular fa-calendar-days mr-3"></i> Timetable</button>
-            {% for timetable in timetables %}
-              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-                <div class="accordion-body">
-                  <a class="side-nav-link brand-text-dark" href="{% url 'dashboard' %}">{{ timetable.name }}</a>
-                </div>
-              </div>
-            {% endfor %}
-          </h2>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"><i class="fa-solid fa-list mr-3"></i> View Your Bookings</button></h2>
-          <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-            <div class="accordion-body">
-              <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=upcoming">Upcoming Bookings</a>
-            </div>
-          </div>
-          <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-            <div class="accordion-body">
-              <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=previous">Previous Bookings</a>
-            </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"><i class="fa-solid fa-user mr-3"></i>Manage account info</button></h2>
-          <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-            <div class="accordion-body">
-              <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=upcoming">Your personal details</a>
-            </div>
-          </div>
-          <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-            <div class="accordion-body">
-              <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=participants">Manage Participants</a>
-            </div>
-          </div>
-         
-        </div>
-        <div class="accordion-item d-md-none">
-          <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> Logout / Exit</button></h2>
-          <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-            <div class="accordion-body">
-              <a class="side-nav-link brand-text-dark" href="{% url 'account_login' %}">Logout</a>
-            </div>
-          </div>
-          <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
-            <div class="accordion-body">
-              <a class="side-nav-link brand-text-dark" href="{% url 'home' %}">Exit OpenClubManager</a>
-            </div>
-          </div>
-        </div>
-        <!-- More accordion items... -->
-      </div>
-      <div id="side-bottom" class="flex-row flex-md-column">
-        
-      <a href="{% url 'contact' %}" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-phone justify-self-left col-2"></i><span class="col-10 "> Contact us </span></a>
-        
-      <a href="" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-gear justify-self-left col-2"></i><span class="col-10 ">Settings</span></a>
-      </div>
-     </div>
-      </div>
-      
-      
-      <div id="main-content" class="col col-md-9 col-lg-9 col-xl-10 pl-0">
-        {% block innerframe %}
-          <div class="brand-color-1">
-            <header class="pl-4" id="page-header">Upcoming sessions: {{ timetables.instance.name }}</header>
-          </div>  
-      
-                <h2 class="text-center mb-0 pb-2 pt-2">This Week</h2>
-
-                {% for day, events in this_week_by_day.items %}
-                  <div class="{{ day|lower }} left-padding ">
-                    <h3>{{ day }}:</h3>
-                    <ul class="no-padding">
-                      {% for event in events %}
-                        <li class="session-list"style="background-color: {{ event.class_type.color_value }}">
-                          <a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} | {{ event.start_time|time:'H:i' }} to {{ event.finish_time|time:'H:i' }} | {{ event.instance_date|date:"l, j F Y" }}</a>
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-                {% endfor %}
+              <div class="accordion-item ">
+                <h2 class="accordion-header brand-color-white">
+                  <button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"><i class="fa-regular fa-calendar-days mr-3"></i> Timetable</button>
+                </h2>
+                  {% for timetable in timetables %}
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+                      <div class="accordion-body">
+                        <a class="side-nav-link brand-text-dark" href="{% url 'dashboard' %}">{{ timetable.name }}</a>
+                      </div>
+                    </div>
+                  {% endfor %}
                 
-                <h2 class="text-center mb-0 pb-2 pt-2">Next Week</h2>
-
-                {% for day, events in next_week_by_day.items %}
-                <div class="{{ day|lower }} left-padding ">
-                  <h3>{{ day }}:</h3>
-                  <ul class="no-padding">
-                    {% for event in events %}
-                      <li class="session-list" style="background-color: {{ event.class_type.color_value }}">
-                        <a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} | {{ event.start_time|time:'H:i' }} to {{ event.finish_time|time:'H:i' }} | {{ event.instance_date|date:"l, j F Y" }}</a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                {% endfor %}
-
-                <div class="bg-color-light">
-                  <h2 class="left-padding text-center">Later This Month</h2>
-                  <ul class="left-padding">
-                    {% for event in later_this_month %}
-                      <li class="session-list" style="background-color: {{ event.class_type.color_value }}"><a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} - {{ event.start_time|time:'H:i' }} to {{ event.end_time|time:'H:i' }} on {{ event.instance_date|date:"l, j F Y" }}</a></li>
-                    {% empty %}
-                      <li>No events later this month.</li>
-                    {% endfor %}
-                  </ul>
-                </div>
-                <div class="bg-color-dark">
-                  <h2 class="left-padding text-center">Later This Year</h2>
-                  <ul class="left-padding">
-                    {% for event in later_this_year %}
-                      <li class="session-list" style="background-color: {{ event.class_type.color_value }}"><a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} - {{ event.start_time|time:'H:i' }} to {{ event.end_time|time:'H:i' }} on {{ event.instance_date|date:"l, j F Y" }}</a></li>
-                    {% empty %}
-                      <li>No events later this year.</li>
-                    {% endfor %}
-                  </ul>
-                </div>
               </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"><i class="fa-solid fa-list mr-3"></i> View Your Bookings</button></h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+                  <div class="accordion-body">
+                    <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=upcoming">Upcoming Bookings</a>
+                  </div>
+                  <div class="accordion-body">
+                    <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=previous">Previous Bookings</a>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"><i class="fa-solid fa-user mr-3"></i>Manage account info</button></h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+                  <div class="accordion-body">
+                    <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=upcoming">Your personal details</a>
+                  </div>
+                  <div class="accordion-body">
+                    <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=participants">Manage Participants</a>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="accordion-item d-md-none">
+                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> Logout / Exit</button></h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
+                  <div class="accordion-body">
+                    <a class="side-nav-link brand-text-dark" href="{% url 'account_login' %}">Logout</a>
+                  </div>
+                  <div class="accordion-body">
+                    <a class="side-nav-link brand-text-dark" href="{% url 'home' %}">Exit OpenClubManager</a>
+                  </div>
+                </div>
+                
+              </div>
+              <!-- More accordion items... -->
             </div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">There are no previous sessions on this timetable yet.</div>
+            <div id="side-bottom" class="flex-row flex-md-column">
+              
+            <a href="{% url 'contact' %}" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-phone justify-self-left col-2"></i><span class="col-10 "> Contact us </span></a>
+              
+            <a href="" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-gear justify-self-left col-2"></i><span class="col-10 ">Settings</span></a>
+            </div>
           </div>
+       </div>
+            
+            
+        <div id="main-content" class="col col-md-9 col-lg-9 col-xl-10 pl-0">
+              {% block innerframe %}
+                <div class="brand-color-1">
+                  <header class="pl-4" id="page-header">Upcoming sessions: {{ timetables.instance.name }}</header>
+                </div>  
+                      
+                      <h2 class="text-center mb-0 pb-2 pt-2 bg-color-light">This Week</h2>
+                      {% if this_week_by_day %}
+                      {% for day, events in this_week_by_day.items %}
+                        
+                        <div class="{{ day|lower }} left-padding">
+                          <h3>{{ day }}:</h3>
+                          <ul class="no-padding">
+                            {% for event in events %}
+                              <li class="session-list"style="background-color: {{ event.class_type.color_value }}">
+                                <a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} | {{ event.start_time|time:'H:i' }} to {{ event.finish_time|time:'H:i' }} | {{ event.instance_date|date:"l, j F Y" }}</a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      {% endfor %}
+                      {% else %}
+                      <div id="no-sessions-message" class="pl-4 pt-2 text-center">
+                        <p> There are no sessions remaining this week.</p>
+                      </div>
+                      {% endif %}
+                      <h2 class="text-center mb-0 pb-2 pt-2 bg-color-light">Next Week</h2>
+
+                      {% for day, events in next_week_by_day.items %}
+                      <div class="{{ day|lower }} left-padding ">
+                        <h3>{{ day }}:</h3>
+                        <ul class="no-padding">
+                          {% for event in events %}
+                            <li class="session-list" style="background-color: {{ event.class_type.color_value }}">
+                              <a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} | {{ event.start_time|time:'H:i' }} to {{ event.finish_time|time:'H:i' }} | {{ event.instance_date|date:"l, j F Y" }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      {% endfor %}
+
+                      <div class="bg-color-light">
+                        <h2 class="left-padding text-center bg-color-light">Later This Month</h2>
+                        <ul class="left-padding">
+                          {% for event in later_this_month %}
+                            <li class="session-list" style="background-color: {{ event.class_type.color_value }}"><a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} - {{ event.start_time|time:'H:i' }} to {{ event.end_time|time:'H:i' }} on {{ event.instance_date|date:"l, j F Y" }}</a></li>
+                          {% empty %}
+                            <li>No events later this month.</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <div class="bg-color-dark">
+                        <h2 class="left-padding text-center ">Later This Year</h2>
+                        <ul class="left-padding">
+                          {% for event in later_this_year %}
+                            <li class="session-list" style="background-color: {{ event.class_type.color_value }}"><a data-event-id="{{ event.id }}" class="class-instance-link pl-1">{{ event.age_group }} {{ event.class_type }} - {{ event.start_time|time:'H:i' }} to {{ event.end_time|time:'H:i' }} on {{ event.instance_date|date:"l, j F Y" }}</a></li>
+                          {% empty %}
+                            <li>No events later this year.</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div> 
+            </div> 
+          
         {% endblock %}
-       
-        
-      </div>
+    </div>
+  </div>
+</div>      
+  
      
     
 

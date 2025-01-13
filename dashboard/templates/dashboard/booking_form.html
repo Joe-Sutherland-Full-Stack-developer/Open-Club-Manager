@@ -9,8 +9,20 @@
     <p class="modal-form"><strong>Price:</strong> {{customization.currency_symbol}}{{ event.class_type.price }}</p>
   
     {% csrf_token %}
+
+    {% if not user.participants.exists %}
+    <p> You have not yet added the details of the person(s) who will be participating in the sessions.</p>
+    <a href="{% url 'create_participant'%}"> Click here to add a participant now.</a>
+
+    {% else %}
+
     {{ form.participant.label }}: {{ form.participant }}
+
     
+    
+
+    
+
     <input type="hidden" name="class_instance_id" value="{{ event.id }}">
     <input type="hidden" name="product_name" value="{{event.class_type}}_{{ event.instance_date|date:'l'}}_{{ event.start_time|time:'H:i' }}">
     <input type="hidden" name="price" value="{{ event.class_type.price }}">
@@ -20,5 +32,7 @@
     <button type="submit" class="btn btn-secondary">Pay Now</button>
   {% else %}
     <button type="submit" class="btn btn-primary">Book</button>
+  {% endif %}
+
   {% endif %}
 </form>

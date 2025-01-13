@@ -1,41 +1,59 @@
 from django import forms
-from .models import Participant, ClassInstance, ClassType, Booking, ContactRequest
-from .models import Timetable
-from django_flatpickr.widgets import DatePickerInput, TimePickerInput, DateTimePickerInput
-from django_flatpickr.schemas import FlatpickrOptions
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
-from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 from django.contrib.auth import get_user_model
+from django_flatpickr.widgets import TimePickerInput
+from django_flatpickr.schemas import FlatpickrOptions
+# from crispy_forms.helper import FormHelper
+# from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
+# from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
+
+from .models import (
+    Participant,
+    ClassInstance,
+    ClassType,
+    Booking,
+    ContactRequest,
+    Timetable,
+)
+
+User = get_user_model()
+
 
 class ParticipantForm(forms.ModelForm):
-
-
     def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            for field_name, field in self.fields.items():
-            # Check if the field is a visible input field and not a label or non-input widget
-                if isinstance(field.widget, forms.widgets.Input):
-                    field.widget.attrs['class'] = 'edit-form-input d-none'  # Add class to hide input fields
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            # Check if the field is a visible input field
+            if isinstance(field.widget, forms.widgets.Input):
+                # Add class to hide input fields
+                field.widget.attrs['class'] = ('edit-form-input'
+                                               ' d-none')
 
     class Meta:
         model = Participant
-        fields = ['first_name', 'last_name', 'date_of_birth', 'address', 'email', 
-                  'emergency_contact_name', 'emergency_contact_number', 'additional_info']
+        fields = [
+            'first_name', 'last_name', 'date_of_birth',
+            'address', 'email', 'emergency_contact_name',
+            'emergency_contact_number', 'additional_info'
+        ]
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-            'additional_info': forms.TextInput(attrs={'class': 'edit-form-input d-none'})
+            'additional_info': forms.TextInput(attrs={
+                                'class': 'edit-form-input d-none'
+                                })
         }
-    
-class NewParticipant(forms.ModelForm):
 
+
+class NewParticipant(forms.ModelForm):
     class Meta:
         model = Participant
-        fields = ['first_name', 'last_name', 'date_of_birth', 'address', 'email', 
-                  'emergency_contact_name', 'emergency_contact_number', 'additional_info']
+        fields = [
+            'first_name', 'last_name', 'date_of_birth',
+            'address', 'email', 'emergency_contact_name',
+            'emergency_contact_number', 'additional_info'
+        ]
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-        }  
+        }
         labels = {
             'first_name': 'First Name',
             'last_name': 'Last Name',
@@ -44,19 +62,24 @@ class NewParticipant(forms.ModelForm):
             'email': 'Email Address (optional)',
             'emergency_contact_name': 'Emergency Contact Name',
             'emergency_contact_number': 'Emergency Contact Number',
-            'additional_info': 'Additional / Medical Information (optional)'}
+            'additional_info': ('Additional / Medical Information'
+                                ' (optional)')
+        }
 
 
 class AddEvent(forms.ModelForm):
-    class_type = forms.ModelChoiceField(queryset=ClassType.objects.all(), label='Class Type')
-    repeat = forms.BooleanField(required=False, initial=False, label="Repeat?")
-    
+    class_type = forms.ModelChoiceField(queryset=ClassType.objects.all(),
+                                        label='Class Type')
+    repeat = forms.BooleanField(required=False, initial=False,
+                                label="Repeat?")
+
     class Meta:
         model = ClassInstance
-        fields = ['class_type', 'start_time', 'finish_time', 'day', 'repeat']  # Include 'day' if needed
+        fields = ['class_type', 'start_time', 'finish_time',
+                  'day', 'repeat']
         widgets = {
             "start_time": TimePickerInput(
-                attrs={'class': 'form-control',},
+                attrs={'class': 'form-control'},
                 options=FlatpickrOptions(
                     time_24hr=True,
                     minuteIncrement=15
@@ -74,25 +97,29 @@ class AddEvent(forms.ModelForm):
 
 class BookingForm(forms.ModelForm):
     participant = forms.ModelChoiceField(queryset=Participant.objects.none())
-    product_name = forms.CharField(max_length=100)  # Ensure this field is defined
-    price = forms.DecimalField(max_digits=10, decimal_places=2)  # Add price field as well
+    product_name = forms.CharField(max_length=100)
+    price = forms.DecimalField(max_digits=10, decimal_places=2)
+
     class Meta:
         model = Booking
-        fields = ['product_name', 'price', 'participant',]
+        fields = ['product_name', 'price', 'participant']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        
-        if user:
-            self.fields['participant'].queryset = Participant.objects.filter(user=user)
 
-User= get_user_model()
+        if user:
+            self.fields['participant'].queryset = (
+                Participant.objects.filter(user=user))
+
+
 class UserEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            for visible in self.visible_fields():
-                visible.field.widget.attrs['class'] = 'edit-form-input d-none'  # or any other class
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = ('edit-form-input'
+                                                   ' d-none')
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
@@ -101,10 +128,18 @@ class UserEditForm(forms.ModelForm):
 class ContactForm(forms.ModelForm):
     class Meta:
         model = ContactRequest
-        fields = ['name', 'phone', 'email', 'message']  # Exclude 'user' and 'created_on'
+        fields = ['name', 'phone', 'email', 'message']
         widgets = {
-            'message': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Your message here...'}),
-            'phone': forms.TextInput(attrs={'placeholder': 'Your phone number'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Your email address'}),
-            'name': forms.TextInput(attrs={'placeholder': 'Your name'}),
+            'message': forms.Textarea(attrs={
+                'rows': 4, 'placeholder': 'Your message here...'
+                }),
+            'phone': forms.TextInput(attrs={
+                'placeholder': 'Your phone number'
+                }),
+            'email': forms.EmailInput(attrs={
+                'placeholder': 'Your email address'
+                }),
+            'name': forms.TextInput(attrs={
+                'placeholder': 'Your name'
+                }),
         }
