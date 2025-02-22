@@ -27,6 +27,15 @@
   .brand-text-dark{
     color: {{ customization.brand_color_dark }};
   }
+  .brand-text-1{
+    color: {{ customization.brand_color_1 }};
+  }
+  .brand-text-2{
+    color: {{ customization.brand_color_2 }};
+  }
+  .brand-text-3{
+    color: {{ customization.brand_color_3 }};
+  }
 </style>
 {% endblock additional_styles %}
 
@@ -46,16 +55,16 @@
       </div>
       
       <!-- Side Panel Navigation -->
-      <div id="sidePanel" class="collapse d-md-block col-md-3 col-lg-3 col-xl-2 pr-0 brand-color-1">
+      <div id="sidePanel" class="collapse d-md-block col-md-3 col-lg-3 col-xl-2 pr-0 brand-color-2 brand-text-white">
           <div id="side-sticky">
             <h2 id="welcome" class="pl-4 pt-4 pb-2 pr-2 brand-color-2">Welcome, {{ user }}</h2>
             
-            <div class="accordion accordion-flush" id="side-accordian">
+            <div class="accordion accordion-flush brand-text-white" id="side-accordian">
                 <!-- Accordion items go here -->
 
               <div class="accordion-item ">
                 <h2 class="accordion-header brand-color-white">
-                  <button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"><i class="fa-regular fa-calendar-days mr-3"></i> Timetable</button>
+                  <button class="accordion-button collapsed brand-color-2 brand-text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"><i class="fa-regular fa-calendar-days mr-3"></i> Timetable</button>
                 </h2>
                   {% for timetable in timetables %}
                     <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
@@ -67,7 +76,7 @@
                 
               </div>
               <div class="accordion-item">
-                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"><i class="fa-solid fa-list mr-3"></i> View Your Bookings</button></h2>
+                <h2 class="accordion-header brand-color-white brand-text-white"><button class="accordion-button collapsed brand-color-2 brand-text-white type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"><i class="fa-solid fa-list mr-3"></i> View Your Bookings</button></h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
                   <div class="accordion-body">
                     <a class="side-nav-link brand-text-dark" href="{% url 'view_bookings' %}?tab=upcoming">Upcoming Bookings</a>
@@ -79,7 +88,7 @@
                 
               </div>
               <div class="accordion-item">
-                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"><i class="fa-solid fa-user mr-3"></i>Manage account info</button></h2>
+                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 brand-text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"><i class="fa-solid fa-user mr-3"></i>Manage account info</button></h2>
                 <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
                   <div class="accordion-body">
                     <a class="side-nav-link brand-text-dark" href="{% url 'account_details' %}?tab=upcoming">Your personal details</a>
@@ -91,7 +100,7 @@
                 
               </div>
               <div class="accordion-item d-md-none">
-                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> Logout / Exit</button></h2>
+                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-2 brand-text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> Logout / Exit</button></h2>
                 <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
                   <div class="accordion-body">
                     <a class="side-nav-link brand-text-dark" href="{% url 'account_login' %}">Logout</a>
@@ -106,9 +115,9 @@
             </div>
             <div id="side-bottom" class="flex-row flex-md-column">
               
-            <a href="{% url 'contact' %}" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-phone justify-self-left col-2"></i><span class="col-10 "> Contact us </span></a>
+            <a href="{% url 'contact' %}" class="side-bar-item brand-color-2 brand-text-white  d-flex justify-content-center align-items-center"><i class="fa-solid fa-phone justify-self-left col-2"></i><span class="col-10 "> Contact us </span></a>
               
-            <a href="" class="side-bar-item brand-color-2 brand-text-dark  d-flex justify-content-center align-items-center"><i class="fa-solid fa-gear justify-self-left col-2"></i><span class="col-10 ">Settings</span></a>
+            <a href="" class="side-bar-item brand-color-2 brand-text-white  d-flex justify-content-center align-items-center"><i class="fa-solid fa-gear justify-self-left col-2"></i><span class="col-10 ">Settings</span></a>
             </div>
           </div>
        </div>
@@ -116,12 +125,12 @@
             
         <div id="main-content" class="col col-md-9 col-lg-9 col-xl-10 pl-0">
               {% block innerframe %}
-                <div class="brand-color-1">
+                <div class="brand-color-white">
                   <header class="pl-4" id="page-header">Upcoming sessions: {{ timetables.instance.name }}</header>
                 </div>  
                       
-                      <h2 class="text-center mb-0 pb-2 pt-2 bg-color-light">This Week</h2>
-                      {% if this_week_by_day %}
+                      <h2 class="text-center mb-0 pb-2 pt-2 brand-color-white brand-text-2">This Week</h2>
+                      <!-- {% if this_week_by_day %}
                       {% for day, events in this_week_by_day.items %}
                         
                         <div class="{{ day|lower }} left-padding">
@@ -139,7 +148,48 @@
                       <div id="no-sessions-message" class="pl-4 pt-2 text-center">
                         <p> There are no sessions remaining this week.</p>
                       </div>
-                      {% endif %}
+                      {% endif %} -->
+                      {% if this_week_by_day %}
+  {% for day, events in this_week_by_day.items %}
+  <div class="{{ day|lower }} left-padding brand-text-2">
+    <div class="day-of-week-header">{{ day }}:</div>
+      {% if events %}
+        {% for event in events %}
+          <div class="card event-card wipe lft-rgt-wipe m-3 shadow rounded" style="--wipe-color: {{event.class_type.color_value}}">
+            
+            <div class="card-body border-left d-flex justify-content-between" style="border-left: 5px solid {{ event.class_type.color_value }}">
+              <div class="col">
+              <h5 class="" style="color: {{event.class_type.color_value}}">{{ event.class_type }} <br> {{ event.instance_date|date:"l, j F Y" }}</h5>
+              <div class="booking-icon hover-icon">
+              <i class="fa-solid fa-calendar-plus" style="color: #ffffff;"></i>
+              <span class="">Book now</span>
+              </div>
+            </div>
+            <div class="col">
+              <p class="">
+                <strong>Time:</strong> {{ event.start_time|time:'H:i' }} to {{ event.finish_time|time:'H:i' }}<br>
+                <strong>Price:</strong> {{ customization.currency_symbol }}{{ event.class_type.price }}<br>
+                <!-- <div class="progress">
+                  <div class="progress-bar w-75 hover-fade" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> -->
+              </p>
+            
+              <a data-event-id="{{ event.id }}" class="class-instance-link stretched-link"></a>
+            </div>
+          </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">No sessions for this day.</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% else %}
+  <div id="no-sessions-message" class="alert alert-warning text-center">
+    <p>There are no sessions remaining this week.</p>
+  </div>
+{% endif %}
+
                       <h2 class="text-center mb-0 pb-2 pt-2 bg-color-light">Next Week</h2>
 
                       {% for day, events in next_week_by_day.items %}

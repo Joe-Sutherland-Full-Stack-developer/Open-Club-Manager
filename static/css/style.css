@@ -13,6 +13,74 @@ li{
     font-size: 1rem ;
     
 }
+.day-of-week-header{
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.wipe {
+    transition: color 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .wipe:after {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: var(--wipe-color);
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    z-index: 1;
+  }
+  .card-body{
+    z-index: 1;
+  }
+  .wipe:hover {
+    color: var(--wipe-color);
+  }
+  
+  .lft-rgt-wipe:after {
+    transform: translateX(-100%);
+  }
+  
+  .lft-rgt-wipe:hover:after {
+    transform: translateX(0%);
+  }
+  .hover-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+    opacity: 0;
+    transition: opacity 0.15s ;
+    z-index: 3; /* Increased z-index to be above other elements */
+    font-size: 3rem; /* Adjust size as needed */
+    color: #ffffff; /* Adjust color as needed */
+  }
+  .hover-icon i {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+  .hover-icon span {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .event-card:hover .hover-icon {
+    opacity: 1;
+  }
+  
+  /* Ensure card content stays behind the icon */
+  .event-card .card-body {
+    position: relative;
+    z-index: 2;
+  }
+  
 .navbar-toggler {
     background-color: #007bff; /* Change to your desired color */
 }
@@ -131,15 +199,15 @@ li{
     color: #061a40;
     display:flex;
     align-items: center;
-    height: 100%;
+    
     width: 100%;
-    min-height: 5vh;
+    
 }   
-.class-instance-link:hover{
+/* .class-instance-link:hover{
     text-decoration: none;
     color:#ffffff;
     background-color: #172d6b46 ;
-}
+} */
 .event-cell {
     border-color: black; 
 }

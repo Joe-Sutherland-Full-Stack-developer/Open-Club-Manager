@@ -37,7 +37,7 @@ class ClassType(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     default_capacity = models.IntegerField(default=0)
     color_value = ColorField(default='#FF0000')
-
+    members_only = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 
@@ -171,8 +171,8 @@ class Customization(models.Model):
         max_length=200, default='United Kingdom'
     )
     default_language = models.CharField(max_length=200, default='English')
-    logo = CloudinaryField('image', null=True, blank=True)
-    favicon = CloudinaryField('image', null=True, blank=True)
+    logo = CloudinaryField('logo', null=True, blank=True)
+    favicon = CloudinaryField('favicon', null=True, blank=True)
     custom_font = models.CharField(max_length=200, default='Arial')
     site_title = models.CharField(
         max_length=200, default="Open Club Manager"
