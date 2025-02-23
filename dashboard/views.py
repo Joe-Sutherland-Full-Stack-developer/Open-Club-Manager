@@ -48,7 +48,7 @@ def dashboard(request):
 
     start_of_next_week = end_of_week + timedelta(days=1)
     end_of_next_week = start_of_next_week + timedelta(days=6)
-
+    print(f"End of month var: {end_of_month}")
     class_instances = ClassInstance.objects.filter(
         instance_date__gte=today
     ).order_by('instance_date', 'start_time')
@@ -61,8 +61,9 @@ def dashboard(request):
             this_week.append(instance)
         elif start_of_next_week <= instance.instance_date <= end_of_next_week:
             next_week.append(instance)
-        elif instance.instance_date <= end_of_month:
+        elif end_of_next_week < instance.instance_date <= end_of_month:
             later_this_month.append(instance)
+            print(f"Later this month: {[instance.instance_date for instance in later_this_month]}")
         else:
             later_this_year.append(instance)
 

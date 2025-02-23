@@ -81,15 +81,36 @@ li{
     z-index: 2;
   }
   
-.navbar-toggler {
-    background-color: #007bff; /* Change to your desired color */
+/* .navbar-toggler {
+    background-color: #007bff;
+    
 }
 .navbar-toggler-icon{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-}
+    font-size: 1.25rem;
+    
+} */
+.navbar-toggler {
+    border: 0.5px solid #f8f9fb42;
+    padding: 0.65rem 0.85rem;
+    
+  }
+  
+  .navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
+  .navbar-toggler .fa-bars {
+    
+    font-size: 1.3rem; /* Adjust size as needed */
+  }
+  .navbar-brand:hover {
+    color: var(--brand-color-2);
+  }
+
 .collapse {
     transition: height 0.35s ease; /* Smooth transition */
 }
@@ -101,7 +122,7 @@ li{
 }
 
 #side-panel{
-    
+    flex-shrink: 1;
     font-size:2rem ;
     border-right: 2px solid #0353a43b;
     box-shadow: 5px 0px 5px -2px rgba(26, 76, 184, 0.295);
@@ -136,19 +157,52 @@ li{
     text-decoration: none;
 }
 .accordion-item{
-    
-    font-size: 1.2rem;
+   letter-spacing: 0.1rem;
+    font-size: 0.75rem;
+    overflow-x: hidden;
+    width: 100%;
+    border: 0;
+}
+.accordion-button:not(.collapsed){
+    background-color: var(--brand-color-1);
+    opacity: 100%;
+    color: white;
+    font-weight: 550;
+    border: 0;
+    letter-spacing: 0.075rem;
+    box-shadow: none;
 }
 .accordion-button{
-    font-size: 1.45rem;
+    font-size: 1.35rem;
     min-height: 4.5rem;
+    
+}
+.accordion-button:hover{
+    color: white;
+    font-weight: 550;
 }
 .accordion-item a{
     text-decoration: none;
     
 }
+.accordion-button:focus{
+    box-shadow: none;
+}
+.accordion-collapse{
+    width: 85%;
+}
+.accordion-body{
+    position: relative;
+}
 .side-nav-link{
     font-size: 1.25rem;
+    
+}
+.side-nav-link:hover{
+    font-weight: 550;
+}
+.side-bar-item{
+    padding: 20px;
 }
 #side-bottom{
     height: auto;
@@ -303,4 +357,11 @@ li{
         top: 83vh
     }
 
+}
+@media (min-width: 992px){
+    .accordion-item{
+        letter-spacing: 0.1rem;
+         font-size: 1rem;
+        
+     }
 }
