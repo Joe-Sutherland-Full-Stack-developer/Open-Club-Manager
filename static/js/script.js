@@ -102,3 +102,39 @@ function setFlatpickrValue(inputId, value) {
         console.error(`Element with ID "${inputId}" not found.`);
     }
 }
+
+
+//SCript to dynamically set the text-color to be high-contrast against its background
+
+function getContrastRatio(color) {
+    const rgb = color.match(/\d+/g);
+    const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+    return luminance > 0.5 ? 'dark' : 'light';
+}
+
+function setTextColor(element) {
+    const bgColor = window.getComputedStyle(element).backgroundColor;
+    const contrastRatio = getContrastRatio(bgColor);
+    
+    if (contrastRatio === 'light') {
+        element.classList.remove('text-dark');
+        element.classList.add('text-white');
+    } else {
+        element.classList.remove('text-white');
+        element.classList.add('text-dark');
+    }
+}
+document.querySelectorAll('.dynamic-text').forEach(setTextColor);
+
+// Mutation observer for testing the above
+// const observer = new MutationObserver(mutations => {
+//     mutations.forEach(mutation => {
+//         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+//             setTextColor(mutation.target);
+//         }
+//     });
+// });
+
+// document.querySelectorAll('.dynamic-text').forEach(element => {
+//     observer.observe(element, { attributes: true });
+// });

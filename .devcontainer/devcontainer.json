@@ -14,7 +14,8 @@
 	// "forwardPorts": [5000, 5432],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "bash -c 'python -m pip install --user -r requirements.txt && sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 libffi-dev libjpeg-dev libopenjp2-7-dev'"
+	"postCreateCommand": "bash -c 'python -m pip install --user -r requirements.txt && sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0 libffi-dev libjpeg-dev libopenjp2-7-dev && git config --global user.email \"joesuth13@gmail.com\" && git config --global user.name \"Joesuth13\"'"
+
 
 
 	// Configure tool-specific properties.

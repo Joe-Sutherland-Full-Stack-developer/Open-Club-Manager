@@ -346,7 +346,24 @@ li{
     border: 3px solid #00000073;
 
 }
+.edit-form-input,
+.form-control-plaintext{
+    height:26px;
+}
+.edit-form-input{
+    border: 1px solid var(--brand-color-2);
+    padding-left: 2px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.form-control-plaintext{
+    padding-left: 3px;
+}
 
+#myTab .nav-item .active, #myTab .nav-item .active{
+    background-color: var(--brand-white);
+    border-bottom: var(--brand-white);
+}
 /*  --------------------------------------------------------Testing area: */
 
 
