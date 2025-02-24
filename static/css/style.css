@@ -1,3 +1,5 @@
+
+ 
  body {
     overflow-x: clip;
 }
@@ -247,6 +249,7 @@ li{
 }
 .nav-tabs .nav-link{
     max-width: 40vw;
+    border: none;
 }
 .class-instance-link{
     text-decoration: none;
@@ -309,6 +312,7 @@ li{
 #previous-tab{
     font-size: 1.5rem;
     color: #061a408e;
+    border:none;
 }
 
 
@@ -341,6 +345,12 @@ li{
 #myTab .nav-item  .active{
     font-weight: 600;
     color: #061a40;
+    background-color: var(--brand-white);
+    border-bottom: none;
+}
+#myTabContent{
+    border: none;
+
 }
 #add-participant-btn:hover{
     border: 3px solid #00000073;
@@ -355,15 +365,21 @@ li{
     padding-left: 2px;
     background-color: #fff;
     border-radius: 5px;
+    text-align: center;
+    
 }
 .form-control-plaintext{
     padding-left: 3px;
 }
 
-#myTab .nav-item .active, #myTab .nav-item .active{
-    background-color: var(--brand-white);
-    border-bottom: var(--brand-white);
+
+.btn-sm:hover,
+.btn:hover{
+    color:#061a40;
+    --bs-btn-hover-bg: none;
+    filter: brightness(0.85);
 }
+
 /*  --------------------------------------------------------Testing area: */
 
 

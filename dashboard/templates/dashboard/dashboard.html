@@ -36,6 +36,10 @@
   .brand-text-3{
     color: {{ customization.brand_color_3 }};
   }
+  .btn:hover{
+    background-color: revert;
+
+  }
   :root {
   --nav-color: {{ customization.brand_color_2 }};
   --brand-white: {{ customization.brand_color_white }};
@@ -128,9 +132,9 @@
             </div>
             <div id="side-bottom" class="flex-row flex-md-column d-flex justify-content-right align-items-center ">
               
-            <a href="{% url 'contact' %}" class="side-bar-item brand-color-1 brand-text-white d-flex align-items-center position-relative"><i class="fa-solid fa-phone"></i><span class="position-absolute top-50 start-50 translate-middle text-center"> Contact us </span></a>
+            <a href="{% url 'contact' %}" class="side-bar-item side-nav-link brand-color-1 brand-text-white d-flex align-items-center position-relative"><i class="fa-solid fa-phone"></i><span class="position-absolute top-50 start-50 translate-middle text-center"> Contact us </span></a>
               
-            <a href="" class="side-bar-item brand-color-1 brand-text-white  d-flex  align-items-center position-relative"><i class="fa-solid fa-gear"></i><span class="position-absolute top-50 start-50 translate-middle text-center">Settings</span></a>
+            <a href="" class="side-bar-item side-nav-link brand-color-1 brand-text-white  d-flex  align-items-center position-relative"><i class="fa-solid fa-gear"></i><span class="position-absolute top-50 start-50 translate-middle text-center">Settings</span></a>
             </div>
           </div>
        </div>

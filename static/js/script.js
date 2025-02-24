@@ -88,43 +88,43 @@ function formatTime(time) {
     return `${hours}:${minutes}`;
 }
 
-function setFlatpickrValue(inputId, value) {
-    const inputElement = document.getElementById(inputId);
-    if (inputElement) {
-        inputElement.value = value;
+// function setFlatpickrValue(inputId, value) {
+//     const inputElement = document.getElementById(inputId);
+//     if (inputElement) {
+//         inputElement.value = value;
 
-        if (inputElement._flatpickr) {
-            inputElement._flatpickr.setDate(value, true);
-        } else {
-            console.error(`Flatpickr instance not found for #${inputId}`);
-        }
-    } else {
-        console.error(`Element with ID "${inputId}" not found.`);
-    }
-}
+//         if (inputElement._flatpickr) {
+//             inputElement._flatpickr.setDate(value, true);
+//         } else {
+//             console.error(`Flatpickr instance not found for #${inputId}`);
+//         }
+//     } else {
+//         console.error(`Element with ID "${inputId}" not found.`);
+//     }
+// }
 
 
 //SCript to dynamically set the text-color to be high-contrast against its background
 
-function getContrastRatio(color) {
-    const rgb = color.match(/\d+/g);
-    const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
-    return luminance > 0.5 ? 'dark' : 'light';
-}
+// function getContrastRatio(color) {
+//     const rgb = color.match(/\d+/g);
+//     const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+//     return luminance > 0.5 ? 'dark' : 'light';
+// }
 
-function setTextColor(element) {
-    const bgColor = window.getComputedStyle(element).backgroundColor;
-    const contrastRatio = getContrastRatio(bgColor);
+// function setTextColor(element) {
+//     const bgColor = window.getComputedStyle(element).backgroundColor;
+//     const contrastRatio = getContrastRatio(bgColor);
     
-    if (contrastRatio === 'light') {
-        element.classList.remove('text-dark');
-        element.classList.add('text-white');
-    } else {
-        element.classList.remove('text-white');
-        element.classList.add('text-dark');
-    }
-}
-document.querySelectorAll('.dynamic-text').forEach(setTextColor);
+//     if (contrastRatio === 'light') {
+//         element.classList.remove('text-dark');
+//         element.classList.add('text-white');
+//     } else {
+//         element.classList.remove('text-white');
+//         element.classList.add('text-dark');
+//     }
+// }
+// document.querySelectorAll('.dynamic-text').forEach(setTextColor);
 
 // Mutation observer for testing the above
 // const observer = new MutationObserver(mutations => {
@@ -138,3 +138,46 @@ document.querySelectorAll('.dynamic-text').forEach(setTextColor);
 // document.querySelectorAll('.dynamic-text').forEach(element => {
 //     observer.observe(element, { attributes: true });
 // });
+
+// Script to dynamically adjust the text-color to remain high-contrast with the background color of its element.
+function hexToRGBA(hex) {
+    hex = hex.replace(/^#/, '');
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    let a = 1;
+    if (hex.length === 8) {
+      a = parseInt(hex.slice(6, 8), 16) / 255;
+    }
+    return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
+  }
+  
+  function getLuminance(clr) {
+    if (clr.startsWith('#')) {
+      clr = hexToRGBA(clr);
+    }
+    
+    let rgb = clr.match(/\d+/g).map(Number);
+    rgb = rgb.map(c => {
+      c = c / 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    
+    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+  }
+  
+  function chooseForeground(bkg) {
+    let relativeLuminance = getLuminance(bkg);
+    let chooseBlack = (relativeLuminance + 0.05) / 0.05;
+    let chooseWhite = 1.05 / (relativeLuminance + 0.05);
+    return (chooseBlack > chooseWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
+  }
+  
+  // Use
+  let testAreas = document.getElementsByClassName('btn');
+  Array.from(testAreas).forEach(testArea => {
+    let computedStyle = window.getComputedStyle(testArea);
+    let bkgColour = computedStyle.backgroundColor;
+    testArea.style.color = chooseForeground(bkgColour);
+  });
+  
