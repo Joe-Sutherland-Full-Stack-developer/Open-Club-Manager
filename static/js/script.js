@@ -140,44 +140,162 @@ function formatTime(time) {
 // });
 
 // Script to dynamically adjust the text-color to remain high-contrast with the background color of its element.
-function hexToRGBA(hex) {
-    hex = hex.replace(/^#/, '');
-    const r = parseInt(hex.slice(0, 2), 16);
-    const g = parseInt(hex.slice(2, 4), 16);
-    const b = parseInt(hex.slice(4, 6), 16);
-    let a = 1;
-    if (hex.length === 8) {
-      a = parseInt(hex.slice(6, 8), 16) / 255;
-    }
-    return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
-  }
+// document.addEventListener('DOMContentLoaded', function(){
+// function hexToRGBA(hex) {
+//     hex = hex.replace(/^#/, '');
+//     const r = parseInt(hex.slice(0, 2), 16);
+//     const g = parseInt(hex.slice(2, 4), 16);
+//     const b = parseInt(hex.slice(4, 6), 16);
+//     let a = 1;
+//     if (hex.length === 8) {
+//       a = parseInt(hex.slice(6, 8), 16) / 255;
+//     }
+//     return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
+//   }
   
-  function getLuminance(clr) {
-    if (clr.startsWith('#')) {
-      clr = hexToRGBA(clr);
+//   function getLuminance(clr) {
+//     if (clr.startsWith('#')) {
+//       clr = hexToRGBA(clr);
+//     }
+    
+//     let rgb = clr.match(/\d+/g).map(Number);
+//     let alpha = rgb.length === 4 ? rgb[3] / 255 : 1;
+    
+//     // Apply alpha blending with white background
+//     rgb = rgb.slice(0, 3).map(c => {
+//       c = c / 255;
+//       return alpha * c + (1 - alpha);
+//     });
+    
+//     // Apply gamma correction
+//     rgb = rgb.map(c => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+    
+//     return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+//   }
+  
+//   function chooseForeground(bkg) {
+//     let relativeLuminance = getLuminance(bkg);
+//     let contrastRatioBlack = (relativeLuminance + 0.05) / 0.05;
+//     let contrastRatioWhite = 1.05 / (relativeLuminance + 0.05);
+//     return (contrastRatioBlack > contrastRatioWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
+//   }
+//   // Use
+//   let btnElements = document.getElementsByClassName('btn');
+//   let autoColorElements = document.getElementsByClassName('auto-color-text');
+  
+//   let combinedElements = [...btnElements, ...autoColorElements];
+  
+//   combinedElements.forEach(element => {
+
+//     let computedStyle = window.getComputedStyle(element);
+//     let bkgColour = computedStyle.backgroundColor;
+//     element.style.color = chooseForeground(bkgColour);
+//   });
+// });
+document.addEventListener('DOMContentLoaded', function(){
+    function hexToRGBA(hex) {
+      hex = hex.replace(/^#/, '');
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      let a = 1;
+      if (hex.length === 8) {
+        a = parseInt(hex.slice(6, 8), 16) / 255;
+      }
+      return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
     }
     
-    let rgb = clr.match(/\d+/g).map(Number);
-    rgb = rgb.map(c => {
-      c = c / 255;
-      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    function getLuminance(clr) {
+      if (clr.startsWith('#')) {
+        clr = hexToRGBA(clr);
+      }
+      
+      let rgb = clr.match(/\d+/g).map(Number);
+      let alpha = rgb.length === 4 ? rgb[3] / 255 : 1;
+      
+      // Apply alpha blending with white background
+      rgb = rgb.slice(0, 3).map(c => {
+        c = c / 255;
+        return alpha * c + (1 - alpha);
+      });
+      
+      // Apply gamma correction
+      rgb = rgb.map(c => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+      
+      return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+    }
+    
+    function chooseForeground(bkg) {
+      let relativeLuminance = getLuminance(bkg);
+      let contrastRatioBlack = (relativeLuminance + 0.05) / 0.05;
+      let contrastRatioWhite = 1.05 / (relativeLuminance + 0.05);
+      return (contrastRatioBlack > contrastRatioWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
+    }
+  
+    function updateElementColor(element) {
+        let computedStyle = window.getComputedStyle(element);
+        let bkgColor = computedStyle.backgroundColor;
+        let textColor = chooseForeground(bkgColor);
+        
+        const customStylesheet = document.getElementById('customcss').sheet;
+        const rules = customStylesheet.cssRules || customStylesheet.rules;
+        
+        // Update the normal state
+        let normalRule = Array.from(rules).find(rule => rule.selectorText === '.auto-color-text');
+        if (normalRule) {
+          normalRule.style.setProperty('color', textColor);
+        } else {
+          customStylesheet.insertRule(`.auto-color-text { color: ${textColor}; }`, rules.length);
+        }
+        
+        // Calculate hover state color
+        let hoverBkgColor = applyBrightnessFilter(bkgColor, 90);
+        let hoverTextColor = chooseForeground(hoverBkgColor);
+        
+        // Update or add the hover state
+        let hoverRule = Array.from(rules).find(rule => rule.selectorText === '.auto-color-text:hover');
+        if (hoverRule) {
+          hoverRule.style.setProperty('color', hoverTextColor);
+          hoverRule.style.setProperty('filter', 'brightness(90%)');
+        } else {
+          customStylesheet.insertRule(`.auto-color-text:hover { color: ${hoverTextColor}; filter: brightness(90%); }`, rules.length);
+        }
+      }
+      
+      function applyBrightnessFilter(color, brightness) {
+        let rgb = color.match(/\d+/g).map(Number);
+        return `rgb(${rgb.map(c => Math.round(c * brightness / 100)).join(', ')})`;
+      }
+      
+  
+    // Use
+    let btnElements = document.getElementsByClassName('btn');
+    let autoColorElements = document.getElementsByClassName('auto-color-text');
+    
+    let combinedElements = [...btnElements, ...autoColorElements];
+    
+    combinedElements.forEach(updateElementColor);
+    
+      
+    // Set up MutationObserver
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          updateElementColor(mutation.target);
+        }
+      });
     });
-    
-    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
-  }
   
-  function chooseForeground(bkg) {
-    let relativeLuminance = getLuminance(bkg);
-    let chooseBlack = (relativeLuminance + 0.05) / 0.05;
-    let chooseWhite = 1.05 / (relativeLuminance + 0.05);
-    return (chooseBlack > chooseWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
-  }
-  
-  // Use
-  let testAreas = document.getElementsByClassName('btn');
-  Array.from(testAreas).forEach(testArea => {
-    let computedStyle = window.getComputedStyle(testArea);
-    let bkgColour = computedStyle.backgroundColor;
-    testArea.style.color = chooseForeground(bkgColour);
+    // Observe each element
+    combinedElements.forEach(element => {
+      observer.observe(element, { attributes: true, attributeFilter: ['style'] });
+    });
   });
+
+//script to change the style.css stylesheet directly
+
+
   
+
+
+    

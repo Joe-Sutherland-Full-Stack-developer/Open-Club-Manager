@@ -23,11 +23,13 @@
             <li class="d-flex pe-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span class="text-end">{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
             <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span class="text-end">{% if booking.paid_or_member == True %}Yes{% else %}No{% endif %}</span></li>
         </ul>
-        <div class="d-flex justify-content-sm-between justify-content-center row">
+        <div class="d-flex w-100 mx-auto row gap-1">
         <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="col btn btn-secondary mb-3 px-auto"><i class="fa-solid fa-download"></i><br>Download PDF</a>
-        <a href="{% url 'dashboard' %}" class=" col btn btn-primary ms-3 mb-3 px-auto"><i class="fa-solid fa-home"></i><br>Return to Dashboard</a>
-        <a href="{% url 'cancel_booking' booking.id %}" class="col btn btn-danger ms-3 mb-3 px-auto"><i class="fa-solid fa-xmark"></i><br>Cancel this booking</a>
-        
+        <a href="{% url 'dashboard' %}" class=" col btn btn-primary  mb-3 px-auto"><i class="fa-solid fa-home"></i><br>Return to Dashboard</a>
+        <form action="{% url 'cancel_booking' booking.id %}" class="col p-0 mb-3" method="post">
+            {% csrf_token %}
+            <button type="submit" class=" btn btn-danger d-block px-auto w-100 h-100"><i class="fa-solid fa-xmark"></i><br>Cancel Booking</button>
+          </form>        
         </div>
     </div>
     <p id="booking-update-time" class="mt-2">This booking was created/last updated on: {{booking.updated_on}}</p>

@@ -39,9 +39,9 @@
       <div class="accordion" id="accordionUpcoming">
         {% for booking in upcoming_bookings %}
           <div class="accordion-item">
-            <h2 class="accordion-header" id="headingUpcoming{{ forloop.counter }}"><button class="accordion-button brand-color-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">
-              {% if booking.active == False %}CANCELLED:{%endif%} Booking ID: {{ booking.id }} - {{ booking.class_instance.class_type.name }} | {{ booking.participant }}</button></h2>
-            <div id="collapseUpcoming{{ forloop.counter }}" class="accordion-collapse collapse show w-100" aria-labelledby="headingUpcoming{{ forloop.counter }}" data-bs-parent="#accordionUpcoming">
+            <h2 class="accordion-header" id="headingUpcoming{{ forloop.counter }}"><button class="accordion-button bookings-accordion collapsed {% if booking.active == False %}  bg-soft-red bg-gradient {% else %} brand-color-3 {% endif %} auto-color-text" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpcoming{{ forloop.counter }}" aria-expanded="true" aria-controls="collapseUpcoming{{ forloop.counter }}">
+              {% if booking.active == False %}CANCELLED:{%endif%} Booking ID: {{ booking.id }} | {{ booking.class_instance.class_type.name }} | {{ booking.participant }}</button></h2>
+            <div id="collapseUpcoming{{ forloop.counter }}" class="accordion-collapse collapse w-100" aria-labelledby="headingUpcoming{{ forloop.counter }}" data-bs-parent="#accordionUpcoming">
               
               <div id="booking-confirmation-container" class="accordion-body w-100">
                 <div class="img-container d-flex justify-content-center px-5">
@@ -56,7 +56,7 @@
                     <p id="confirmation-message" class="text-center">{{ customization.confirmation_message }}</p>
                     {% endif %}
                   </div>
-                  <ul class="p-0">
+                  <ul class="p-0 fs-6">
                     <li class="d-flex pe-2 justify-content-between bg-color-light "><strong><i class="fa-solid fa-hashtag"></i>      Booking number: </strong> <span class="text-end">{{ booking.id }}</span></li>
             <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-solid fa-circle-exclamation"></i>      Session Type:</strong> <span class="text-end">{{ booking.class_instance.class_type }}</span></li>
             <li class="d-flex pe-2 justify-content-between bg-color-light "><strong><i class="fa-solid fa-calendar-days"></i>        Date:</strong> <span class="text-end">{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
@@ -67,16 +67,16 @@
             <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span class="text-end">{% if booking.paid_or_member == True %}Yes{% else %}No{% endif %}</span></li>
                     {% if booking.active == False %}
                     <li class="d-flex pe-2 justify-content-between">
-                      <strong class="text-center"><i class="fa-solid fa-xmark"></i></strong><span class="text-center fw-bold">THIS BOOKING HAS BEEN CANCELLED</span>
+                      <strong class="text-center"><i class="fa-regular fa-circle-xmark"></i></strong><span class="text-center fw-bold">THIS BOOKING HAS BEEN CANCELLED</span>
                     </li>
                     {% endif %}
                   </ul>
                   <div class="d-flex justify-content-sm-between justify-content-center row gap-3">
-                    <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="col btn btn-secondary mb-3 px-auto"><i class="fa-solid fa-download"></i><br>Download PDF</a>
+                    <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="col btn btn-secondary mb-3 px-auto bg-gradient"><i class="fa-solid fa-download"></i><br>Download PDF</a>
                     {% if booking.active == True %}
-                    <form action="{% url 'cancel_booking' booking.id %}" class="d-block col p-0 mb-3" method="post">
+                    <form action="{% url 'cancel_booking' booking.id %}" class="col p-0 mb-3 bg-soft-red bg-gradient rounded" method="post">
                       {% csrf_token %}
-                      <button type="submit" class=" btn btn-danger px-auto h-auto"><i class="fa-solid fa-xmark"></i>Cancel Booking</button>
+                      <button type="submit" id="" class="d-block w-100 h-100 bg-soft-red bg-gradient rounded fs-6"><i class="fa-regular fa-circle-xmark"></i><br>Cancel Booking</button>
                     </form>
                     {%endif%}
                     <span id="booking-update-time" class="text-right">This booking was created/last updated on: {{ booking.updated_on }}</span>
