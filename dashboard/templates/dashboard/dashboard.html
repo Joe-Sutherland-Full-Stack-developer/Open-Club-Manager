@@ -59,11 +59,11 @@
     <div class="row g-0">
       <!-- Toggle Button for Mobile -->
       
-      <div id="mobile-nav" class="container-fluid d-flex d-md-none pl-3 justify-content-between align-items-center brand-color-dark">
-            <a class="navbar-brand ml-2 brand-text-white" href="{% url 'home' %}">Open Club Manager - {{ customization.business_name }}</a>
+      <div id="mobile-nav" class="container-fluid d-flex d-md-none ps-3 justify-content-between align-items-center brand-color-dark">
+            <a class="navbar-brand ms-2 brand-text-white" href="{% url 'home' %}">Open Club Manager - {{ customization.business_name }}</a>
             
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidePanel" aria-controls="sidePanel" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+        <button class="navbar-toggler rounded brand-text-white h-auto" type="button" data-bs-toggle="collapse" data-bs-target="#sidePanel" aria-controls="sidePanel" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars navbar-toggler-icon m-auto h-auto"></i>
         </button>
       </div>
       
@@ -140,10 +140,10 @@
        </div>
             
             
-        <div id="main-content" class="col col-md-9 col-lg-9 col-xl-10 pl-0 brand-color-white">
+        <div id="main-content" class="col col-md-9 col-lg-9 col-xl-10 ps-0 brand-color-white">
               {% block innerframe %}
                 <div class="bg-color-dark">
-                  <header class="pl-4" id="page-header">Upcoming sessions: {{ timetables.instance.name }}</header>
+                  <header class="ps-2" id="page-header">Upcoming sessions: {{ timetables.instance.name }}</header>
                 </div>  
                       
                       <h2 class="text-center mb-0 pb-2 pt-2 brand-color-white brand-text-2 shadow">This Week</h2>

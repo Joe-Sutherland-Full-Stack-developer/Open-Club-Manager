@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.timezone import now
@@ -261,16 +262,12 @@ def booking_confirmation_pdf(request, booking_id):
     HTML(string=html_string).write_pdf(response)
     return response
 
-def CancelBookingView(request, booking_id):
-    if request.method == 'POST':
-        # Handle the cancellation
-        booking = get_object_or_404(Booking, id=booking_id)
-        booking.active = False
-        booking.save()
-        return redirect('view_bookings')  # Correct the redirect URL as needed
-
-    # Handle GET request
-
+@require_POST
+def toggle_booking_status(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
+    booking.active = not booking.active
+    booking.save()
+    return redirect('view_bookings')
 
 @login_required
 def account_details(request):
