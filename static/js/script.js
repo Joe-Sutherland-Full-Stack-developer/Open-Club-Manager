@@ -88,56 +88,7 @@ function formatTime(time) {
     return `${hours}:${minutes}`;
 }
 
-// function setFlatpickrValue(inputId, value) {
-//     const inputElement = document.getElementById(inputId);
-//     if (inputElement) {
-//         inputElement.value = value;
 
-//         if (inputElement._flatpickr) {
-//             inputElement._flatpickr.setDate(value, true);
-//         } else {
-//             console.error(`Flatpickr instance not found for #${inputId}`);
-//         }
-//     } else {
-//         console.error(`Element with ID "${inputId}" not found.`);
-//     }
-// }
-
-
-//SCript to dynamically set the text-color to be high-contrast against its background
-
-// function getContrastRatio(color) {
-//     const rgb = color.match(/\d+/g);
-//     const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
-//     return luminance > 0.5 ? 'dark' : 'light';
-// }
-
-// function setTextColor(element) {
-//     const bgColor = window.getComputedStyle(element).backgroundColor;
-//     const contrastRatio = getContrastRatio(bgColor);
-    
-//     if (contrastRatio === 'light') {
-//         element.classList.remove('text-dark');
-//         element.classList.add('text-white');
-//     } else {
-//         element.classList.remove('text-white');
-//         element.classList.add('text-dark');
-//     }
-// }
-// document.querySelectorAll('.dynamic-text').forEach(setTextColor);
-
-// Mutation observer for testing the above
-// const observer = new MutationObserver(mutations => {
-//     mutations.forEach(mutation => {
-//         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-//             setTextColor(mutation.target);
-//         }
-//     });
-// });
-
-// document.querySelectorAll('.dynamic-text').forEach(element => {
-//     observer.observe(element, { attributes: true });
-// });
 
 // Script to dynamically adjust the text-color to remain high-contrast with the background color of its element.
 // document.addEventListener('DOMContentLoaded', function(){
@@ -179,19 +130,95 @@ function formatTime(time) {
 //     let contrastRatioWhite = 1.05 / (relativeLuminance + 0.05);
 //     return (contrastRatioBlack > contrastRatioWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
 //   }
-//   // Use
-//   let btnElements = document.getElementsByClassName('btn');
-//   let autoColorElements = document.getElementsByClassName('auto-color-text');
+// //   // Use
+// //   let btnElements = document.getElementsByClassName('btn');
+// //   let autoColorElements = document.getElementsByClassName('auto-color-text');
   
-//   let combinedElements = [...btnElements, ...autoColorElements];
+// //   let combinedElements = [...btnElements, ...autoColorElements];
   
-//   combinedElements.forEach(element => {
+// //   combinedElements.forEach(element => {
 
+// //     let computedStyle = window.getComputedStyle(element);
+// //     let bkgColour = computedStyle.backgroundColor;
+// //     element.style.color = chooseForeground(bkgColour);
+// //   });
+// // });
+
+// function updateElementColor(element) {
 //     let computedStyle = window.getComputedStyle(element);
-//     let bkgColour = computedStyle.backgroundColor;
-//     element.style.color = chooseForeground(bkgColour);
-//   });
+//     let bkgColor = computedStyle.backgroundColor;
+//     let textColor = chooseForeground(bkgColor);
+    
+//     const customStylesheet = document.getElementById('custom-css').sheet;
+//     if (!customStylesheet) {
+//         console.error('Stylesheet with ID "custom-css" not found!');
+//         return;
+//     }
+//     const rules = customStylesheet.cssRules || customStylesheet.rules;
+    
+//     // Get the element's ID
+//     let elementId = element.id;
+//     // exception catcher to help development 
+//     if (!elementId) {
+//         console.error('Element does not have an ID:', {
+//             tagName: element.tagName,
+//             classes: Array.from(element.classList),
+//             textContent: element.textContent.slice(0, 50) + (element.textContent.length > 50 ? '...' : ''),
+//             parentId: element.parentElement ? element.parentElement.id : 'No parent ID',
+//             nthChild: Array.from(element.parentElement.children).indexOf(element) + 1
+//         });
+        
+//         // Generate a temporary ID
+//         elementId = 'auto-color-' + Math.random().toString(36).substr(2, 9);
+//         element.id = elementId;
+//         console.warn(`Temporary ID "${elementId}" assigned to element.`);
+//     }
+    
+//     // Look for an existing rule for this element
+//     let existingRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}`);
+    
+//     if (existingRule) {
+//         // Update existing rule
+//         existingRule.style.setProperty('color', textColor);
+//     } else {
+//         // Add new rule
+//         customStylesheet.insertRule(`#${elementId} { color: ${textColor}; }`, rules.length);
+//     }
+    
+//     // Update hover state
+//     let hoverBkgColor = applyBrightnessFilter(bkgColor, 90);
+//     let hoverTextColor = chooseForeground(hoverBkgColor);
+    
+//     let existingHoverRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}:hover`);
+    
+//     if (existingHoverRule) {
+//         existingHoverRule.style.setProperty('color', hoverTextColor);
+//     } else {
+//         customStylesheet.insertRule(`#${elementId}:hover { color: ${hoverTextColor}; filter: brightness(90%); }`, rules.length);
+//     }
+// }
+
+// let autoColorElements = document.getElementsByClassName('auto-color-text');
+
+// Array.from(autoColorElements).forEach(updateElementColor);
 // });
+
+// // Set up MutationObserver for each element
+// const observer = new MutationObserver((mutations) => {
+//     mutations.forEach((mutation) => {
+//         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+//             updateElementColor(mutation.target);
+//         }
+//     });
+// });
+
+// Array.from(autoColorElements).forEach(element => {
+//     observer.observe(element, {
+//         attributes: true,
+//         attributeFilter: ['style']
+//     });
+// });
+
 document.addEventListener('DOMContentLoaded', function(){
     function hexToRGBA(hex) {
       hex = hex.replace(/^#/, '');
@@ -232,52 +259,70 @@ document.addEventListener('DOMContentLoaded', function(){
       return (contrastRatioBlack > contrastRatioWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
     }
   
-    function updateElementColor(element) {
-        let computedStyle = window.getComputedStyle(element);
-        let bkgColor = computedStyle.backgroundColor;
-        let textColor = chooseForeground(bkgColor);
-        
-        const customStylesheet = document.getElementById('customcss').sheet;
-        const rules = customStylesheet.cssRules || customStylesheet.rules;
-        
-        // Update the normal state
-        let normalRule = Array.from(rules).find(rule => rule.selectorText === '.auto-color-text');
-        if (normalRule) {
-          normalRule.style.setProperty('color', textColor);
-        } else {
-          customStylesheet.insertRule(`.auto-color-text { color: ${textColor}; }`, rules.length);
-        }
-        
-        // Calculate hover state color
-        let hoverBkgColor = applyBrightnessFilter(bkgColor, 90);
-        let hoverTextColor = chooseForeground(hoverBkgColor);
-        
-        // Update or add the hover state
-        let hoverRule = Array.from(rules).find(rule => rule.selectorText === '.auto-color-text:hover');
-        if (hoverRule) {
-          hoverRule.style.setProperty('color', hoverTextColor);
-          hoverRule.style.setProperty('filter', 'brightness(90%)');
-        } else {
-          customStylesheet.insertRule(`.auto-color-text:hover { color: ${hoverTextColor}; filter: brightness(90%); }`, rules.length);
-        }
-      }
-      
-      function applyBrightnessFilter(color, brightness) {
-        let rgb = color.match(/\d+/g).map(Number);
-        return `rgb(${rgb.map(c => Math.round(c * brightness / 100)).join(', ')})`;
-      }
-      
+    function applyBrightnessFilter(color, brightness) {
+      let rgb = color.match(/\d+/g).map(Number);
+      return `rgb(${rgb.map(c => Math.max(0, Math.min(255, Math.round(c * brightness / 100)))).join(', ')})`;
+    }
   
-    // Use
-    let btnElements = document.getElementsByClassName('btn');
-    let autoColorElements = document.getElementsByClassName('auto-color-text');
-    
-    let combinedElements = [...btnElements, ...autoColorElements];
-    
-    combinedElements.forEach(updateElementColor);
-    
+    function updateElementColor(element) {
+      let computedStyle = window.getComputedStyle(element);
+      let bkgColor = computedStyle.backgroundColor;
+      let textColor = chooseForeground(bkgColor);
       
-    // Set up MutationObserver
+      const customStylesheet = document.getElementById('custom-css').sheet;
+      if (!customStylesheet) {
+        console.error('Stylesheet with ID "custom-css" not found!');
+        return;
+      }
+      const rules = customStylesheet.cssRules || customStylesheet.rules;
+      
+      // Get the element's ID
+      let elementId = element.id;
+      // exception catcher to help development 
+      if (!elementId) {
+        console.error('Element does not have an ID:', {
+          tagName: element.tagName,
+          classes: Array.from(element.classList),
+          textContent: element.textContent.slice(0, 50) + (element.textContent.length > 50 ? '...' : ''),
+          parentId: element.parentElement ? element.parentElement.id : 'No parent ID',
+          nthChild: Array.from(element.parentElement.children).indexOf(element) + 1
+        });
+        
+        // Generate a temporary ID
+        elementId = 'auto-color-' + Math.random().toString(36).substr(2, 9);
+        element.id = elementId;
+        console.warn(`Temporary ID "${elementId}" assigned to element.`);
+      }
+      
+      // Look for an existing rule for this element
+      let existingRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}`);
+      
+      if (existingRule) {
+        // Update existing rule
+        existingRule.style.setProperty('color', textColor);
+      } else {
+        // Add new rule
+        customStylesheet.insertRule(`#${elementId} { color: ${textColor}; }`, rules.length);
+      }
+      
+      // Update hover state
+      let hoverBkgColor = applyBrightnessFilter(bkgColor, 90);
+      let hoverTextColor = chooseForeground(hoverBkgColor);
+      
+      let existingHoverRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}:hover`);
+      
+      if (existingHoverRule) {
+        existingHoverRule.style.setProperty('color', hoverTextColor);
+      } else {
+        customStylesheet.insertRule(`#${elementId}:hover { color: ${hoverTextColor}; filter: brightness(90%); }`, rules.length);
+      }
+    }
+  
+    let autoColorElements = document.getElementsByClassName('auto-color-text');
+  
+    Array.from(autoColorElements).forEach(updateElementColor);
+  
+    // Set up MutationObserver for each element
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
@@ -286,15 +331,14 @@ document.addEventListener('DOMContentLoaded', function(){
       });
     });
   
-    // Observe each element
-    combinedElements.forEach(element => {
-      observer.observe(element, { attributes: true, attributeFilter: ['style'] });
+    Array.from(autoColorElements).forEach(element => {
+      observer.observe(element, {
+        attributes: true,
+        attributeFilter: ['style']
+      });
     });
   });
-
-//script to change the style.css stylesheet directly
-
-
+  
   
 
 

@@ -323,9 +323,9 @@ li{
  .bookings-accordion:hover{
     font-weight: 500;
     color: #fff;
-    filter: brightness(90%);
-    -webkit-transition: all 0.4s ease;
-    transition: all 0.4s ease;
+    filter: brightness(70%);
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
  }
  .bookings-accordion:not(.collapsed){
     background-color: var(--brand-color-3);
@@ -339,8 +339,8 @@ li{
 }
 .bookings-accordion:not(.collapsed):hover{
     filter: brightness(95%);
-    -webkit-transition: all 0.4s ease;
-    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
 }
 .bg-soft-red{
     background-color: #f52c4d;
@@ -349,8 +349,8 @@ li{
 .bg-soft-red:hover {
     background-color: #cc2440;
     color:#fff;
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
 }
 .bg-soft-red:not(.collapsed){
     background-color: #f52c4d;
@@ -359,8 +359,16 @@ li{
 .bg-soft-red:hover:not(.collapsed) :hover{
     background-color: #cc2440;
     color: var(--brand-white);
-    -webkit-transition: all 0.4s ease;
-    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+.auto-color-text{
+    color:grey;
+
+}
+.auto-color-text:hover {
+    filter: brightness(80%);
 }
 /*-------------------------------------------------------------------------home page*/
 

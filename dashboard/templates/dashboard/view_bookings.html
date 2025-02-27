@@ -90,8 +90,59 @@
         {% endfor %}
       </div>
     </div>
-
-    <div class="tab-pane fade {% if request.GET.tab == 'previous' %}show active{% endif %}" id="previous-tab-pane" role="tabpanel" aria-labelledby="previous-tab" tabindex="1">
+    <div class="tab-pane fade {% if request.GET.tab == 'previous' %}show active{% endif %} p-5" id="previous-tab-pane" role="tabpanel" aria-labelledby="previous-tab" tabindex="1">
+      <div class="accordion" id="accordionPrevious">
+        {% for booking in previous_bookings %}
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPrevious{{ forloop.counter }}">
+              <button class="accordion-button bookings-accordion collapsed {% if booking.active == False %} bg-soft-red bg-gradient {% else %} brand-color-3 {% endif %} auto-color-text" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrevious{{ forloop.counter }}" aria-expanded="false" aria-controls="collapsePrevious{{ forloop.counter }}">
+                {% if booking.active == False %}CANCELLED:{%endif%} Booking ID: {{ booking.id }} | {{ booking.class_instance.class_type.name }} | {{ booking.participant }}
+              </button>
+            </h2>
+            <div id="collapsePrevious{{ forloop.counter }}" class="accordion-collapse collapse w-100" aria-labelledby="headingPrevious{{ forloop.counter }}" data-bs-parent="#accordionPrevious">
+              <div id="booking-confirmation-container" class="accordion-body w-100">
+                <div class="img-container d-flex justify-content-center px-5">
+                  <img class="align-self-center {% if booking.active == False %} d-none{% endif %}" src="https://res.cloudinary.com/dyjgm6n1a/image/upload/v1736279027/Confirmed-tick-remove-bg-io_rroa9z.png" alt="green checkmark icon" />
+                </div>
+                <div class="booking-info w-75 mx-auto">
+                  <div class="d-flex justify-content-sm-center booking-confirm-text">
+                    {% if booking.active == False %}
+                      <p id="booking-cancelled" class="text-center">Booking cancelled</p>
+                    {% else %}
+                      <p id="booking-confirmed" class="text-center">Booking Confirmed!</p><br/>
+                      <p id="confirmation-message" class="text-center">{{ customization.confirmation_message }}</p>
+                    {% endif %}
+                  </div>
+                  <ul class="p-0 fs-6">
+                    <li class="d-flex pe-2 justify-content-between bg-color-light "><strong><i class="fa-solid fa-hashtag"></i> Booking number: </strong> <span class="text-end">{{ booking.id }}</span></li>
+                    <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-solid fa-circle-exclamation"></i> Session Type:</strong> <span class="text-end">{{ booking.class_instance.class_type }}</span></li>
+                    <li class="d-flex pe-2 justify-content-between bg-color-light "><strong><i class="fa-solid fa-calendar-days"></i> Date:</strong> <span class="text-end">{{ booking.class_instance.instance_date|date:"l, j F Y" }}</span></li>
+                    <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-solid fa-clock"></i> Start Time:</strong><span class="text-end"> {{ booking.class_instance.start_time|time:"H:i" }}</span></li>
+                    <li class="d-flex pe-2 justify-content-between bg-color-light"><strong><i class="fa-regular fa-clock"></i> Finish Time:</strong> <span class="text-end">{{ booking.class_instance.finish_time|time:"H:i" }}</span></li>
+                    <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-solid fa-user"></i> Participant:</strong><span class="text-end"> {{ booking.participant }}</span></li>
+                    <li class="d-flex pe-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i> Session Price: </strong> <span class="text-end">{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
+                    <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i> Paid/Member:</strong> <span class="text-end">{% if booking.paid_or_member == True %}Yes{% else %}No{% endif %}</span></li>
+                    {% if booking.active == False %}
+                      <li class="d-flex pe-2 justify-content-between">
+                        <strong class="text-center"><i class="fa-regular fa-circle-xmark"></i></strong><span class="text-center fw-bold">THIS BOOKING HAS BEEN CANCELLED</span>
+                      </li>
+                    {% endif %}
+                  </ul>
+                  <div class="d-flex justify-content-sm-between justify-content-center row gap-3">
+                    <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="col btn btn-secondary mb-3 px-auto bg-gradient"><i class="fa-solid fa-download"></i> Download PDF</a>
+                    <span id="booking-update-time" class="text-right">This booking was created/last updated on: {{ booking.updated_on }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <p>You have no previous bookings.</p>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- <div class="tab-pane fade {% if request.GET.tab == 'previous' %}show active{% endif %}" id="previous-tab-pane" role="tabpanel" aria-labelledby="previous-tab" tabindex="1">
       <div class="accordion" id="accordionPrevious">
         {% for booking in previous_bookings %}
           <div class="accordion-item">
@@ -148,8 +199,8 @@
             </div>
           </div>
         {% empty %}
-          <p>You have no upcoming bookings.</p>
-        {% endfor %}
+          <p>You have no previous bookings.</p>
+        {% endfor %} -->
       </div>
     </div>
   </div>

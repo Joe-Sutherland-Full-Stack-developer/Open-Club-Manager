@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.timezone import now
+from django.db.models import Q
 from django.views.generic import TemplateView
 
 # Local imports
@@ -133,14 +134,18 @@ def booking_owner_or_admin(user, booking):
 
 def view_bookings(request):
     current_date = timezone.now().date()
+    
     upcoming_bookings = Booking.objects.filter(
         user=request.user,
-        class_instance__instance_date__gte=current_date
+        class_instance__instance_date__gte=current_date,
+        active=True
     )
+    
     previous_bookings = Booking.objects.filter(
-        user=request.user,
-        class_instance__instance_date__lt=current_date
+        Q(user=request.user) &
+        (Q(class_instance__instance_date__lt=current_date) | Q(active=False))
     )
+    
     return render(
         request,
         'dashboard/view_bookings.html',
@@ -149,6 +154,7 @@ def view_bookings(request):
             'previous_bookings': previous_bookings,
         }
     )
+
 
 
 @login_required
