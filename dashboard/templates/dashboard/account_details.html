@@ -6,7 +6,7 @@
 
 {% block innerframe %}
 
-<div class="bg-color-light">
+<div class="bg-color-dark">
     <header id="page-header" class=" px-2">Your Account details</header>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -62,12 +62,12 @@
                 {% for participant in participants %}
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingParticipants{{ forloop.counter }}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParticipant{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseParticipant{{ forloop.counter }}">
+                        <button class="participant-accordion accordion-button brand-color-1 brand-text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseParticipant{{ forloop.counter }}" aria-expanded="false" aria-controls="collapseParticipant{{ forloop.counter }}">
                             Participant: {{ participant.first_name }} {{ participant.last_name }}
                         </button>
                     </h2>
-                    <div id="collapseParticipant{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="headingParticipant{{ forloop.counter }}" data-bs-parent="#accordionParticipants">
-                        <div class="accordion-body">
+                    <div id="collapseParticipant{{ forloop.counter }}" class="accordion-collapse w-100 collapse" aria-labelledby="headingParticipant{{ forloop.counter }}" data-bs-parent="#accordionParticipants">
+                        <div class="accordion-body participant-accordion-body w-100 text-center">
                             {% for participant_form in participant_forms %}
                             {% if participant.id == participant_form.instance.id %}
                             <form class="participant-form" method="post">
@@ -75,17 +75,23 @@
                                 <input type="hidden" name="participant_id" value="{{ participant.id }}">
                                 {% for field in participant_form %}
                                 <div class="row mb-3">
-                                    <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label }}</label>
-                                    <div class="col-sm-6">
-                                        <span class="form-control-plaintext">{{ field.value|default_if_none:'' }}</span>
+                                    <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label align-items-center fw-bold">{{ field.label }}</label>
+                                    <div class="col-sm-6 d-flex align-items-center justify-content-center">
+                                        <span class="form-control-plaintext w-100 p-0">{{ field.value|default_if_none:'' }}</span>
+                                        {% if field.label == "Additional info" %}
+                                        <textarea class="Large-text-field edit-form-input w-100" rows="10" cols="50" name="{{ field.name }}" style="display: none;">{{ field.value|default_if_none:'' }}</textarea>
+                                        {% else %}
+                                        
                                         {{ field }} 
-                                        <input class="edit-form-input" type="hidden" name="field_name" value="{{ field.name }}"> <!-- Render input field -->
+                                        <input class="edit-form-input w-100" type="hidden" name="field_name" value="{{ field.name }}"> <!-- Render input field -->
+                                        {% endif %}
                                     </div>
                                     <div class="col-sm-4">
                                         <button type="button" class="btn btn-primary edit-field" data-field="{{ field.name }}">Edit</button>
                                         <button type="submit" class="btn btn-success save-field d-none" data-field="{{ field.name }}">Save</button>  <!-- Ensure this button is visible -->
                                     </div>
                                 </div>
+                                
                                 {% endfor %}
                             </form>
                                 <!-- Delete Button -->

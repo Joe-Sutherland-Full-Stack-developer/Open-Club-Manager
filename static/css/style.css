@@ -282,17 +282,17 @@ li{
 }
 
 .bg-color-light{
-    background-color: #1d4e7c23;
+    background-color: #1d4e7c11;
 }
 .bg-color-dark{
-    background-color: #1d4e7c54; 
+    background-color: #1d4e7c3b; 
 }
 
 /*--------------------------------------------------------------------------Bookings page----------------------------------*/
 #booking-update-time{
     font-size: 0.85rem;
     align-self:flex-end;
-   
+    width: 100%;
     text-align: end;
 }
 
@@ -370,6 +370,7 @@ li{
 }
 .form-control-plaintext{
     padding-left: 3px;
+    
 }
 
 
@@ -378,6 +379,12 @@ li{
     color:#061a40;
     --bs-btn-hover-bg: none;
     filter: brightness(0.85);
+}
+.participant-accordion:hover{
+    letter-spacing: 0.075rem;
+}
+.participant-accordion-body{
+    font-size: 1rem;
 }
 
 /*  --------------------------------------------------------Testing area: */

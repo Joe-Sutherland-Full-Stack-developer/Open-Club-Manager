@@ -3,7 +3,7 @@
 {% bootstrap_css %}
 
 {% block innerframe %}
-  <div class="brand-color-white">
+  <div class="bg-color-dark">
     <header class="pl-4" id="page-header">Your Bookings</header>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -34,7 +34,7 @@
     </ul>
   </div>
 
-  <div class="tab-content" id="myTabContent">
+  <div class="tab-content brand-color-white" id="myTabContent">
     <div class="tab-pane fade {% if request.GET.tab != 'previous' %}show active{% endif %}" id="upcoming-tab-pane" role="tabpanel" aria-labelledby="upcoming-tab" tabindex="0">
       <div class="accordion" id="accordionUpcoming">
         {% for booking in upcoming_bookings %}
