@@ -66,24 +66,19 @@
             <li class="d-flex pe-2 justify-content-between bg-color-light"><strong><i class="fa-solid fa-money-bill"></i>      Session Price: </strong> <span class="text-end">{{ customization.currency_symbol }}{{ booking.class_instance.class_type.price }}</span></li>
             <li class="d-flex pe-2 justify-content-between "><strong><i class="fa-regular fa-credit-card"></i>     Paid/Member:</strong> <span class="text-end">{% if booking.paid_or_member == True %}Yes{% else %}No{% endif %}</span></li>
                     {% if booking.active == False %}
-                    <li class="d-flex pl-1 pr-2 justify-content-between">
-                      <strong><i class="fa-regular fa-credit-card"></i> THIS BOOKING HAS BEEN CANCELLED</strong>
+                    <li class="d-flex pe-2 justify-content-between">
+                      <strong class="text-center"><i class="fa-solid fa-xmark"></i></strong><span class="text-center fw-bold">THIS BOOKING HAS BEEN CANCELLED</span>
                     </li>
                     {% endif %}
                   </ul>
-                  <div class="d-flex justify-content-sm-between justify-content-center row">
+                  <div class="d-flex justify-content-sm-between justify-content-center row gap-3">
                     <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="col btn btn-secondary mb-3 px-auto"><i class="fa-solid fa-download"></i><br>Download PDF</a>
                     {% if booking.active == True %}
-                    <form action="{% url 'toggle_booking_status' booking.id %}" method="post">
+                    <form action="{% url 'cancel_booking' booking.id %}" class="d-block col p-0 mb-3" method="post">
                       {% csrf_token %}
-                      <button type="submit" class="col btn btn-danger ms-3 mb-3 px-auto"><i class="fa-solid fa-xmark"></i>Cancel Booking</button>
+                      <button type="submit" class=" btn btn-danger px-auto h-auto"><i class="fa-solid fa-xmark"></i>Cancel Booking</button>
                     </form>
-                    {% else %}
-                    <form action="{% url 'toggle_booking_status' booking.id %}" method="post">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-secondary ms-3"><i class="fa-solid fa-checkmark"></i>Renew Booking</button>
-                    </form>
-                    {% endif %}
+                    {%endif%}
                     <span id="booking-update-time" class="text-right">This booking was created/last updated on: {{ booking.updated_on }}</span>
                   </div>
                 </div>

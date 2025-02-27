@@ -263,11 +263,13 @@ def booking_confirmation_pdf(request, booking_id):
     return response
 
 @require_POST
-def toggle_booking_status(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
-    booking.active = not booking.active
-    booking.save()
-    return redirect('view_bookings')
+def CancelBookingView(request, booking_id):
+    if request.method == 'POST':
+        # Handle the cancellation
+        booking = get_object_or_404(Booking, id=booking_id)
+        booking.active = False
+        booking.save()
+        return redirect('view_bookings')  # Correct the redirect URL as needed
 
 @login_required
 def account_details(request):
