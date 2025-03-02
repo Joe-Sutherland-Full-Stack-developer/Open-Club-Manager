@@ -1,0 +1,7 @@
+<!-- partials/class_form.html -->
+<form hx-post="{% url 'add_class' %}" hx-target="#timetable-container">
+    {{ form.as_p }}
+    <input type="hidden" name="day" value="{{ request.GET.day }}">
+    <input type="hidden" name="date" value="{{ request.GET.date }}">
+    <button type="submit">Add Class</button>
+</form>

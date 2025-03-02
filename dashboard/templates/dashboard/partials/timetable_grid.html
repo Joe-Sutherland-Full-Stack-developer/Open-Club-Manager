@@ -1,0 +1,73 @@
+{% load timetable_filters %}
+{%load static %}
+
+<table class="timetable-grid table table-striped table-sm table-bordered">
+    <thead>
+        <tr>
+            <th class = "border-bottom-0">Time</th>
+            {% for day in selected_days %}
+                <th>{{ day }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for slot in time_slots %}
+            {% if forloop.counter0|divisibleby:2 %}
+                <tr class="row-even">
+                    <td rowspan="2" class="time-label align-top"> <span class="position-absolute top-0 start-50 translate-middle">{{ slot }}</span></td>
+            {% else %}
+                <tr class="hidden-row row-odd border">
+            {% endif %}
+                {% for day in selected_days %}
+                    <td data-day="{{ day }}" data-slot="{{ slot }}" class="empty-cell"><div class="infotip"><span class="infotiptext">{{day}} {{slot}} </span></div></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script src="{% static 'js/Timetable.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const classInstances = [
+            {% for instance in class_instances %}
+                {
+                    day: "{{ instance.day }}",
+                    startTime: "{{ instance.start_time|time:'H:i' }}",
+                    endTime: "{{ instance.finish_time|time:'H:i' }}",
+                    name: "{{ instance.class_type.name }}",
+                    color: "{{ instance.class_type.color_value }}"
+                },
+            {% endfor %}
+        ];
+
+        classInstances.forEach(instance => {
+            const cell = document.querySelector(`td[data-day="${instance.day}"][data-slot="${instance.startTime}"]`);
+            if (cell) {
+                const startTime = new Date(`2000-01-01T${instance.startTime}`);
+                const endTime = new Date(`2000-01-01T${instance.endTime}`);
+                const durationInMinutes = (endTime - startTime) / (1000 * 60);
+                const rowspan = Math.ceil(durationInMinutes / 15);
+
+                cell.innerHTML = `${instance.name}<br>${instance.day} @ ${instance.startTime} - ${instance.endTime}`;
+                cell.style.backgroundColor = instance.color;
+                cell.rowSpan = rowspan;
+                cell.classList.remove('empty-cell');
+
+                // Remove cells that are now covered by the rowspan
+                let currentRow = cell.parentElement;
+                for (let i = 1; i < rowspan; i++) {
+                    currentRow = currentRow.nextElementSibling;
+                    if (currentRow) {
+                        const cellToRemove = currentRow.querySelector(`td[data-day="${instance.day}"]`);
+                        if (cellToRemove) cellToRemove.remove();
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+
+
+
+

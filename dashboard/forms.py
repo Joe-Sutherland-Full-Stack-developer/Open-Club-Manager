@@ -5,7 +5,7 @@ from django_flatpickr.schemas import FlatpickrOptions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
-
+from django.shortcuts import HttpResponse
 from .models import (
     Participant,
     ClassInstance,
@@ -134,3 +134,29 @@ class ContactForm(forms.ModelForm):
                 'rows': 4, 'placeholder': 'Your message here...'
                 }),
         }
+
+
+
+
+
+class ClassInstanceForm(forms.ModelForm):
+    class Meta:
+        model = ClassInstance
+        fields = ['class_type', 'start_time', 'finish_time', 'capacity']
+
+def add_class(request):
+    if request.method == 'POST':
+        form = ClassInstanceForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.day = request.POST.get('day')
+            instance.instance_date = request.POST.get('date')
+            instance.save()
+            return HttpResponse(status=204)
+    else:
+        form = ClassInstanceForm(initial={
+            'start_time': request.GET.get('time'),
+            'day': request.GET.get('day'),
+        })
+    
+    return render(request, 'partials/class_form.html', {'form': form})
