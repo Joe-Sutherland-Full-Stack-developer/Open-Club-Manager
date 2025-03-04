@@ -141,6 +141,7 @@ class ClassInstanceForm(forms.ModelForm):
                                         label='Class Type')
     repeat = forms.BooleanField(required=False, initial=False,
                                 label="Repeat?")
+    repeat_until = forms.DateField(required=False, widget=DatePickerInput(options={"format": "DD/MM/YYYY"}))
     class Meta:
         model = ClassInstance
         fields = ['class_type', 'instance_date', 'day', 'start_time', 'finish_time', 'capacity']
@@ -155,6 +156,6 @@ class ClassInstanceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['class_type'].queryset = ClassType.objects.all()
-        
         self.fields['instance_date'].widget = forms.HiddenInput()
-        
+        self.fields['repeat_until'].widget.attrs['class'] = 'repeat-until-field'
+        self.fields['repeat_until'].label_attrs = {'class': 'repeat-until-label'}

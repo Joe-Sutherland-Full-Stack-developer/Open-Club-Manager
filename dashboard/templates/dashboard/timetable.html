@@ -44,6 +44,7 @@
                 <form id="classInstanceForm" method="post" action="{% url 'add_class_instance' %}">
                     {% csrf_token %}
                     {% bootstrap_form form %}
+                    
                     <p> Duration <input type="text" name="duration" id="duration" read-only label="Duration"></p>
                 </form>
             </div>
@@ -55,7 +56,20 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const repeatCheckbox = document.querySelector('input[name="repeat"]');
+        const repeatUntilContainer = document.querySelector('label[for="id_repeat_until"]').parentElement;
 
+        function toggleRepeatUntil() {
+        const display = repeatCheckbox.checked ? 'block' : 'none';
+        repeatUntilContainer.style.display = display;
+    }
+
+        repeatCheckbox.addEventListener('change', toggleRepeatUntil);
+        toggleRepeatUntil(); // Initial state
+    });
+</script>
 
 
 
