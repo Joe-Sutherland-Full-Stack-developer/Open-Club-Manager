@@ -26,7 +26,9 @@ urlpatterns = [
     path('dashboard/', dashboard_views.dashboard, name='dashboard'),
     # path('dashboard/new_participant', dashboard_views.create_participant, name="create_participant")
     path('timetable/<int:timetable_id>/', dashboard_views.timetable_view, name='timetable_view'),
-    path('timetable/add_class/', dashboard_views.add_class, name='add_class'),
+    path('get_class_form/', dashboard_views.get_class_form, name='get_class_form'),
+    path('add-class-instance/', dashboard_views.add_class_instance, name='add_class_instance'),
+    
     path('load-booking-form/<int:event_id>/', dashboard_views.load_booking_form, name='load_booking_form'),
     path('create-booking/', dashboard_views.create_booking, name='create_booking'),
     path('booking-confirmation/<int:booking_id>/', dashboard_views.booking_confirmation, name='booking_confirmation'),

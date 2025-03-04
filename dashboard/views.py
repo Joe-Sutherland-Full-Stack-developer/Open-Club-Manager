@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
@@ -21,7 +21,7 @@ from django.views.generic import TemplateView
 
 # Local imports
 from .forms import (
-    UserEditForm, ParticipantForm, AddEvent, BookingForm, NewParticipant,
+    UserEditForm, ParticipantForm, BookingForm, NewParticipant,
     ContactForm, ClassInstanceForm
 )
 from .models import (
@@ -171,20 +171,22 @@ def create_participant(request):
         form = NewParticipant()
     return render(request, 'dashboard/create_participant.html', {'form': form})
 
-def add_class(request):
+from .forms import ClassInstanceForm
+
+def get_class_form(request):
+    form = ClassInstanceForm()
+    return render(request, 'class_form.html', {'form': form})
+
+def add_class_instance(request):
     if request.method == 'POST':
         form = ClassInstanceForm(request.POST)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.day = request.POST.get('day')
-            instance.instance_date = request.POST.get('date')
-            instance.save()
-            return HttpResponse(status=204)
-    else:
-        form = ClassInstanceForm(initial={
-            'start_time': request.GET.get('time'),
-            'day': request.GET.get('day'),
-        })
+            instance = form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': form.errors})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
     
     return render(request, 'partials/class_form.html', {'form': form})
 
@@ -198,12 +200,13 @@ def timetable_view(request, timetable_id):
         start_time__gte=timetable.start_time,
         finish_time__lte=timetable.end_time
     ).select_related('class_type').order_by('day', 'start_time')
-
+    form = ClassInstanceForm
     context = {
         'timetable': timetable,
         'selected_days': selected_days,
         'time_slots': time_slots,
         'class_instances': class_instances,
+        'form': form,
     }
 
     return render(request, 'dashboard/timetable.html', context)

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django_flatpickr.widgets import TimePickerInput
-from django_flatpickr.schemas import FlatpickrOptions
+
+from bootstrap_datepicker_plus.widgets import DatePickerInput, TimePickerInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -67,32 +67,32 @@ class NewParticipant(forms.ModelForm):
         }
 
 
-class AddEvent(forms.ModelForm):
-    class_type = forms.ModelChoiceField(queryset=ClassType.objects.all(),
-                                        label='Class Type')
-    repeat = forms.BooleanField(required=False, initial=False,
-                                label="Repeat?")
+# class AddEvent(forms.ModelForm):
+#     class_type = forms.ModelChoiceField(queryset=ClassType.objects.all(),
+#                                         label='Class Type')
+#     repeat = forms.BooleanField(required=False, initial=False,
+#                                 label="Repeat?")
 
-    class Meta:
-        model = ClassInstance
-        fields = ['class_type', 'start_time', 'finish_time',
-                  'day', 'repeat']
-        widgets = {
-            "start_time": TimePickerInput(
-                attrs={'class': 'form-control'},
-                options=FlatpickrOptions(
-                    time_24hr=True,
-                    minuteIncrement=15
-                )
-            ),
-            "finish_time": TimePickerInput(
-                attrs={'class': 'form-control'},
-                options=FlatpickrOptions(
-                    time_24hr=True,
-                    minuteIncrement=15
-                )
-            ),
-        }
+#     class Meta:
+#         model = ClassInstance
+#         fields = ['class_type', 'start_time', 'finish_time',
+#                   'day', 'repeat']
+#         widgets = {
+#             "start_time": TimePickerInput(
+#                 attrs={'class': 'form-control'},
+#                 options=FlatpickrOptions(
+#                     time_24hr=True,
+#                     minuteIncrement=15
+#                 )
+#             ),
+#             "finish_time": TimePickerInput(
+#                 attrs={'class': 'form-control'},
+#                 options=FlatpickrOptions(
+#                     time_24hr=True,
+#                     minuteIncrement=15
+#                 )
+#             ),
+#         }
 
 
 class BookingForm(forms.ModelForm):
@@ -136,27 +136,23 @@ class ContactForm(forms.ModelForm):
         }
 
 
-
-
-
 class ClassInstanceForm(forms.ModelForm):
+    class_type = forms.ModelChoiceField(queryset=ClassType.objects.all(),
+                                        label='Class Type')
+    repeat = forms.BooleanField(required=False, initial=False,
+                                label="Repeat?")
     class Meta:
         model = ClassInstance
-        fields = ['class_type', 'start_time', 'finish_time', 'capacity']
+        fields = ['class_type', 'instance_date', 'day', 'start_time', 'finish_time', 'capacity']
+        
+        widgets = {
+            'start_time': TimePickerInput(),
+            'finish_time': TimePickerInput(),
+        }
 
-def add_class(request):
-    if request.method == 'POST':
-        form = ClassInstanceForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.day = request.POST.get('day')
-            instance.instance_date = request.POST.get('date')
-            instance.save()
-            return HttpResponse(status=204)
-    else:
-        form = ClassInstanceForm(initial={
-            'start_time': request.GET.get('time'),
-            'day': request.GET.get('day'),
-        })
-    
-    return render(request, 'partials/class_form.html', {'form': form})
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['class_type'].queryset = ClassType.objects.all()
+        
+        self.fields['instance_date'].widget = forms.HiddenInput()
+        

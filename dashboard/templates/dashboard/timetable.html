@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 {% load bootstrap5 %}
 {% bootstrap_css %}
-
+{% bootstrap_javascript %}
 {% load static %}
 
 
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% bootstrap_javascript %}
+
 <script src="{% static 'js/htmx.min.js' defer %}"></script>
 
 
@@ -28,6 +31,29 @@
     </div>
 
 
+<!-- Modal Placeholder -->
+<div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="classModalLabel">Add Class Instance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ form.media }}
+                <form id="classInstanceForm" method="post" action="{% url 'add_class_instance' %}">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <input type="text" name="duration" id="duration" readonly label="Duration">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="classInstanceForm" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

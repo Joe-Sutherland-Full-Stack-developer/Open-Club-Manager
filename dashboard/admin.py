@@ -6,7 +6,7 @@ from django.utils import timezone
 from .models import Participant, ClassType, Timetable, ClassInstance, Booking
 from .models import Customization, StripeIntegration,ContactRequest
 from django import forms
-from .forms import AddEvent
+from .forms import ClassInstanceForm
 from bootstrap_datepicker_plus.widgets import TimePickerInput
 
 class ParticipantInline(admin.StackedInline):
@@ -126,7 +126,7 @@ class TimetableAdmin(admin.ModelAdmin):
 
 @admin.register(ClassInstance)
 class ClassInstAdmin(admin.ModelAdmin):
-    form = AddEvent
+    form = ClassInstanceForm
     list_display = ["__str__"]
     fields = ['class_type', 'instance_date', 'day',
               'start_time', 'finish_time', 'capacity',
