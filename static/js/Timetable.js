@@ -82,3 +82,62 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error:', error));
     });
 });
+
+// script to dynamically update the modal form fields depending on selected class type
+document.addEventListener('DOMContentLoaded', function () {
+    const classTypeSelect = document.querySelector('.class-type-select');
+    const durationField = document.querySelector('#id_duration'); // Assuming you have a duration field
+    const startTimeField = document.querySelector('#id_start_time');
+    const finishTimeField = document.querySelector('#id_finish_time');
+    const capacityField = document.querySelector('#id_capacity');
+
+    function updateFields() {
+        const selectedOption = classTypeSelect.options[classTypeSelect.selectedIndex];
+        if (!selectedOption.value) return; // Exit if no option is selected
+
+        // Retrieve duration and capacity from data attributes
+        const duration = parseInt(selectedOption.getAttribute('data-duration'), 10); // Parse as integer
+        const capacity = selectedOption.getAttribute('data-capacity');
+
+        // Update duration field
+        if (durationField) {
+            durationField.value = isNaN(duration) ? '' : duration; // Ensure valid value
+        }
+
+        // Update capacity field
+        if (capacityField) {
+            capacityField.value = capacity || ''; // Fallback to empty string if no capacity
+        }
+
+        // Update finish time based on start time and duration
+        if (startTimeField.value && !isNaN(duration)) {
+            const [hours, minutes] = startTimeField.value.split(':').map(Number); // Split and parse start time
+            if (!isNaN(hours) && !isNaN(minutes)) {
+                // Create a Date object for the start time
+                const startTime = new Date();
+                startTime.setHours(hours, minutes, 0, 0); // Set hours and minutes
+
+                // Add the duration (in minutes)
+                const finishTime = new Date(startTime.getTime() + duration * 60000); // Add duration in milliseconds
+
+                // Format the finish time as HH:MM
+                const formattedFinishTime = `${String(finishTime.getHours()).padStart(2, '0')}:${String(finishTime.getMinutes()).padStart(2, '0')}`;
+                finishTimeField.value = formattedFinishTime;
+                console.log("Finish time:", formattedFinishTime);
+            } else {
+                console.error("Invalid start time format.");
+            }
+        } else {
+            finishTimeField.value = ''; // Clear finish time if inputs are invalid
+        }
+    }
+
+    classTypeSelect.addEventListener('change', updateFields);
+    startTimeField.addEventListener('change', updateFields);
+
+    // Initial update if a class type is pre-selected
+    if (classTypeSelect.value) {
+        updateFields();
+    }
+});
+

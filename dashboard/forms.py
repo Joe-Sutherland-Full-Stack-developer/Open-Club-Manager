@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-
+import json
 from bootstrap_datepicker_plus.widgets import DatePickerInput, TimePickerInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -155,7 +155,23 @@ class ClassInstanceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['class_type'].queryset = ClassType.objects.all()
+        self.fields['class_type'].widget.attrs.update({
+            'class': 'class-type-select',
+        })
+
+        # Correctly set up the choices
+        class_types = ClassType.objects.all()
+        choices = [(ct.id, ct.name) for ct in class_types]  # Value, Label
+        self.fields['class_type'].choices = choices
+
+        # Add data attributes to the widget itself
+        data_attrs = {
+            str(ct.id): {'duration': ct.duration, 'capacity': ct.default_capacity}
+            for ct in class_types
+        }
+        self.fields['class_type'].widget.attrs['data-class-types'] = json.dumps(data_attrs)
+        # Remove any initial value to ensure the field starts empty
+        self.fields['class_type'].initial = None
         self.fields['instance_date'].widget = forms.HiddenInput()
         self.fields['repeat_until'].widget.attrs['class'] = 'repeat-until-field'
         self.fields['repeat_until'].label_attrs = {'class': 'repeat-until-label'}
