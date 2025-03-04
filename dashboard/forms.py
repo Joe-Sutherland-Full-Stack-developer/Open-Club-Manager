@@ -146,9 +146,10 @@ class ClassInstanceForm(forms.ModelForm):
         fields = ['class_type', 'instance_date', 'day', 'start_time', 'finish_time', 'capacity']
         
         widgets = {
-            'start_time': TimePickerInput(options={"format": "hh:mm",
+            'start_time': TimePickerInput(options={"format": "HH:mm",
                                                    "stepping": 15}),
-            'finish_time': TimePickerInput(),
+            'finish_time': TimePickerInput(options={"format": "HH:mm",
+                                                   "stepping": 15}),
         }
 
     def __init__(self, *args, **kwargs):

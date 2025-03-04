@@ -44,7 +44,7 @@
                 <form id="classInstanceForm" method="post" action="{% url 'add_class_instance' %}">
                     {% csrf_token %}
                     {% bootstrap_form form %}
-                    <input type="text" name="duration" id="duration" readonly label="Duration">
+                    <p> Duration <input type="text" name="duration" id="duration" read-only label="Duration"></p>
                 </form>
             </div>
             <div class="modal-footer">

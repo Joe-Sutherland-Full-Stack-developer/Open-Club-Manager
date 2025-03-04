@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let isModalOpen = false;
 
     function updateDuration() {
-        const startTime = form.elements['start_time'].value;
-        const finishTime = form.elements['finish_time'].value;
+        let startTime = form.elements['start_time'].value;
+        let finishTime = form.elements['finish_time'].value;
         
         if (startTime && finishTime) {
             const start = new Date(`2000-01-01T${startTime}`);
