@@ -33,7 +33,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [ 'localhost', '8000-joesuth13-openclubmanag-wf8lig7ea43.ws.codeinstitute-ide.net', 'https://*.herokuapp.com', 'openclubmanager-fbf0e93c3ef0.herokuapp.com', '127.0.0.1']
 

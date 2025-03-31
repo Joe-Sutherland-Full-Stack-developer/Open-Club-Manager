@@ -17,11 +17,6 @@
 
     <h1>Sports Club Timetable: {{ timetable.name }}</h1>
     
-    <input type="date" id="date-picker" value="{{ selected_date }}" 
-           hx-get="{% url 'timetable_view' timetable.id %}" 
-           hx-target="#timetable-container" 
-           hx-trigger="change">
-    
     <div id="timetable-container">
         {% include 'dashboard/partials/timetable_grid.html' %}
     </div>
@@ -30,7 +25,14 @@
         <!-- Form for adding/editing classes will be here -->
     </div>
 
-
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
 <!-- Modal Placeholder -->
 <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -45,11 +47,11 @@
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     
-                    <p> Duration <input type="text" name="duration" id="duration" read-only label="Duration"></p>
+                    
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
                 <button type="submit" form="classInstanceForm" class="btn btn-primary">Save changes</button>
             </div>
         </div>

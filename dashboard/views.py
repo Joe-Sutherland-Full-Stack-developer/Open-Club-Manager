@@ -177,18 +177,49 @@ def get_class_form(request):
     form = ClassInstanceForm()
     return render(request, 'class_form.html', {'form': form})
 
+@login_required
 def add_class_instance(request):
     if request.method == 'POST':
         form = ClassInstanceForm(request.POST)
         if form.is_valid():
-            instance = form.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'error': form.errors})
-    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+            # Get the selected day from the form
+            selected_day = form.cleaned_data['day']
+            
+            # Calculate instance_date based on selected_day
+            instance_date = get_date_for_day_of_week(selected_day)
 
-    
-    return render(request, 'partials/class_form.html', {'form': form})
+            # Assign the calculated date to the form's instance_date field
+            form.instance.instance_date = instance_date
+
+            class_instance = form.save()
+            messages.success(request, "Class added successfully!")
+            if form.cleaned_data['repeat']:
+                repeat_until = form.cleaned_data['repeat_until']
+                # Implement logic to create repeated instances
+
+            # Redirect to HTTP_REFERER (previous page)
+            referer_url = request.META.get('HTTP_REFERER', '/dashboard')  # Fallback to '/dashboard' if no referer
+            return redirect(referer_url)
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({'success': False, 'error': errors}, status=400)
+    else:
+        form = ClassInstanceForm()
+    return render(request, 'dashboard/timetable.html', {'form': form})
+
+def get_date_for_day_of_week(day_name):
+    days_of_week = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    today = datetime.now().date()
+    day_index = days_of_week.index(day_name)
+    current_day = today.weekday()  # Monday is 0, Sunday is 6
+    diff = day_index - current_day
+
+    if diff < 0:
+        diff += 7
+
+    instance_date = today + timedelta(days=diff)
+
+    return instance_date
 
 def timetable_view(request, timetable_id):
     timetable = get_object_or_404(Timetable, id=timetable_id, active=True)

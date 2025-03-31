@@ -144,7 +144,7 @@ class ClassInstanceForm(forms.ModelForm):
     repeat_until = forms.DateField(required=False, widget=DatePickerInput(options={"format": "DD/MM/YYYY"}))
     class Meta:
         model = ClassInstance
-        fields = ['class_type', 'instance_date', 'day', 'start_time', 'finish_time', 'capacity']
+        fields = ['class_type', 'day', 'start_time', 'finish_time', 'capacity']
         
         widgets = {
             'start_time': TimePickerInput(options={"format": "HH:mm",
@@ -172,6 +172,6 @@ class ClassInstanceForm(forms.ModelForm):
         self.fields['class_type'].widget.attrs['data-class-types'] = json.dumps(data_attrs)
         # Remove any initial value to ensure the field starts empty
         self.fields['class_type'].initial = None
-        self.fields['instance_date'].widget = forms.HiddenInput()
+        
         self.fields['repeat_until'].widget.attrs['class'] = 'repeat-until-field'
         self.fields['repeat_until'].label_attrs = {'class': 'repeat-until-label'}
