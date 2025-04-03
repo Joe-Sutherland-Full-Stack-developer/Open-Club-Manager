@@ -190,13 +190,40 @@ def add_class_instance(request):
 
             # Assign the calculated date to the form's instance_date field
             form.instance.instance_date = instance_date
+            # Extract timetable_id from HTTP_REFERER (existing logic)
+            referer_url = request.META.get('HTTP_REFERER', '')
+            
 
             class_instance = form.save()
             messages.success(request, "Class added successfully!")
-            if form.cleaned_data['repeat']:
+            # Handle repeats
+            if form.cleaned_data.get('repeat'):
                 repeat_until = form.cleaned_data['repeat_until']
-                # Implement logic to create repeated instances
-
+                    
+                # Validate repeat_until date
+                if not repeat_until or repeat_until <= instance_date:
+                    form.add_error('repeat_until', 'Invalid repeat date')
+                    return JsonResponse({'success': False, 'error': form.errors.as_json()}, status=400)
+                    
+                # Calculate weekly dates and bulk create
+                days_diff = (repeat_until - instance_date).days
+                num_repeats = days_diff // 7
+                    
+                instances = [
+                    ClassInstance(
+                        timetable_id=timetable_id,
+                        class_type=class_instance.class_type,
+                        instance_date=instance_date + timedelta(weeks=i+1),
+                        day=selected_day,
+                        start_time=class_instance.start_time,
+                        finish_time=class_instance.finish_time,
+                        capacity=class_instance.capacity
+                    )
+                    for i in range(num_repeats)
+                ]
+                ClassInstance.objects.bulk_create(instances)
+                
+                
             # Redirect to HTTP_REFERER (previous page)
             referer_url = request.META.get('HTTP_REFERER', '/dashboard')  # Fallback to '/dashboard' if no referer
             return redirect(referer_url)
