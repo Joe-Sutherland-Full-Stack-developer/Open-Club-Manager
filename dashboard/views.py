@@ -190,8 +190,9 @@ def add_class_instance(request):
 
             # Assign the calculated date to the form's instance_date field
             form.instance.instance_date = instance_date
-            # Extract timetable_id from HTTP_REFERER (existing logic)
-            referer_url = request.META.get('HTTP_REFERER', '')
+
+            # get timetable id from the form
+            timetable_id = form.cleaned_data['timetable_id']
             
 
             class_instance = form.save()
