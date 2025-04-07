@@ -60,8 +60,8 @@
       <!-- Toggle Button for Mobile -->
       
       <div id="mobile-nav" class="container-fluid d-flex d-md-none ps-3 justify-content-between align-items-center brand-color-dark">
-            <a class="navbar-brand ms-2 brand-text-white" href="{% url 'home' %}">Open Club Manager - {{ customization.business_name }}</a>
-            
+            <a class="navbar-brand ms-2 brand-text-white d-none d-sm-block" href="{% url 'home' %}">Open Club Manager - {{ customization.business_name }}</a>
+            <a class="navbar-brand ms-2 brand-text-white d-block d-sm-none" href="{% url 'home' %}">OCM - {{ customization.business_name }}</a>
         <button class="navbar-toggler rounded brand-text-white h-auto" type="button" data-bs-toggle="collapse" data-bs-target="#sidePanel" aria-controls="sidePanel" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fa-solid fa-bars navbar-toggler-icon m-auto h-auto"></i>
         </button>
@@ -117,7 +117,7 @@
                 
               </div>
               <div class="accordion-item d-md-none">
-                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-1 brand-text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> Logout / Exit</button></h2>
+                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-1 brand-text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> <span class="w-100 text-center">Logout / exit</span></button></h2>
                 <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
                   <div class="accordion-body">
                     <a class="side-nav-link brand-text-dark" href="{% url 'account_login' %}">Logout</a>

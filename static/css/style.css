@@ -109,6 +109,7 @@ li{
     
     font-size: 1.3rem; /* Adjust size as needed */
   }
+ 
   .navbar-brand:hover {
     color: var(--brand-color-2);
   }
@@ -120,7 +121,7 @@ li{
     height: 7.5vh;
     padding: 5px;
     padding-right: 4%;
-    
+    overflow-x: hidden;
 }
 
 #side-panel{
