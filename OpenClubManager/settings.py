@@ -189,7 +189,7 @@ cloudinary.config(
     api_secret=os.environ.get("CLOUDINARY_API_SECRET")
 )
 
-
+DATE_FORMAT = "d/m/Y"
 
 DJANGO_FLATPICKR = {
     # Name of the theme to use

@@ -16,6 +16,7 @@ from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.timezone import now
+from django.utils.formats import date_format
 from django.db.models import Q
 from django.views.generic import TemplateView
 
@@ -193,7 +194,8 @@ def add_class_instance(request):
 
             # get timetable id from the form
             timetable_id = request.POST.get('timetable_id')
-            
+            timetable = get_object_or_404(Timetable, id=timetable_id)
+            form.instance.timetable = timetable
 
             class_instance = form.save()
             messages.success(request, "Class added successfully!")
@@ -212,7 +214,7 @@ def add_class_instance(request):
                     
                 instances = [
                     ClassInstance(
-                        timetable_id=timetable_id,
+                        timetable=timetable,
                         class_type=class_instance.class_type,
                         instance_date=instance_date + timedelta(weeks=i+1),
                         day=selected_day,
@@ -223,6 +225,10 @@ def add_class_instance(request):
                     for i in range(num_repeats)
                 ]
                 ClassInstance.objects.bulk_create(instances)
+                # Notify user of successful repeat creation
+                
+                repeat_until_str = f"{date_format(repeat_until, 'DATE_FORMAT')}"
+                messages.success(request, f"Successfully set class to repeat weekly until {repeat_until_str}")
                 
                 
             # Redirect to HTTP_REFERER (previous page)

@@ -14,9 +14,10 @@
 
     <script src="https://unpkg.com/htmx.org@1.6.1"></script>
     <link rel="stylesheet" href="{% static 'css/timetable.css' %}">
-
-    <h1>Sports Club Timetable: {{ timetable.name }}</h1>
-    
+    <div class="d-flex justify-content-between">
+    <h1 class="m-1">Sports Club Timetable: {{ timetable.name }}</h1>
+    <button class="btn btn-primary m-1">Return to admin panel</button>
+    </div>
     <div id="timetable-container">
         {% include 'dashboard/partials/timetable_grid.html' %}
     </div>

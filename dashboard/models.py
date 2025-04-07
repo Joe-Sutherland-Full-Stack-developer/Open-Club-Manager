@@ -103,7 +103,7 @@ class ClassInstance(models.Model):
     finish_time = models.TimeField()
     capacity = models.IntegerField(default=0)
     attendees = models.ManyToManyField('Booking')
-    timetable_id = models.ForeignKey(Timetable, on_delete=models.CASCADE)
+    timetable = models.ForeignKey(Timetable, on_delete=models.CASCADE)
     def __str__(self):
         return (
             f"{self.class_type} | {self.start_time.strftime('%H:%M')} | "
