@@ -2,6 +2,7 @@
  
  body {
     overflow-x: clip;
+    
 }
 
 li{
@@ -132,10 +133,14 @@ li{
     z-index: 1;
     
 }
+#sidePanel{
+    height: 92.5vh
+}
 #side-sticky{
     position: sticky;
     top:0;
-    height: 110vh;
+    height: 100%;
+    
 }
 #side-panel-buttons{
     height: 100%;
@@ -214,8 +219,7 @@ li{
     width: 100%;
    display: flex;
    /* flex-direction: column; */
-   position:sticky;
-   top: 92vh;
+   margin-top: auto;
    justify-content: center;
 }
 #side-bottom a{
@@ -444,10 +448,21 @@ li{
 
 
 /*---------------------------------------------------Media queries---------------------*/
+
+@media (min-width: 575px){
+    #side-bottom{
+        top: 89vh;
+    }
+
+    #sidePanel{
+        height: 96vh;
+    }
+}
+
 @media (min-width: 768px) {
 
     #side-bottom{
-        top: 83vh
+        top: 79vh
     }
 
 }

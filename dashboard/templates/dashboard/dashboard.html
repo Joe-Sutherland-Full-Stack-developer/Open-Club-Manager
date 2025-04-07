@@ -69,8 +69,8 @@
       
       <!-- Side Panel Navigation -->
       <div id="sidePanel" class="collapse d-md-block col-md-3 col-lg-3 col-xl-2 pr-0 brand-color-1 brand-text-white">
-          <div id="side-sticky">
-            <h2 id="welcome" class="p-2 brand-color-1 text-center">Welcome, {{ user }}</h2>
+          <div id="side-sticky" class="d-flex flex-column">
+            <h2 id="welcome" class="p-2 brand-color-1 text-center d-none d-md-block">Welcome, {{ user }}</h2>
             
             <div class="accordion accordion-flush brand-text-white d-flex flex-column justify-content-center align-items-center" id="side-accordian">
                 <!-- Accordion items go here -->
@@ -116,21 +116,21 @@
                 </div>
                 
               </div>
-              <div class="accordion-item d-md-none">
-                <h2 class="accordion-header brand-color-white"><button class="accordion-button collapsed brand-color-1 brand-text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-list mr-3"></i> <span class="w-100 text-center">Logout / exit</span></button></h2>
+              <div class="accordion-item d-md-none  rounded brand-color-1 d-flex flex-column justify-content-center align-items-center">
+                <button class="accordion-button collapsed brand-color-1 brand-text-white" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"><i class="fa-solid fa-right-from-bracket"></i> <span class="w-100 text-center">Logout / exit</span></button>
                 <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#side-accordian">
                   <div class="accordion-body">
-                    <a class="side-nav-link brand-text-dark" href="{% url 'account_login' %}">Logout</a>
+                    <a class="side-nav-link brand-text-dark stretched-link" href="{% url 'account_login' %}">Logout</a>
                   </div>
                   <div class="accordion-body">
-                    <a class="side-nav-link brand-text-dark" href="{% url 'home' %}">Exit OpenClubManager</a>
+                    <a class="side-nav-link brand-text-dark stretched-link" href="{% url 'home' %}">Exit OpenClubManager</a>
                   </div>
                 </div>
                 
               </div>
               <!-- More accordion items... -->
             </div>
-            <div id="side-bottom" class="flex-row flex-md-column d-flex justify-content-right align-items-center ">
+            <div id="side-bottom" class="flex-column flex-sm-row flex-md-column d-flex justify-content-right align-items-center justify-self-end">
               
             <a href="{% url 'contact' %}" class="side-bar-item side-nav-link brand-color-1 brand-text-white d-flex align-items-center position-relative"><i class="fa-solid fa-phone"></i><span class="position-absolute top-50 start-50 translate-middle text-center"> Contact us </span></a>
               

@@ -1,8 +1,12 @@
 
 from django.contrib import admin
+from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.html import format_html
 from django.utils import timezone
+from admin_extra_buttons.api import ExtraButtonsMixin, link
 from .models import Participant, ClassType, Timetable, ClassInstance, Booking
 from .models import Customization, StripeIntegration,ContactRequest
 from django import forms
@@ -117,11 +121,22 @@ class TimetableForm(forms.ModelForm):
 
 
 @admin.register(Timetable)
-class TimetableAdmin(admin.ModelAdmin):
+class TimetableAdmin( ExtraButtonsMixin, admin.ModelAdmin):
     form = TimetableForm
     list_display = ["__str__"]
     fields = ['name', 'active', 'selected_days',
               'start_time', 'end_time', 'notes']
+    
+    @link(label="Manage this Timetable", change_list=False, html_attrs={'style': 'background-color:#6CDC73;color:black'})
+    def edit_timetable(self, button):
+        # Extract timetable_id from the current request's URL
+        timetable_id = button.context['request'].resolver_match.kwargs.get('object_id')
+
+        # Generate the URL for the timetable editor
+        url = reverse('timetable_view', kwargs={'timetable_id': timetable_id})
+
+        # Set the button's href attribute to this URL
+        button.href = url
 
 
 @admin.register(ClassInstance)

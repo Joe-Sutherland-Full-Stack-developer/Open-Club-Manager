@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'colorfield',
     'crispy_forms',
     'crispy_bootstrap4',
+    'admin_extra_buttons',
     'bootstrap_datepicker_plus',
     "django_flatpickr", 
     'dashboard',
