@@ -39,7 +39,7 @@
                 },
             {% endfor %}
         ];
-
+            
         classInstances.forEach(instance => {
             const cell = document.querySelector(`td[data-day="${instance.day}"][data-slot="${instance.startTime}"]`);
             if (cell) {

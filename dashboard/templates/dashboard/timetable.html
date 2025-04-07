@@ -46,7 +46,7 @@
                 <form id="classInstanceForm" method="post" action="{% url 'add_class_instance' %}">
                     {% csrf_token %}
                     {% bootstrap_form form %}
-                    
+                    <input type="hidden" name="timetable_id" id="id_timetable_id" value="{{timetable.id}}">
                     
                 </form>
             </div>

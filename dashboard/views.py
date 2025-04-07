@@ -192,7 +192,7 @@ def add_class_instance(request):
             form.instance.instance_date = instance_date
 
             # get timetable id from the form
-            timetable_id = form.cleaned_data['timetable_id']
+            timetable_id = request.POST.get('timetable_id')
             
 
             class_instance = form.save()
@@ -257,7 +257,8 @@ def timetable_view(request, timetable_id):
 
     class_instances = ClassInstance.objects.filter(
         start_time__gte=timetable.start_time,
-        finish_time__lte=timetable.end_time
+        finish_time__lte=timetable.end_time,
+        instance_date__gte=timezone.now().date()  # Filter instances with instance_date after today
     ).select_related('class_type').order_by('day', 'start_time')
     form = ClassInstanceForm
     context = {
