@@ -143,7 +143,51 @@ function initializeGlobalModalCloseButtons() {
         if (closeButton) {
             // Show an alert instead of a confirmation dialog
             alert('No changes were made.');
-            
+
         }
     });
 }
+// Function to handle confirmation dialogs for Save and Delete class instance actions
+// This function is called when the user clicks the Save or Delete button
+document.addEventListener('DOMContentLoaded', function () {
+    // Function to handle the confirmation dialog
+    function handleConfirmation(e, message) {
+        if (!confirm(message)) {
+            e.preventDefault(); // Prevent form submission if the user cancels
+        }
+    }
+
+    // Event listener for the Save button
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('save-btn')) {
+            const applyToRepeats = document.querySelector('#applyToRepeats');
+            let message;
+
+            if (applyToRepeats && applyToRepeats.checked) {
+                message = "These changes will be applied to all future repeats of this session. Would you like to proceed?";
+            } else {
+                const classType = document.querySelector('[name="class_type"]').value;
+                const instanceDate = document.querySelector('[name="instance_date"]').value;
+                message = `These changes will be applied exclusively to the ${classType} on ${instanceDate}. Would you like to proceed?`;
+            }
+
+            handleConfirmation(e, message);
+        }
+    });
+
+    // Event listener for the Delete button
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('delete-btn')) {
+            const applyToRepeats = document.querySelector('#applyToRepeats');
+            let message;
+
+            if (applyToRepeats && applyToRepeats.checked) {
+                message = "This action will delete all future repeats of this session. Are you sure you want to proceed?";
+            } else {
+                message = "This action will delete only this class instance. Are you sure you want to proceed?";
+            }
+
+            handleConfirmation(e, message);
+        }
+    });
+});

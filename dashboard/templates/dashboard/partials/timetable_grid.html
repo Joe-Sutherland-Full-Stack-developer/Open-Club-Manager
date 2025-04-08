@@ -39,7 +39,7 @@
             },
         {% endfor %}
     ];
-
+    console.log(classInstances);
     classInstances.forEach(instance => {
         const cell = document.querySelector(`td[data-day="${instance.day}"][data-slot="${instance.startTime}"]`);
         if (cell) {
@@ -49,6 +49,9 @@
             const rowspan = Math.max(1, Math.ceil(durationInMinutes / 15));
 
             cell.dataset.instanceId = instance.id;
+            cell.setAttribute('hx-get', `/class-instance/${instance.id}/edit/`);
+            cell.setAttribute('hx-target', '#edit-modal');
+            cell.setAttribute('hx-trigger', 'click');
             cell.innerHTML = `${instance.name}<br>${instance.day} @ ${instance.startTime} - ${instance.endTime}`;
             cell.style.backgroundColor = instance.color;
             cell.rowSpan = rowspan;

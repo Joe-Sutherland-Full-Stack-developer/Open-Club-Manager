@@ -267,8 +267,9 @@ def edit_class_instance(request, pk):
     if request.method == 'POST':
         # Handle form submission
         form = ClassInstanceForm(request.POST, instance=instance)
+        apply_to_repeats = request.POST.get('apply-to-repeats') == 'on'
         if form.is_valid():
-            if form.cleaned_data.get('update_repeats'):
+            if apply_to_repeats:
                 # Update all repeat instances
                 for repeat in repeats:
                     repeat.class_type = form.cleaned_data['class_type']
@@ -277,8 +278,9 @@ def edit_class_instance(request, pk):
                     repeat.finish_time = form.cleaned_data['finish_time']
                     repeat.capacity = form.cleaned_data['capacity']
                     repeat.save()
-                messages.success(request, "Class and repeats updated successfully!")
+                messages.success(request, "Class and all repeats updated successfully!")
             else:
+                # Update only the current instance
                 form.save()
                 messages.success(request, "Class updated successfully!")
             return redirect('timetable_view')
@@ -297,9 +299,19 @@ def edit_class_instance(request, pk):
 
 def delete_class_instance(request, pk):
     instance = get_object_or_404(ClassInstance, pk=pk)
+    apply_to_repeats = request.POST.get('apply-to-repeats') == 'on'
+
     if request.method == 'POST':
-        instance.delete()
-        messages.success(request, "Class deleted successfully!")
+        if apply_to_repeats:
+            # Delete all future repeats
+            repeats = find_repeat_instances(pk)
+            for repeat in repeats:
+                repeat.delete()
+            messages.success(request, "Class and all repeats deleted successfully!")
+        else:
+            # Delete only the current instance
+            instance.delete()
+            messages.success(request, "Class deleted successfully!")
         return redirect('timetable_view')
     return render(request, 'dashboard/partials/confirm_delete.html', {'instance': instance})
 
@@ -316,14 +328,17 @@ def find_repeat_instances(instance_id):
     # Get the class instance by its ID
     class_instance = get_object_or_404(ClassInstance, id=instance_id)
 
-    # Find all repeat instances with matching details
+    # Get today's date
+    today = now().date()
+
+    # Find all repeat instances with matching details and future dates
     repeat_instances = ClassInstance.objects.filter(
         day=class_instance.day,
         start_time=class_instance.start_time,
         finish_time=class_instance.finish_time,
         timetable_id=class_instance.timetable_id,
         class_type=class_instance.class_type,
-        instance_date__gt=class_instance.instance_date
+        instance_date__gt=today  # Ensure only future dates are included
     )
 
     return repeat_instances
