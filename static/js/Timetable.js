@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle the "Edit Class" modal
     initializeEditClassModal();
+    
+    initializeGlobalModalCloseButtons();
 });
 
 // Function to initialize the "Add Class" modal
@@ -74,7 +76,8 @@ function initializeEditModalEventListeners(modalContent) {
         const editTrigger = e.target.closest('.edit-trigger');
         if (editTrigger) {
             const field = editTrigger.dataset.field;
-            toggleEditMode(modalContent, field);
+            // Toggle edit mode for the specific field
+            toggleEditMode(modalContent, field, editTrigger);
         }
     });
 
@@ -106,11 +109,41 @@ function initializeEditModalEventListeners(modalContent) {
 }
 
 // Function to toggle edit mode for a specific field
-function toggleEditMode(modalContent, field) {
+function toggleEditMode(modalContent, field, editTrigger) {
     const viewMode = modalContent.querySelector(`.view-mode[data-field="${field}"]`);
     const editMode = modalContent.querySelector(`.edit-mode[data-field="${field}"]`);
-    if (viewMode && editMode) {
-        viewMode.classList.toggle('d-none');
-        editMode.classList.toggle('d-none');
+    const parentRow = editTrigger.closest('.row');
+    if (viewMode && editMode && parentRow) {
+        // Toggle the edit-mode class on the parent row
+        if (parentRow.classList.contains('edit-mode')) {
+            parentRow.classList.remove('edit-mode');
+            viewMode.classList.remove('d-none');
+            editMode.classList.add('d-none');
+            const icon = editTrigger.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-xmark', 'fa-solid');
+                icon.classList.add('fa-edit', 'fas');
+            }
+        } else {
+            parentRow.classList.add('edit-mode');
+            viewMode.classList.add('d-none');
+            editMode.classList.remove('d-none');
+            const icon = editTrigger.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-edit', 'fas');
+                icon.classList.add('fa-xmark', 'fa-solid');
+            }
+        }
     }
+}
+// Function to initialize global modal close buttons
+function initializeGlobalModalCloseButtons() {
+    document.addEventListener('click', function (e) {
+        const closeButton = e.target.closest('[data-bs-dismiss="modal"]');
+        if (closeButton) {
+            // Show an alert instead of a confirmation dialog
+            alert('No changes were made.');
+            
+        }
+    });
 }

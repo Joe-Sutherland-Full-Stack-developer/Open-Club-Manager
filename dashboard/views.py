@@ -256,23 +256,44 @@ def get_date_for_day_of_week(day_name):
     return instance_date
 
 def edit_class_instance(request, pk):
+    # Get the class instance by its primary key
     instance = get_object_or_404(ClassInstance, pk=pk)
-    print(instance.day, instance.start_time, instance.finish_time, instance.capacity, instance.class_type)
-    
+
+    # Find repeat instances and calculate the "repeats_until" date
+    repeats = find_repeat_instances(pk)
+    final_repeat = repeats.filter(instance_date__gt=instance.instance_date).order_by('instance_date').last()
+    repeats_until = final_repeat.instance_date if final_repeat else None
+
     if request.method == 'POST':
+        # Handle form submission
         form = ClassInstanceForm(request.POST, instance=instance)
-        print(form.initial)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Class updated successfully!")
+            if form.cleaned_data.get('update_repeats'):
+                # Update all repeat instances
+                for repeat in repeats:
+                    repeat.class_type = form.cleaned_data['class_type']
+                    repeat.day = form.cleaned_data['day']
+                    repeat.start_time = form.cleaned_data['start_time']
+                    repeat.finish_time = form.cleaned_data['finish_time']
+                    repeat.capacity = form.cleaned_data['capacity']
+                    repeat.save()
+                messages.success(request, "Class and repeats updated successfully!")
+            else:
+                form.save()
+                messages.success(request, "Class updated successfully!")
             return redirect('timetable_view')
     else:
+        # Handle GET request to populate the modal
         form = ClassInstanceForm(instance=instance)
-    
-    return render(request, 'dashboard/partials/edit_class.html', {
+
+    # Context for rendering the modal
+    context = {
         'form': form,
-        'instance': instance
-    })
+        'instance': instance,
+        'repeats': repeats,
+        'repeats_until': repeats_until,
+    }
+    return render(request, 'dashboard/partials/edit_class.html', context)
 
 def delete_class_instance(request, pk):
     instance = get_object_or_404(ClassInstance, pk=pk)
@@ -281,6 +302,31 @@ def delete_class_instance(request, pk):
         messages.success(request, "Class deleted successfully!")
         return redirect('timetable_view')
     return render(request, 'dashboard/partials/confirm_delete.html', {'instance': instance})
+
+def find_repeat_instances(instance_id):
+    """
+    Finds all future repeat instances of a given class session by its ID.
+
+    Args:
+        instance_id (int): The ID of the class instance to find repeats for.
+
+    Returns:
+        QuerySet: A queryset of future repeat instances.
+    """
+    # Get the class instance by its ID
+    class_instance = get_object_or_404(ClassInstance, id=instance_id)
+
+    # Find all repeat instances with matching details
+    repeat_instances = ClassInstance.objects.filter(
+        day=class_instance.day,
+        start_time=class_instance.start_time,
+        finish_time=class_instance.finish_time,
+        timetable_id=class_instance.timetable_id,
+        class_type=class_instance.class_type,
+        instance_date__gt=class_instance.instance_date
+    )
+
+    return repeat_instances
 
 
 def timetable_view(request, timetable_id):

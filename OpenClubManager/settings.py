@@ -16,8 +16,8 @@ import dj_database_url
 import cloudinary
 if os.path.exists('env.py'):
     import env
-
-
+import warnings
+import ast
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
@@ -28,16 +28,18 @@ LOGIN_URL = '/login/'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
+if not SECRET_KEY:
+    raise ValueError("The SECRET_KEY environment variable is not set!")
 
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ['true', '1']
 
-ALLOWED_HOSTS = [ 'localhost', '8000-joesuth13-openclubmanag-wf8lig7ea43.ws.codeinstitute-ide.net', 'https://*.herokuapp.com', 'openclubmanager-fbf0e93c3ef0.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ast.literal_eval(os.environ.get('ALLOWED_HOSTS', '[]'))
 
-CSRF_TRUSTED_ORIGINS = ['https://*.codeinstitute-ide.net', 'https://*.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ast.literal_eval(os.environ.get('CSRF_TRUSTED_ORIGINS', '[]'))
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -113,30 +115,21 @@ WSGI_APPLICATION = 'OpenClubManager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
-
 if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL)
     }
 else:
-    # Fallback to default SQLite database for development
+    warnings.warn("DATABASE_URL is not set. Using SQLite as the default database.")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
-print("DATABASE_URL:", DATABASE_URL)
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
