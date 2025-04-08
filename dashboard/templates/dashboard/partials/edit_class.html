@@ -7,14 +7,19 @@
         <form hx-post="{% url 'edit-class-instance' instance.pk %}" hx-target="#edit-modal">
             {% csrf_token %}
             <div class="container-fluid">
-                <!-- Class Type (non-editable) -->
-                <div class="row g-0 mb-3">
-                    <div class="col-4">Class Type:</div>
-                    <div class="col-8 fw-bold">{{ instance.class_type.name }}</div>
+                <!-- Class Type -->
+                <div class="row g-0 mb-3 align-items-center">
+                    <div class="col-4">{{ form.class_type.label }}</div>
+                    <div class="col-6 fw-bold view-mode" data-field="class_type">
+                        {{ instance.class_type |default_if_none:"Not set" }}
+                    </div>
                     <div class="col-2 text-end">
-                        <button type="button" class="btn btn-sm btn-outline-secondary edit-trigger" data-field="day">
+                        <button type="button" class="btn btn-sm btn-outline-secondary edit-trigger" data-field="class_type">
                             <i class="fas fa-edit"></i>
                         </button>
+                    </div>
+                    <div class="col-8 edit-mode d-none" data-field="class_type">
+                        {{ form.class_type }}
                     </div>
                 </div>
 
@@ -29,7 +34,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                     </div>
-                    <div class="col-8 edit-mode d-none" data-field="day">
+                    <div class="col-6 edit-mode d-none" data-field="day">
                         {{ form.day }}
                     </div>
                 </div>
@@ -45,7 +50,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                     </div>
-                    <div class="col-8 edit-mode d-none" data-field="start_time">
+                    <div class="col-6 edit-mode d-none" data-field="start_time">
                         {{ form.start_time }}
                     </div>
                 </div>
@@ -109,29 +114,3 @@
     .view-mode[data-field="day"] { text-transform: capitalize; }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('edit-modal');
-    
-    // Individual field edit buttons
-    modal.addEventListener('click', function(e) {
-        if (e.target.closest('.edit-trigger')) {
-            const field = e.target.closest('.edit-trigger').dataset.field;
-            toggleEditMode(field);
-        }
-    });
-
-    // Edit All button
-    modal.querySelector('.edit-all-btn').addEventListener('click', function() {
-        document.querySelectorAll('.view-mode').forEach(el => el.classList.add('d-none'));
-        document.querySelectorAll('.edit-mode').forEach(el => el.classList.remove('d-none'));
-    });
-
-    function toggleEditMode(field) {
-        const viewMode = document.querySelector(`.view-mode[data-field="${field}"]`);
-        const editMode = document.querySelector(`.edit-mode[data-field="${field}"]`);
-        viewMode.classList.toggle('d-none');
-        editMode.classList.toggle('d-none');
-    }
-});
-</script>

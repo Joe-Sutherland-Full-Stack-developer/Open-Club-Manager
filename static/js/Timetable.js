@@ -1,208 +1,116 @@
-// document.addEventListener('DOMContentLoaded', function() {
-//     const emptyCells = document.querySelectorAll('.empty-cell');
-//     const modal = document.getElementById('classModal');
-//     const form = document.getElementById('classInstanceForm');
-//     const bootstrapModal = new bootstrap.Modal(modal);
-//     let isModalOpen = false;
+let isEditClassModalInitialized = false;
+document.addEventListener('DOMContentLoaded', function () {
+    // Handle the "Add Class" modal
+    initializeAddClassModal();
 
-    // function updateDuration() {
-    //     let startTime = form.elements['start_time'].value;
-    //     let finishTime = form.elements['finish_time'].value;
-        
-    //     if (startTime && finishTime) {
-    //         const start = new Date(`2000-01-01T${startTime}`);
-    //         const finish = new Date(`2000-01-01T${finishTime}`);
-    //         const durationMs = finish - start;
-    //         const durationMinutes = Math.round(durationMs / 60000);
-    //         document.getElementById('duration').value = `${durationMinutes} minutes`;
-    //     }
-    // }
+    // Handle the "Edit Class" modal
+    initializeEditClassModal();
+});
 
-    // emptyCells.forEach(cell => {
-    //     cell.addEventListener('click', function() {
-    //         if (!isModalOpen) {
-    //             const day = this.dataset.day;
-    //             const slot = this.dataset.slot;
-
-    //             form.elements['day'].value = day;
-    //             form.elements['start_time'].value = slot;
-
-    //             const startTimeInput = document.querySelector('[data-name="start_time"]');
-    //             if (startTimeInput) {
-    //                 startTimeInput.value = slot;
-    //             }
-
-    //             isModalOpen = true;
-    //             bootstrapModal.show();
-    //         }
-    //     });
-    // });
-
-    // modal.addEventListener('shown.bs.modal', function() {
-    //     isModalOpen = true;
-    // });
-
-    // modal.addEventListener('hidden.bs.modal', function() {
-    //     isModalOpen = false;
-    // });
-
-    // // Ensure dismissal buttons work properly
-    // const closeButtons = modal.querySelectorAll('[data-bs-dismiss="modal"]');
-    // closeButtons.forEach(button => {
-    //     button.addEventListener('click', function() {
-    //         bootstrapModal.hide(); // Explicitly hide the modal
-            
-    //         form.reset(); // Optional: Reset form fields when closing
-            
-    //     });
-    // });
-
-//     // Allow changing start time
-//     const startTimeInput = document.querySelector('[data-name="start_time"]');
-//     if (startTimeInput) {
-//         startTimeInput.addEventListener('change', function() {
-//             form.elements['start_time'].value = this.value;
-//             updateDuration();
-//         });
-//     }
-
-//     // Update duration when finish time changes
-//     const finishTimeInput = document.querySelector('[data-name="finish_time"]');
-//     if (finishTimeInput) {
-//         finishTimeInput.addEventListener('change', updateDuration);
-//     }
-
-//     form.addEventListener('submit', function(e) {
-//         e.preventDefault();
-//         const formData = new FormData(form);
-
-//         fetch(form.action, {
-//             method: 'POST',
-//             body: formData,
-//         })
-//         .then(response => response.json())
-//         .then(data => {
-//             if (data.success) {
-//                 alert('Class instance added successfully!');
-//                 bootstrapModal.hide();
-//                 // Optionally, update the timetable here
-//             } else {
-//                 alert('Error: ' + data.error);
-//             }
-//         })
-//         .catch(error => console.error('Error:', error));
-//     });
-// });
-
-// // script to dynamically update the modal form fields depending on selected class type
-// document.addEventListener('DOMContentLoaded', function () {
-//     const classTypeSelect = document.querySelector('.class-type-select');
-//     const durationField = document.querySelector('#id_duration'); // Assuming you have a duration field
-//     const startTimeField = document.querySelector('#id_start_time');
-//     const finishTimeField = document.querySelector('#id_finish_time');
-//     const capacityField = document.querySelector('#id_capacity');
-
-    // function updateFields() {
-    //     const selectedOption = classTypeSelect.options[classTypeSelect.selectedIndex];
-    //     if (!selectedOption.value) return; // Exit if no option is selected
-
-    //     // Retrieve duration and capacity from data attributes
-    //     const duration = parseInt(selectedOption.getAttribute('data-duration'), 10); // Parse as integer
-    //     const capacity = selectedOption.getAttribute('data-capacity');
-
-    //     // Update duration field
-    //     if (durationField) {
-    //         durationField.value = isNaN(duration) ? '' : duration; // Ensure valid value
-    //     }
-
-    //     // Update capacity field
-    //     if (capacityField) {
-    //         capacityField.value = capacity || ''; // Fallback to empty string if no capacity
-    //     }
-
-    //     // Update finish time based on start time and duration
-    //     if (startTimeField.value && !isNaN(duration)) {
-    //         const [hours, minutes] = startTimeField.value.split(':').map(Number); // Split and parse start time
-    //         if (!isNaN(hours) && !isNaN(minutes)) {
-    //             // Create a Date object for the start time
-    //             const startTime = new Date();
-    //             startTime.setHours(hours, minutes, 0, 0); // Set hours and minutes
-
-    //             // Add the duration (in minutes)
-    //             const finishTime = new Date(startTime.getTime() + duration * 60000); // Add duration in milliseconds
-
-    //             // Format the finish time as HH:MM
-    //             const formattedFinishTime = `${String(finishTime.getHours()).padStart(2, '0')}:${String(finishTime.getMinutes()).padStart(2, '0')}`;
-    //             finishTimeField.value = formattedFinishTime;
-    //             console.log("Finish time:", formattedFinishTime);
-    //         } else {
-    //             console.error("Invalid start time format.");
-    //         }
-    //     } else {
-    //         finishTimeField.value = ''; // Clear finish time if inputs are invalid
-    //     }
-    // }
-
-//     classTypeSelect.addEventListener('change', updateFields);
-//     startTimeField.addEventListener('change', updateFields);
-
-//     // Initial update if a class type is pre-selected
-//     if (classTypeSelect.value) {
-//         updateFields();
-//     }
-// });
-
-document.addEventListener('DOMContentLoaded', function() {
+// Function to initialize the "Add Class" modal
+function initializeAddClassModal() {
     const emptyCells = document.querySelectorAll('.empty-cell');
-    const modal = document.getElementById('classModal');
-    const form = document.getElementById('classInstanceForm');
-    const bootstrapModal = new bootstrap.Modal(modal);
+    const addClassModalElement = document.getElementById('classModal');
+    const addClassForm = document.getElementById('classInstanceForm');
+    const addClassModal = new bootstrap.Modal(addClassModalElement);
 
     emptyCells.forEach(cell => {
-        cell.addEventListener('click', function() {
+        cell.addEventListener('click', function () {
             const day = this.dataset.day;
             const slot = this.dataset.slot;
-            
-            
-            form.elements['day'].value = day;
-            form.elements['start_time'].value = slot;
-            
 
-             const startTimeInput = document.querySelector('[data-name="start_time"]');
-                if (startTimeInput) {
-                    startTimeInput.value = slot;
-                }
-             
-            bootstrapModal.show();
+            // Populate form fields
+            addClassForm.elements['day'].value = day;
+            addClassForm.elements['start_time'].value = slot;
+
+            addClassModal.show();
         });
     });
-    
 
-    const closeButtons = modal.querySelectorAll('[data-bs-dismiss="modal"]');
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            bootstrapModal.hide(); // Explicitly hide the modal
-        })
-    // Reset state on modal hide
-    modal.addEventListener('hidden.bs.modal', function() {
-        form.reset(); // Optional: Reset form fields when closing
+    // Reset form when the modal is hidden
+    addClassModalElement.addEventListener('hidden.bs.modal', function () {
+        addClassForm.reset();
     });
-})});
+}
 
-// Handle the class edit modal
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('td[data-instance-id]').forEach(cell => {
-        cell.addEventListener('click', (e) => {
-            const instanceId = cell.dataset.instanceId;
-            const modal = new bootstrap.Modal(document.getElementById('edit-modal'));
-            
+
+
+
+function initializeEditClassModal() {
+    if (isEditClassModalInitialized) return; // Prevent re-initialization
+    isEditClassModalInitialized = true;
+
+    const editCells = document.querySelectorAll('td[data-instance-id]');
+    const editModalElement = document.getElementById('edit-modal');
+    const editModalContent = document.getElementById('edit-modal-content');
+    const editModal = new bootstrap.Modal(editModalElement);
+
+    editCells.forEach(cell => {
+        cell.addEventListener('click', function () {
+            const instanceId = this.dataset.instanceId;
+
+            // Clear previous content to avoid conflicts
+            editModalContent.innerHTML = '';
+
             // Load edit form
             fetch(`/class-instance/${instanceId}/edit/`)
                 .then(response => response.text())
                 .then(html => {
-                    document.getElementById('edit-modal-content').innerHTML = html;
-                    modal.show();
+                    editModalContent.innerHTML = html;
+
+                    // Add event listeners for dynamically loaded content
+                    initializeEditModalEventListeners(editModalContent);
+
+                    editModal.show();
                 });
         });
     });
-});
+}
+
+// Function to initialize event listeners for the "Edit Class" modal
+function initializeEditModalEventListeners(modalContent) {
+    // Handle individual edit button clicks
+    modalContent.addEventListener('click', function (e) {
+        const editTrigger = e.target.closest('.edit-trigger');
+        if (editTrigger) {
+            const field = editTrigger.dataset.field;
+            toggleEditMode(modalContent, field);
+        }
+    });
+
+    // Handle "Edit All" button
+    const editAllButton = modalContent.querySelector('.edit-all-btn');
+    if (editAllButton) {
+        editAllButton.addEventListener('click', function () {
+            const isInEditMode = modalContent.querySelector('.edit-mode:not(.d-none)');
+            if (isInEditMode) {
+                modalContent.querySelectorAll('.view-mode').forEach(el => el.classList.remove('d-none'));
+                modalContent.querySelectorAll('.edit-mode').forEach(el => el.classList.add('d-none'));
+            } else {
+                modalContent.querySelectorAll('.view-mode').forEach(el => el.classList.add('d-none'));
+                modalContent.querySelectorAll('.edit-mode').forEach(el => el.classList.remove('d-none'));
+            }
+        });
+    }
+
+    // Handle delete button with confirmation
+    modalContent.addEventListener('click', function (e) {
+        const deleteButton = e.target.closest('[hx-delete]');
+        if (deleteButton) {
+            const confirmMessage = deleteButton.getAttribute('hx-confirm');
+            if (confirmMessage && !confirm(confirmMessage)) {
+                e.preventDefault(); // Prevent the delete action if the user cancels
+            }
+        }
+    });
+}
+
+// Function to toggle edit mode for a specific field
+function toggleEditMode(modalContent, field) {
+    const viewMode = modalContent.querySelector(`.view-mode[data-field="${field}"]`);
+    const editMode = modalContent.querySelector(`.edit-mode[data-field="${field}"]`);
+    if (viewMode && editMode) {
+        viewMode.classList.toggle('d-none');
+        editMode.classList.toggle('d-none');
+    }
+}
