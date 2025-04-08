@@ -141,8 +141,23 @@ class TimetableAdmin( ExtraButtonsMixin, admin.ModelAdmin):
 
 @admin.register(ClassInstance)
 class ClassInstAdmin(admin.ModelAdmin):
+        # Fields to display in the admin list view
+    list_display = ('id', 'class_type', 'day', 'start_time', 'finish_time', 'capacity', 'instance_date')
+
+    # Fields to search by
+    search_fields = ('id', 'class_type__name', 'day')
+
+    # Filters for the right-hand sidebar
+    list_filter = ('class_type', 'day', 'instance_date')
+
+    # Default ordering of the list view
+    ordering = ('-instance_date', 'start_time')
+
+    # Add ordering buttons to the columns
+    list_display_links = ('id',)  # Make the ID clickable to edit the instance
+    
     form = ClassInstanceForm
-    list_display = ["__str__"]
+    
     fields = ['class_type', 'instance_date', 'day',
               'start_time', 'finish_time', 'capacity',
               'attendees']
