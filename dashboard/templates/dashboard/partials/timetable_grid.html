@@ -25,48 +25,56 @@
         {% endfor %}
     </tbody>
 </table>
-<script src="{% static 'js/Timetable.js' %}"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const classInstances = [
-            {% for instance in class_instances %}
-                {
-                    day: "{{ instance.day }}",
-                    startTime: "{{ instance.start_time|time:'H:i' }}",
-                    endTime: "{{ instance.finish_time|time:'H:i' }}",
-                    name: "{{ instance.class_type.name }}",
-                    color: "{{ instance.class_type.color_value }}"
-                },
-            {% endfor %}
-        ];
-            
-        classInstances.forEach(instance => {
-            const cell = document.querySelector(`td[data-day="${instance.day}"][data-slot="${instance.startTime}"]`);
-            if (cell) {
-                const startTime = new Date(`2000-01-01T${instance.startTime}`);
-                const endTime = new Date(`2000-01-01T${instance.endTime}`);
-                const durationInMinutes = (endTime - startTime) / (1000 * 60);
-                const rowspan = Math.ceil(durationInMinutes / 15);
+ document.addEventListener('DOMContentLoaded', function() {
+    const classInstances = [
+        {% for instance in class_instances %}
+            {   id: "{{ instance.id }}",
+                day: "{{ instance.day }}",
+                startTime: "{{ instance.start_time|time:'H:i' }}",
+                endTime: "{{ instance.finish_time|time:'H:i' }}",
+                name: "{{ instance.class_type.name }}",
+                color: "{{ instance.class_type.color_value }}"
+            },
+        {% endfor %}
+    ];
 
-                cell.innerHTML = `${instance.name}<br>${instance.day} @ ${instance.startTime} - ${instance.endTime}`;
-                cell.style.backgroundColor = instance.color;
-                cell.rowSpan = rowspan;
-                cell.classList.remove('empty-cell');
+    classInstances.forEach(instance => {
+        const cell = document.querySelector(`td[data-day="${instance.day}"][data-slot="${instance.startTime}"]`);
+        if (cell) {
+            const startTime = new Date(`2000-01-01T${instance.startTime}`);
+            const endTime = new Date(`2000-01-01T${instance.endTime}`);
+            const durationInMinutes = (endTime - startTime) / (1000 * 60);
+            const rowspan = Math.max(1, Math.ceil(durationInMinutes / 15));
 
-                // Remove cells that are now covered by the rowspan
-                let currentRow = cell.parentElement;
-                for (let i = 1; i < rowspan; i++) {
+            cell.dataset.instanceId = instance.id;
+            cell.innerHTML = `${instance.name}<br>${instance.day} @ ${instance.startTime} - ${instance.endTime}`;
+            cell.style.backgroundColor = instance.color;
+            cell.rowSpan = rowspan;
+            cell.classList.remove('empty-cell');
+
+            // Remove cells that are now covered by the rowspan
+            let currentRow = cell.parentElement;
+            let day = instance.day;
+
+            for (let i = 1; i < rowspan; i++) {
+                if (currentRow) {
                     currentRow = currentRow.nextElementSibling;
-                    if (currentRow) {
-                        const cellToRemove = currentRow.querySelector(`td[data-day="${instance.day}"]`);
-                        if (cellToRemove) cellToRemove.remove();
-                    }
+                }
+                if (currentRow) {
+                  const cellToRemove = currentRow.querySelector(`td[data-day="${day}"][data-slot]`);
+                  if (cellToRemove) {
+                    cellToRemove.remove();
+                  }
                 }
             }
-        });
+        }
     });
+});
+     
 </script>
-
+<script src="{% static 'js/Timetable.js' %}"></script>
 
 
 

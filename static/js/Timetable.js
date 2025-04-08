@@ -188,3 +188,21 @@ document.addEventListener('DOMContentLoaded', function() {
         form.reset(); // Optional: Reset form fields when closing
     });
 })});
+
+// Handle the class edit modal
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('td[data-instance-id]').forEach(cell => {
+        cell.addEventListener('click', (e) => {
+            const instanceId = cell.dataset.instanceId;
+            const modal = new bootstrap.Modal(document.getElementById('edit-modal'));
+            
+            // Load edit form
+            fetch(`/class-instance/${instanceId}/edit/`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('edit-modal-content').innerHTML = html;
+                    modal.show();
+                });
+        });
+    });
+});

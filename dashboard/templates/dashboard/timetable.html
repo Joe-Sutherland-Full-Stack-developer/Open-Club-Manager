@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/timetable.css' %}">
     <div class="d-flex justify-content-between">
     <h1 class="m-1">Sports Club Timetable: {{ timetable.name }}</h1>
-    <button class="btn btn-primary m-1">Return to admin panel</button>
+    <a href="{% url 'admin:dashboard_timetable_change' timetable.id %}" class="btn btn-primary m-1">Return to admin panel</a>
     </div>
     <div id="timetable-container">
         {% include 'dashboard/partials/timetable_grid.html' %}
@@ -58,6 +58,14 @@
         </div>
     </div>
 </div>
+<!-- Class edit Modal -->
+<div class="modal fade" id="edit-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div id="edit-modal-content" class="modal-content" aria-hidden="true">
+            <!-- Content loaded dynamically here from partials/class_edit.html-->
+        </div>
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -73,6 +81,8 @@
         toggleRepeatUntil(); // Initial state
     });
 </script>
+
+<script src="{% static '/js/Timetable.js' %}"></script>
 
 
 

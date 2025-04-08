@@ -28,7 +28,8 @@ urlpatterns = [
     path('timetable/<int:timetable_id>/', dashboard_views.timetable_view, name='timetable_view'),
     path('get_class_form/', dashboard_views.get_class_form, name='get_class_form'),
     path('add-class-instance/', dashboard_views.add_class_instance, name='add_class_instance'),
-    
+    path('class-instance/<int:pk>/edit/', dashboard_views.edit_class_instance, name='edit-class-instance'),
+    path('class-instance/<int:pk>/delete/', dashboard_views.delete_class_instance, name='delete-class-instance'),
     path('load-booking-form/<int:event_id>/', dashboard_views.load_booking_form, name='load_booking_form'),
     path('create-booking/', dashboard_views.create_booking, name='create_booking'),
     path('booking-confirmation/<int:booking_id>/', dashboard_views.booking_confirmation, name='booking_confirmation'),

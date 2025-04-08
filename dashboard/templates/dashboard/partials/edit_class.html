@@ -1,0 +1,137 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Edit {{ instance.class_type.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+        <form hx-post="{% url 'edit-class-instance' instance.pk %}" hx-target="#edit-modal">
+            {% csrf_token %}
+            <div class="container-fluid">
+                <!-- Class Type (non-editable) -->
+                <div class="row g-0 mb-3">
+                    <div class="col-4">Class Type:</div>
+                    <div class="col-8 fw-bold">{{ instance.class_type.name }}</div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-secondary edit-trigger" data-field="day">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Day -->
+                <div class="row g-0 mb-3 align-items-center">
+                    <div class="col-4">{{ form.day.label }}</div>
+                    <div class="col-6 fw-bold view-mode" data-field="day">
+                        {{ form.day.value|default_if_none:"Not set" }}
+                    </div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-secondary edit-trigger" data-field="day">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="col-8 edit-mode d-none" data-field="day">
+                        {{ form.day }}
+                    </div>
+                </div>
+
+                <!-- Start Time -->
+                <div class="row g-0 mb-3 align-items-center">
+                    <div class="col-4">{{ form.start_time.label }}</div>
+                    <div class="col-6 fw-bold view-mode" data-field="start_time">
+                        {{ form.start_time.value|default_if_none:"Not set" }}
+                    </div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-secondary edit-trigger" data-field="start_time">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="col-8 edit-mode d-none" data-field="start_time">
+                        {{ form.start_time }}
+                    </div>
+                </div>
+
+                <!-- Finish Time -->
+                <div class="row g-0 mb-3 align-items-center">
+                    <div class="col-4">{{ form.finish_time.label }}</div>
+                    <div class="col-6 fw-bold view-mode" data-field="finish_time">
+                        {{ form.finish_time.value|default_if_none:"Not set" }}
+                    </div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-secondary edit-trigger" data-field="finish_time">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="col-8 edit-mode d-none" data-field="finish_time">
+                        {{ form.finish_time }}
+                    </div>
+                </div>
+
+                <!-- Capacity -->
+                <div class="row g-0 mb-3 align-items-center">
+                    <div class="col-4">{{ form.capacity.label }}</div>
+                    <div class="col-6 fw-bold view-mode" data-field="capacity">
+                        {{ form.capacity.value|default_if_none:"Not set" }}
+                    </div>
+                    <div class="col-2 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-secondary edit-trigger" data-field="capacity">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="col-8 edit-mode d-none" data-field="capacity">
+                        {{ form.capacity }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2 justify-content-between mt-4">
+                <button type="button" class="btn btn-secondary edit-all-btn">
+                    Edit All Fields
+                </button>
+                <div>
+                    <button type="button" class="btn btn-danger"
+                        hx-delete="{% url 'delete-class-instance' instance.pk %}"
+                        hx-confirm="Are you sure you want to delete this class?">
+                        Delete
+                    </button>
+                    <button type="submit" hx-confirm="would you like to save these changes to all future repeats of this session?"class="btn btn-primary">Save All</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .edit-mode .form-control {
+        padding: 0.25rem 0.5rem;
+        height: auto;
+    }
+    .view-mode[data-field="day"] { text-transform: capitalize; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('edit-modal');
+    
+    // Individual field edit buttons
+    modal.addEventListener('click', function(e) {
+        if (e.target.closest('.edit-trigger')) {
+            const field = e.target.closest('.edit-trigger').dataset.field;
+            toggleEditMode(field);
+        }
+    });
+
+    // Edit All button
+    modal.querySelector('.edit-all-btn').addEventListener('click', function() {
+        document.querySelectorAll('.view-mode').forEach(el => el.classList.add('d-none'));
+        document.querySelectorAll('.edit-mode').forEach(el => el.classList.remove('d-none'));
+    });
+
+    function toggleEditMode(field) {
+        const viewMode = document.querySelector(`.view-mode[data-field="${field}"]`);
+        const editMode = document.querySelector(`.edit-mode[data-field="${field}"]`);
+        viewMode.classList.toggle('d-none');
+        editMode.classList.toggle('d-none');
+    }
+});
+</script>

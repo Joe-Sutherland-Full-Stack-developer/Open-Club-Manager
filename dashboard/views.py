@@ -255,6 +255,34 @@ def get_date_for_day_of_week(day_name):
 
     return instance_date
 
+def edit_class_instance(request, pk):
+    instance = get_object_or_404(ClassInstance, pk=pk)
+    print(instance.day, instance.start_time, instance.finish_time, instance.capacity, instance.class_type)
+    
+    if request.method == 'POST':
+        form = ClassInstanceForm(request.POST, instance=instance)
+        print(form.initial)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Class updated successfully!")
+            return redirect('timetable_view')
+    else:
+        form = ClassInstanceForm(instance=instance)
+    
+    return render(request, 'dashboard/partials/edit_class.html', {
+        'form': form,
+        'instance': instance
+    })
+
+def delete_class_instance(request, pk):
+    instance = get_object_or_404(ClassInstance, pk=pk)
+    if request.method == 'POST':
+        instance.delete()
+        messages.success(request, "Class deleted successfully!")
+        return redirect('timetable_view')
+    return render(request, 'dashboard/partials/confirm_delete.html', {'instance': instance})
+
+
 def timetable_view(request, timetable_id):
     timetable = get_object_or_404(Timetable, id=timetable_id, active=True)
     
