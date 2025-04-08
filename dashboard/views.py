@@ -232,7 +232,7 @@ def add_class_instance(request):
                 
                 
             # Redirect to HTTP_REFERER (previous page)
-            referer_url = request.META.get('HTTP_REFERER', '/dashboard')  # Fallback to '/dashboard' if no referer
+            referer_url = request.META.get('HTTP_REFERER', '/admin')  # Fallback to '/dashboard' if no referer
             return redirect(referer_url)
         else:
             errors = form.errors.as_json()
@@ -256,18 +256,26 @@ def get_date_for_day_of_week(day_name):
     return instance_date
 
 def edit_class_instance(request, pk):
-    # Get the class instance by its primary key
     instance = get_object_or_404(ClassInstance, pk=pk)
-
+    
     # Find repeat instances and calculate the "repeats_until" date
-    repeats = find_repeat_instances(pk)
+    repeats = ClassInstance.objects.filter(timetable=instance.timetable, day=instance.day)
     final_repeat = repeats.filter(instance_date__gt=instance.instance_date).order_by('instance_date').last()
     repeats_until = final_repeat.instance_date if final_repeat else None
+    
 
     if request.method == 'POST':
-        # Handle form submission
         form = ClassInstanceForm(request.POST, instance=instance)
         apply_to_repeats = request.POST.get('apply-to-repeats') == 'on'
+
+        # get timetable id from the form
+        timetable_id = request.POST.get('timetable_id')
+        print(timetable_id)
+        timetable = get_object_or_404(Timetable, id=timetable_id)
+        print(timetable)
+        print(form.instance.timetable)
+        form.instance.timetable = timetable
+        print(form.instance.timetable)
         if form.is_valid():
             if apply_to_repeats:
                 # Update all repeat instances
@@ -283,12 +291,13 @@ def edit_class_instance(request, pk):
                 # Update only the current instance
                 form.save()
                 messages.success(request, "Class updated successfully!")
-            return redirect('timetable_view')
+            return redirect('timetable_view', timetable_id=instance.timetable.id)
+        else:
+            messages.error(request, "There was an error with the form. Please check the fields and try again.")
+            return JsonResponse({'success': False, 'error': form.errors.as_json()}, status=400)
     else:
-        # Handle GET request to populate the modal
         form = ClassInstanceForm(instance=instance)
 
-    # Context for rendering the modal
     context = {
         'form': form,
         'instance': instance,
@@ -312,7 +321,7 @@ def delete_class_instance(request, pk):
             # Delete only the current instance
             instance.delete()
             messages.success(request, "Class deleted successfully!")
-        return redirect('timetable_view')
+        return redirect('timetable_view', timetable_id=instance.timetable.id)
     return render(request, 'dashboard/partials/confirm_delete.html', {'instance': instance})
 
 def find_repeat_instances(instance_id):
@@ -350,7 +359,7 @@ def timetable_view(request, timetable_id):
     selected_days = timetable.selected_days
     time_slots = timetable.time_slots
 
-    class_instances = ClassInstance.objects.filter(
+    class_instances = ClassInstance.objects.filter(timetable=timetable,
         start_time__gte=timetable.start_time,
         finish_time__lte=timetable.end_time,
         instance_date__gte=timezone.now().date()  # Filter instances with instance_date after today

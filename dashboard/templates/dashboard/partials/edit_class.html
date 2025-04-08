@@ -4,7 +4,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
     </div>
     <div class="modal-body">
-        <form method="POST" hx-post="{% url 'edit_class_instance' instance.pk %}" hx-target="#edit-modal">
+        <form method="POST" action="{% url 'edit_class_instance' instance.pk %}">
             {% csrf_token %}
             <div class="container-fluid">
                 <!-- Class Type -->
@@ -87,6 +87,7 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="timetable_id" id="id_timetable_id" value="{{instance.timetable.id}}">
             <!-- Repeats Message -->
             {% if repeats_until %}
             <div class="alert alert-info">
@@ -103,11 +104,13 @@
                     Edit All Fields
                 </button>
                 <div>
-                    <button type="button" class="btn btn-danger delete-btn">
+                    <button type="submit" class="btn btn-danger delete-btn" formaction="{% url 'delete_class_instance' instance.pk %}">
+                        <i class="fas fa-trash"></i>
             
                         Delete
                     </button>
-                    <button type="submit" class="btn btn-success save-btn">
+                    <button type="submit" class="btn btn-success save-btn" formaction="{% url 'edit_class_instance' instance.pk %}">
+                        <i class="fas fa-save"></i>
                         Apply changes
                     </button>
                 </div>

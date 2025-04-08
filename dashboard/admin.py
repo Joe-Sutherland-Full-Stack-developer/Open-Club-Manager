@@ -145,22 +145,22 @@ class ClassInstAdmin(admin.ModelAdmin):
     list_display = ('id', 'class_type', 'day', 'start_time', 'finish_time', 'capacity', 'instance_date')
 
     # Fields to search by
-    search_fields = ('id', 'class_type__name', 'day')
+    search_fields = ('id', 'class_type__name', 'day', 'timetable__name')
 
     # Filters for the right-hand sidebar
-    list_filter = ('class_type', 'day', 'instance_date')
+    list_filter = ('class_type', 'day', 'instance_date', 'timetable')
 
     # Default ordering of the list view
     ordering = ('-instance_date', 'start_time')
 
     # Add ordering buttons to the columns
-    list_display_links = ('id',)  # Make the ID clickable to edit the instance
-    
+    list_display_links = ('id','class_type')  # Make the ID clickable to edit the instance
+
     form = ClassInstanceForm
     
     fields = ['class_type', 'instance_date', 'day',
               'start_time', 'finish_time', 'capacity',
-              'attendees']
+              'attendees', 'timetable']
 
 
 class StripeIntegrationForm(forms.ModelForm):

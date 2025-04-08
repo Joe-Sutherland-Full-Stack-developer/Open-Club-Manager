@@ -142,11 +142,11 @@ class ClassInstanceForm(forms.ModelForm):
     repeat = forms.BooleanField(required=False, initial=False,
                                 label="Repeat?")
     repeat_until = forms.DateField(required=False, widget=DatePickerInput(options={"format": "DD/MM/YYYY"}))
-    timetable_id = forms.IntegerField(required=True, widget=forms.HiddenInput(),)
+    
     class Meta:
         model = ClassInstance
-        fields = ['class_type', 'day', 'start_time', 'finish_time', 'capacity']
-        
+        fields = ['class_type', 'day', 'start_time', 'finish_time', 'capacity', 'timetable']
+        exclude = ['timetable'] 
         widgets = {
             'start_time': TimePickerInput(options={"format": "HH:mm",
                                                    "stepping": 15}),
