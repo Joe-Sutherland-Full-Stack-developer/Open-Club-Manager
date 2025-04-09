@@ -273,9 +273,9 @@ def edit_class_instance(request, pk):
         print(timetable_id)
         timetable = get_object_or_404(Timetable, id=timetable_id)
         print(timetable)
-        print(form.instance.timetable)
+        print(form.instance)
         form.instance.timetable = timetable
-        print(form.instance.timetable)
+
         if form.is_valid():
             if apply_to_repeats:
                 # Update all repeat instances
@@ -567,6 +567,13 @@ class CustomLoginView(LoginView):
             return redirect('create_participant')
         return super().form_valid(form)
     
+@login_required
+def settings_page(request):
+    # Add any context data you want to pass to the template
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'dashboard/settings.html', context)
 
 def contact_success(request):
     return render(request, 'dashboard/contact_success.html') 

@@ -214,7 +214,11 @@ class Profile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
     contact_number = models.CharField(max_length=15, blank=True)
-
+    dark_mode = models.BooleanField(default=False)
+    language = models.CharField(max_length=10, default='en')
+    email_notifications = models.BooleanField(default=True)
+    sms_notifications = models.BooleanField(default=False)
+    profile_visibility = models.BooleanField(default=True)
     def __str__(self):
         return f"{self.user.username}"
 

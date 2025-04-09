@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex align-items-center mb-4">
+        <a href="javascript:history.back()" class="btn rounded-circle me-3">
+            <i class="fa fa-arrow-left"></i> Back
+        </a>
+        <h1 class="mb-0">Settings</h1>
+    </div>
+
+    <!-- General Settings -->
+    <div class="card mb-4">
+        <div class="card-header">General Settings</div>
+        <div class="card-body">
+            <form method="POST" action="{% url 'settings_page' %}">
+                {% csrf_token %}
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="darkModeToggle" name="dark_mode" {% if user.profile.dark_mode %}checked{% endif %}>
+                    <label class="form-check-label" for="darkModeToggle">Enable Dark Mode (Coming soon!)</label>
+                </div>
+                <div class="mt-3">
+                    <label for="languageSelect" class="form-label">Preferred Language</label>
+                    <select class="form-select" id="languageSelect" name="language">
+                        <option value="en" {% if user.profile.language == "en" %}selected{% endif %}>English</option>
+                        <option value="es" {% if user.profile.language == "es" %}selected{% endif %}>Español</option>
+                        <option value="de" {% if user.profile.language == "de" %}selected{% endif %}>Deutch</option>
+                        <option value="fr" {% if user.profile.language == "fr" %}selected{% endif %}>Français</option>
+                        <!-- Add more languages as needed -->
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Settings -->
+    <div class="card mb-4">
+        <div class="card-header">Notification Settings</div>
+        <div class="card-body">
+            Coming soon!
+            <!-- <form method="POST" action="{% url 'settings_page' %}">
+                {% csrf_token %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="emailNotifications" name="email_notifications" {% if user.profile.email_notifications %}checked{% endif %}>
+                    <label class="form-check-label" for="emailNotifications">Enable Email Notifications</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="smsNotifications" name="sms_notifications" {% if user.profile.sms_notifications %}checked{% endif %}>
+                    <label class="form-check-label" for="smsNotifications">Enable SMS Notifications</label>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+            </form> -->
+        </div>
+    </div>
+
+    <!-- Privacy Settings -->
+    <div class="card mb-4">
+        <div class="card-header">Connected accounts</div>
+        <div class="card-body">
+            Coming soon!
+    </div>
+</div>
+{% endblock %}

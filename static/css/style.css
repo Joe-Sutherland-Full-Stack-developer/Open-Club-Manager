@@ -18,7 +18,11 @@ li{
 }
 .day-of-week-header{
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
+}
+.lighter{
+    filter: brightness(1.02);
+
 }
 .wipe {
     transition: color 0.1s;
@@ -233,7 +237,7 @@ li{
 }
 
 #page-header{
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     font-weight: 600;
 }
 #main-content{
@@ -451,20 +455,28 @@ li{
 
 @media (min-width: 575px){
     #side-bottom{
-        top: 89vh;
+        position: sticky;
+        bottom:0;
+        
     }
 
     #sidePanel{
         height: 96vh;
     }
+    #page-header {
+        font-size: 2.5rem;
+        font-weight: 600;
+      }
 }
 
 @media (min-width: 768px) {
 
-    #side-bottom{
-        top: 79vh
+    
+    #sidePanel{
+        position: sticky;
+        top: 0;
+        height: 100vh;
     }
-
 }
 @media (min-width: 992px){
     .accordion-item{
@@ -472,4 +484,36 @@ li{
          font-size: 1rem;
         
      }
+    de-stcky{
+        position: sticky;
+        top: 0;
+        height: 100%;
+    }
+    #side-bottom{
+        position:sticky;
+        bottom:0;
+    }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+    /* Styles for landscape smartphones with limited height */
+    body {
+        font-size: 0.9rem; /* Adjust font size for better readability */
+    }
+
+    #sidePanel {
+        font-size: 0.5rem;
+    }
+
+    #main-content {
+        margin: 0;
+        padding: 1rem; /* Add padding for better spacing */
+    }
+
+    .card {
+        margin: 0.5rem; /* Reduce card margins */
+    }
+
+    .navbar-toggler {
+        font-size: 1.2rem; /* Adjust navbar toggle size */
+    }
 }

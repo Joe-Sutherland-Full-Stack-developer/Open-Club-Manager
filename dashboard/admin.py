@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.contrib.auth.admin import UserAdmin
@@ -7,11 +6,14 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils import timezone
 from admin_extra_buttons.api import ExtraButtonsMixin, link
-from .models import Participant, ClassType, Timetable, ClassInstance, Booking
-from .models import Customization, StripeIntegration,ContactRequest
+from .models import (
+    Participant, ClassType, Timetable, ClassInstance, Booking,
+    Customization, StripeIntegration, ContactRequest
+)
 from django import forms
 from .forms import ClassInstanceForm
 from bootstrap_datepicker_plus.widgets import TimePickerInput
+
 
 class ParticipantInline(admin.StackedInline):
     model = Participant
@@ -36,31 +38,35 @@ admin.site.register(ClassType)
 admin.site.register(Customization)
 admin.site.register(ContactRequest)
 
+
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'participant',
-                    'class_instance', 'paid_or_member',
-                    'created_on', 'updated_on', 'active']
-    list_filter = ['paid_or_member', 'active',
-                   'created_on', 'updated_on']
-    search_fields = ['id', 'user__username',
-                     'participant__first_name',
-                     'participant__last_name']
+    list_display = [
+        'id', 'user', 'participant', 'class_instance', 'paid_or_member',
+        'created_on', 'updated_on', 'active'
+    ]
+    list_filter = ['paid_or_member', 'active', 'created_on', 'updated_on']
+    search_fields = [
+        'id', 'user__username', 'participant__first_name',
+        'participant__last_name'
+    ]
     readonly_fields = ['id', 'created_on', 'updated_on']
-    fields = ['user', 'participant', 'class_instance',
-              'paid_or_member', 'active',
-              'created_on', 'updated_on']
-    actions = ['set_inactive', 'set_active',
-               'mark_as_paid', 'mark_as_not_paid']
+    fields = [
+        'user', 'participant', 'class_instance', 'paid_or_member', 'active',
+        'created_on', 'updated_on'
+    ]
+    actions = [
+        'set_inactive', 'set_active', 'mark_as_paid', 'mark_as_not_paid'
+    ]
     autocomplete_fields = ['user']
 
     def set_inactive(self, request, queryset):
         queryset.update(active=False, updated_on=timezone.now())
-    set_inactive.short_description = ("Mark selected bookings as inactive "
-                                      "Use this to cancel bookings "
-                                      "without deleting them")
+    set_inactive.short_description = (
+        "Mark selected bookings as inactive. Use this to cancel bookings "
+        "without deleting them"
+    )
 
     def set_active(self, request, queryset):
-        # Update the active field to True and set updated_on to now
         queryset.update(active=True, updated_on=timezone.now())
     set_active.short_description = "Mark selected bookings as active"
 
@@ -121,7 +127,7 @@ class TimetableForm(forms.ModelForm):
 
 
 @admin.register(Timetable)
-class TimetableAdmin( ExtraButtonsMixin, admin.ModelAdmin):
+class TimetableAdmin(ExtraButtonsMixin, admin.ModelAdmin):
     form = TimetableForm
     list_display = ["__str__"]
     fields = ['name', 'active', 'selected_days',
@@ -141,7 +147,7 @@ class TimetableAdmin( ExtraButtonsMixin, admin.ModelAdmin):
 
 @admin.register(ClassInstance)
 class ClassInstAdmin(admin.ModelAdmin):
-        # Fields to display in the admin list view
+    # Fields to display in the admin list view
     list_display = ('id', 'class_type', 'day', 'start_time', 'finish_time', 'capacity', 'instance_date')
 
     # Fields to search by
@@ -154,7 +160,7 @@ class ClassInstAdmin(admin.ModelAdmin):
     ordering = ('-instance_date', 'start_time')
 
     # Add ordering buttons to the columns
-    list_display_links = ('id','class_type')  # Make the ID clickable to edit the instance
+    list_display_links = ('id', 'class_type')  # Make the ID clickable to edit the instance
 
     form = ClassInstanceForm
     

@@ -134,7 +134,7 @@
               
             <a href="{% url 'contact' %}" class="side-bar-item side-nav-link brand-color-1 brand-text-white d-flex align-items-center position-relative"><i class="fa-solid fa-phone"></i><span class="position-absolute top-50 start-50 translate-middle text-center"> Contact us </span></a>
               
-            <a href="" class="side-bar-item side-nav-link brand-color-1 brand-text-white  d-flex  align-items-center position-relative"><i class="fa-solid fa-gear"></i><span class="position-absolute top-50 start-50 translate-middle text-center">Settings</span></a>
+            <a href="{% url 'settings_page' %}" class="side-bar-item side-nav-link brand-color-1 brand-text-white  d-flex  align-items-center position-relative"><i class="fa-solid fa-gear"></i><span class="position-absolute top-50 start-50 translate-middle text-center">Settings</span></a>
             </div>
           </div>
        </div>
@@ -143,10 +143,10 @@
         <div id="main-content" class="col col-md-9 col-lg-9 col-xl-10 ps-0 brand-color-white">
               {% block innerframe %}
                 <div class="bg-color-dark">
-                  <header class="ps-2" id="page-header">Upcoming sessions: {{ timetables.instance.name }}</header>
+                  <header class="px-4 py-1" id="page-header">Upcoming sessions: {{ timetable.name }}</header>
                 </div>  
                       
-                      <h2 class="text-center mb-0 pb-2 pt-2 brand-color-white brand-text-2 shadow">This Week</h2>
+                      <h2 class="text-center mb-0 pb-2 pt-2 brand-color-white lighter brand-text-2 shadow fw-semibold">This Week</h2>
                       <!-- {% if this_week_by_day %}
                       {% for day, events in this_week_by_day.items %}
                         
@@ -168,7 +168,7 @@
                       {% endif %} -->
                       {% if this_week_by_day %}
   {% for day, events in this_week_by_day.items %}
-  <div class="{{ day|lower }} left-padding brand-text-2 mt-2">
+  <div class="{{ day|lower }} p-4 brand-text-2 mt-2">
     <div class="day-of-week-header">{{ day }}:</div>
       {% if events %}
         {% for event in events %}
@@ -207,10 +207,10 @@
   </div>
 {% endif %}
 
-                      <h2 class="text-center mb-0 pb-2 pt-2 bg-color-light brand-color-white brand-text-2 shadow rounded">Next Week</h2>
+                      <h2 class="text-center mb-0 pb-2 pt-2 brand-color-white lighter brand-text-2 shadow rounded fw-semibold">Next Week</h2>
 
                       {% for day, events in next_week_by_day.items %}
-                      <div class="{{ day|lower }} left-padding  mt-2">
+                      <div class="{{ day|lower }} p-4  brand-text-2 mt-2">
                         <h3>{{ day }}:</h3>
                         <ul class="no-padding">
                           {% for event in events %}

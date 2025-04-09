@@ -20,20 +20,33 @@ function initializeAddClassModal() {
         cell.addEventListener('click', function () {
             const day = this.dataset.day;
             const slot = this.dataset.slot;
-
+            console.log("Day:", day, "Slot:", slot);
+            // Clear previous content to avoid conflicts
+            addClassForm.reset();
             // Populate form fields
             addClassForm.elements['day'].value = day;
             addClassForm.elements['start_time'].value = slot;
+            
+            const startTimeInput = document.querySelector('[data-name="start_time"]');
+                if (startTimeInput) {
+                    startTimeInput.value = slot;
+                }
 
             addClassModal.show();
         });
     });
-
-    // Reset form when the modal is hidden
-    addClassModalElement.addEventListener('hidden.bs.modal', function () {
-        addClassForm.reset();
-    });
-}
+            const closeButtons = addClassModalElement.querySelectorAll('[data-bs-dismiss="modal"]');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    bootstrapModal.hide(); // Explicitly hide the modal
+                })
+           
+            // Reset form when the modal is hidden
+            addClassModalElement.addEventListener('hidden.bs.modal', function () {
+                addClassForm.reset();
+            });
+        });
+    }
 
 
 
@@ -141,9 +154,16 @@ function initializeGlobalModalCloseButtons() {
     document.addEventListener('click', function (e) {
         const closeButton = e.target.closest('[data-bs-dismiss="modal"]');
         if (closeButton) {
-            // Show an alert instead of a confirmation dialog
+            
             alert('No changes were made.');
-
+            // Allow Bootstrap to dismiss the modal
+            const modalElement = closeButton.closest('.modal');
+            if (modalElement) {
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) {
+                    modalInstance.hide(); // Explicitly hide the modal
+                }
+            }
         }
     });
 }

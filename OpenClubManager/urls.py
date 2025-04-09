@@ -41,8 +41,9 @@ urlpatterns = [
     path('create-checkout-session/', dashboard_views.create_checkout_session, name='create-checkout-session'),
     path('contact/', dashboard_views.contact, name='contact'),
     path('contact/success/', dashboard_views.contact_success, name='contact_success'),
-    path('booking/cancel/<int:booking_id>/', dashboard_views.CancelBookingView, name='cancel_booking')
-]
+    path('booking/cancel/<int:booking_id>/', dashboard_views.CancelBookingView, name='cancel_booking'),
+    path('settings/', dashboard_views.settings_page, name='settings_page'),
+]   
 
 admin.site.site_header = "Open Club Manager"
 admin.site.site_title = "Open Club Manager"

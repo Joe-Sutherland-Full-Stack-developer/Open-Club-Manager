@@ -14,10 +14,13 @@ from pathlib import Path
 import os
 import dj_database_url
 import cloudinary
+
 if os.path.exists('env.py'):
     import env
+
 import warnings
 import ast
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
@@ -30,7 +33,6 @@ LOGIN_URL = '/login/'
 SECRET_KEY = os.environ.get('SECRET_KEY')
 if not SECRET_KEY:
     raise ValueError("The SECRET_KEY environment variable is not set!")
-
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -62,7 +64,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'admin_extra_buttons',
     'bootstrap_datepicker_plus',
-    "django_flatpickr", 
+    "django_flatpickr",
     'dashboard',
 ]
 
@@ -82,7 +84,6 @@ MIDDLEWARE = [
     "django_htmx.middleware.HtmxMiddleware",
     'allauth.account.middleware.AccountMiddleware',
 ]
-
 
 
 ROOT_URLCONF = 'OpenClubManager.urls'
@@ -115,21 +116,22 @@ WSGI_APPLICATION = 'OpenClubManager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
-
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL)
     }
 else:
-    warnings.warn("DATABASE_URL is not set. Using SQLite as the default database.")
+    warnings.warn(
+        "DATABASE_URL is not set. Using SQLite as the default database."
+    )
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -175,7 +177,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
 cloudinary.config(
     cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
@@ -185,45 +186,5 @@ cloudinary.config(
 DATE_FORMAT = "d/m/Y"
 
 DJANGO_FLATPICKR = {
-    # Name of the theme to use
-    # More themes: https://flatpickr.js.org/themes/
     "theme_name": "dark",
-    #
-    # Complete URL of theme CSS file
-    # theme_name is ignored if theme_url is provided
-    # "theme_url": "https://..",
-    #
-    # Global HTML attributes for flatpickr <input> element
-    # "attrs": {
-    #     "class": "my-custom-class",
-    #     "placeholder": "Select Date..",
-    # },
-    #
-    # Global options for flatpickr
-    # More options: https://flatpickr.js.org/options/
-    # Some options are managed by this package e.g mode, dateFormat, altInput
-    # "options": {
-    #     "locale": "bn",             # locale option can be set here only
-    #     "altFormat": "m/d/Y H:i",   # specify date format on the front-end
-    # }
-    # You can set date and event hook options using JavaScript, usage in README.
-    #
-    # HTML template to render the flatpickr input
-    # Example: https://github.com/monim67/django-flatpickr/blob/2.0.0/dev/myapp/templates/myapp/custom-flatpickr-input.html
-    # "template_name": "your-app/custom-flatpickr-input.html",
-    #
-    # Specify CDN roots. Choose where from static JS/CSS are served.
-    # Can be set to localhost (offline setup) or any other preferred CDN.
-    # The default values are:
-    #    "flatpickr_cdn_url": "https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/",
-    #    "app_static_url": "https://cdn.jsdelivr.net/gh/monim67/django-flatpickr@2.0.0/src/django_flatpickr/static/django_flatpickr/",
-    #
-    # Advanced:
-    # If you want to serve static files yourself without CDN (from staticfiles) and
-    # you know how to serve django static files on production server (DEBUG=False)
-    # Then download and extract https://registry.npmjs.org/flatpickr/-/flatpickr-4.6.13.tgz
-    # Copy the dist directory (package/dist) to any of your static directory and rename it to flatpickr
-    # and use following options
-    #    "flatpickr_cdn_url": "flatpickr/",
-    #    "app_static_url": "django_flatpickr/",
-    }
+}
