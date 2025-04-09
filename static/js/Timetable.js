@@ -15,7 +15,7 @@ function initializeAddClassModal() {
     const addClassModalElement = document.getElementById('classModal');
     const addClassForm = document.getElementById('classInstanceForm');
     const addClassModal = new bootstrap.Modal(addClassModalElement);
-
+    console.log(bootstrap)
     emptyCells.forEach(cell => {
         cell.addEventListener('click', function () {
             const day = this.dataset.day;
@@ -35,18 +35,9 @@ function initializeAddClassModal() {
             addClassModal.show();
         });
     });
-            const closeButtons = addClassModalElement.querySelectorAll('[data-bs-dismiss="modal"]');
-            closeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    bootstrapModal.hide(); // Explicitly hide the modal
-                })
-           
-            // Reset form when the modal is hidden
-            addClassModalElement.addEventListener('hidden.bs.modal', function () {
-                addClassForm.reset();
-            });
-        });
-    }
+            
+        };
+    
 
 
 
@@ -149,24 +140,17 @@ function toggleEditMode(modalContent, field, editTrigger) {
         }
     }
 }
-// Function to initialize global modal close buttons
-function initializeGlobalModalCloseButtons() {
-    document.addEventListener('click', function (e) {
-        const closeButton = e.target.closest('[data-bs-dismiss="modal"]');
-        if (closeButton) {
+// // // Function to initialize global modal close buttons
+// function initializeGlobalModalCloseButtons() {
+//     document.addEventListener('click', function (e) {
+//         const closeButton = e.target.closest('[data-bs-dismiss="modal"]');
+//         if (closeButton) {
+//             alert('No changes were made.');
             
-            alert('No changes were made.');
-            // Allow Bootstrap to dismiss the modal
-            const modalElement = closeButton.closest('.modal');
-            if (modalElement) {
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                if (modalInstance) {
-                    modalInstance.hide(); // Explicitly hide the modal
-                }
-            }
-        }
-    });
-}
+            
+//         }
+//     });
+// }
 // Function to handle confirmation dialogs for Save and Delete class instance actions
 // This function is called when the user clicks the Save or Delete button
 document.addEventListener('DOMContentLoaded', function () {

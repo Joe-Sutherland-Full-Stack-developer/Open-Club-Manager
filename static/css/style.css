@@ -573,4 +573,7 @@ li{
         padding:inherit;
         height: 100%;
       }
+      #booking-confirmation-container{
+        max-height: fit-content;
+      }
 }
