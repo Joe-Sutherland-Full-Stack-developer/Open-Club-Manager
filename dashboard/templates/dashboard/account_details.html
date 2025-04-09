@@ -10,10 +10,10 @@
     <header id="page-header" class=" px-2">Your Account details</header>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link brand-text-dark {% if request.GET.tab != 'participants' %}active{% endif %}" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal-tab-pane" type="button" role="tab" aria-controls="personal-tab-pane" aria-selected="{% if request.GET.tab != 'participants' %}true{% else %}false{% endif %}">Your Personal Details</button>
+            <button class="nav-link brand-text-dark {% if request.GET.tab != 'participants' %}active{% endif %} px-2" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal-tab-pane" type="button" role="tab" aria-controls="personal-tab-pane" aria-selected="{% if request.GET.tab != 'participants' %}true{% else %}false{% endif %}">Your Personal Details</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link brand-text-dark {% if request.GET.tab == 'participants' %}active{% endif %}" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants-tab-pane" type="button" role="tab" aria-controls="participants-tab-pane" aria-selected="{% if request.GET.tab == 'participants' %}true{% else %}false{% endif %}">Manage Participants</button>
+            <button class="nav-link brand-text-dark {% if request.GET.tab == 'participants' %}active{% endif %} px-2" id="participants-tab" data-bs-toggle="tab" data-bs-target="#participants-tab-pane" type="button" role="tab" aria-controls="participants-tab-pane" aria-selected="{% if request.GET.tab == 'participants' %}true{% else %}false{% endif %}">Manage Participants</button>
         </li>
     </ul>
 </div>
@@ -79,7 +79,7 @@
                                     <div class="col-sm-6 d-flex align-items-center justify-content-center">
                                         <span class="form-control-plaintext w-100 p-0">{{ field.value|default_if_none:'' }}</span>
                                         {% if field.label == "Additional info" %}
-                                        <textarea class="Large-text-field edit-form-input w-100" rows="10" cols="50" name="{{ field.name }}" style="display: none;">{{ field.value|default_if_none:'' }}</textarea>
+                                        <textarea class="Large-text-field edit-form-input w-100 d-none" rows="10" cols="50" name="{{ field.name }}">{{ field.value|default_if_none:'' }}</textarea>
                                         {% else %}
                                         
                                         {{ field }} 
@@ -93,11 +93,13 @@
                                 </div>
                                 
                                 {% endfor %}
+                                <button type="button" class="btn btn-warning edit-all">Edit All</button>
+                                <button type="submit" class="btn btn-primary save-all">Save changes</button>
                             </form>
                                 <!-- Delete Button -->
                                 <form method="post" action="{% url 'delete_participant' participant.id %}" style="display:inline;">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete Participant</button>
+                                    <button type="submit" class="btn btn-danger btn-sm mt-2" data-confirm="Are you sure you want to delete this participant? If they have an active membership, this may continue to be charged. Proceed?">Delete Participant</button>
                                 </form>
                             
                             {% endif %}
@@ -123,7 +125,7 @@
             </div>
             <div class="modal-body">
                 <form id="NewParticipant" method="POST" action ="{% url 'create_participant' %}">
-
+                    {{new_parti_form.media}}
                     {% csrf_token %}
                     {{ new_parti_form|crispy }}
                     

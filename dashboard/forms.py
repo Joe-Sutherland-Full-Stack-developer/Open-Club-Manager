@@ -44,7 +44,7 @@ class NewParticipant(forms.ModelForm):
             'emergency_contact_number', 'additional_info'
         ]
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_birth': DatePickerInput(format='%d/%m/%Y',),
         }
         labels = {
             'first_name': 'First Name',

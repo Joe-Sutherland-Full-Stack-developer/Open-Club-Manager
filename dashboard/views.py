@@ -436,7 +436,7 @@ def account_details(request):
                                    f"Error updating participant: {str(e)}"
                                    )  # Catch any other exceptions
 
-                return redirect('account_details')
+                return redirect(f'{request.path}?tab=participants')
 
         else:  # Handle user form submission
             form = UserEditForm(request.POST, instance=request.user)

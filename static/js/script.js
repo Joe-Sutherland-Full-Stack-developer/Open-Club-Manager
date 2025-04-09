@@ -80,6 +80,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+    const editAllButtons = document.querySelectorAll('.edit-all');
+
+    editAllButtons.forEach(button => {
+          button.addEventListener('click', function () {
+              const form = button.closest('.participant-form');
+              const editFields = form.querySelectorAll('.edit-form-input');
+              const saveButtons = form.querySelectorAll('.save-field');
+              const plainTexts = form.querySelectorAll('.form-control-plaintext');
+              const individualEditButtons = form.querySelectorAll('.edit-field');
+              const saveAllButton = form.querySelector('.save-all');
+
+              // Show all input fields and save buttons, hide plain text and individual edit buttons
+              editFields.forEach(field => field.classList.remove('d-none'));
+              plainTexts.forEach(text => text.classList.add('d-none'));
+              // saveButtons.forEach(saveButton => saveButton.classList.remove('d-none'));
+              individualEditButtons.forEach(editButton => editButton.classList.add('d-none'));
+
+              // Show the "Save All" button and hide the "Edit All" button
+              saveAllButton.classList.remove('d-none');
+              button.classList.add('d-none');
+          });
+      });
+
+
+      const saveAllButtons = document.querySelectorAll('.save-all');
+
+      saveAllButtons.forEach(button => {
+          button.addEventListener('click', function () {
+              const form = button.closest('.participant-form');
+              const editFields = form.querySelectorAll('.edit-form-input');
+              const plainTexts = form.querySelectorAll('.form-control-plaintext');
+              const individualEditButtons = form.querySelectorAll('.edit-field');
+              const editAllButton = form.querySelector('.edit-all');
+  
+              // Hide all input fields and save buttons, show plain text and individual edit buttons
+              editFields.forEach(field => field.classList.add('d-none'));
+              plainTexts.forEach(text => text.classList.remove('d-none'));
+              individualEditButtons.forEach(editButton => editButton.classList.remove('d-none'));
+  
+              // Show the "Edit All" button and hide the "Save All" button
+              editAllButton.classList.remove('d-none');
+              button.classList.add('d-none');
+  
+              // Optionally, submit the form here if needed
+              form.submit();
+          });
+      });
+
+ // Handle delete participant confirmation
+ const deleteButtons = document.querySelectorAll('.delete-participant-btn');
+
+ deleteButtons.forEach(button => {
+     button.addEventListener('click', function (event) {
+         const confirmMessage = button.getAttribute('data-confirm') || 'Are you sure?';
+         if (!confirm(confirmMessage)) {
+             // Prevent form submission if the user cancels
+             event.preventDefault();
+         }
+     });
+ });
+
 
 function formatTime(time) {
     const parts = time.split(':');
