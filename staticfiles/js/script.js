@@ -80,6 +80,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+    const editAllButtons = document.querySelectorAll('.edit-all');
+
+    editAllButtons.forEach(button => {
+          button.addEventListener('click', function () {
+              const form = button.closest('.participant-form');
+              const editFields = form.querySelectorAll('.edit-form-input');
+              const saveButtons = form.querySelectorAll('.save-field');
+              const plainTexts = form.querySelectorAll('.form-control-plaintext');
+              const individualEditButtons = form.querySelectorAll('.edit-field');
+              const saveAllButton = form.querySelector('.save-all');
+
+              // Show all input fields and save buttons, hide plain text and individual edit buttons
+              editFields.forEach(field => field.classList.remove('d-none'));
+              plainTexts.forEach(text => text.classList.add('d-none'));
+              // saveButtons.forEach(saveButton => saveButton.classList.remove('d-none'));
+              individualEditButtons.forEach(editButton => editButton.classList.add('d-none'));
+
+              // Show the "Save All" button and hide the "Edit All" button
+              saveAllButton.classList.remove('d-none');
+              button.classList.add('d-none');
+          });
+      });
+
+
+      const saveAllButtons = document.querySelectorAll('.save-all');
+
+      saveAllButtons.forEach(button => {
+          button.addEventListener('click', function () {
+              const form = button.closest('.participant-form');
+              const editFields = form.querySelectorAll('.edit-form-input');
+              const plainTexts = form.querySelectorAll('.form-control-plaintext');
+              const individualEditButtons = form.querySelectorAll('.edit-field');
+              const editAllButton = form.querySelector('.edit-all');
+  
+              // Hide all input fields and save buttons, show plain text and individual edit buttons
+              editFields.forEach(field => field.classList.add('d-none'));
+              plainTexts.forEach(text => text.classList.remove('d-none'));
+              individualEditButtons.forEach(editButton => editButton.classList.remove('d-none'));
+  
+              // Show the "Edit All" button and hide the "Save All" button
+              editAllButton.classList.remove('d-none');
+              button.classList.add('d-none');
+  
+              // Optionally, submit the form here if needed
+              form.submit();
+          });
+      });
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-participant-btn');
+        const participantIdInput = document.getElementById('participantIdInput');
+    
+        // Attach event listeners to all delete buttons
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const participantId = button.getAttribute('data-participant-id'); // Get the participant ID
+                participantIdInput.value = participantId; // Set the hidden input value
+            });
+        });
+    });
+
 
 function formatTime(time) {
     const parts = time.split(':');
@@ -88,17 +149,258 @@ function formatTime(time) {
     return `${hours}:${minutes}`;
 }
 
-function setFlatpickrValue(inputId, value) {
-    const inputElement = document.getElementById(inputId);
-    if (inputElement) {
-        inputElement.value = value;
 
-        if (inputElement._flatpickr) {
-            inputElement._flatpickr.setDate(value, true);
-        } else {
-            console.error(`Flatpickr instance not found for #${inputId}`);
-        }
-    } else {
-        console.error(`Element with ID "${inputId}" not found.`);
+
+// Script to dynamically adjust the text-color to remain high-contrast with the background color of its element.
+// document.addEventListener('DOMContentLoaded', function(){
+// function hexToRGBA(hex) {
+//     hex = hex.replace(/^#/, '');
+//     const r = parseInt(hex.slice(0, 2), 16);
+//     const g = parseInt(hex.slice(2, 4), 16);
+//     const b = parseInt(hex.slice(4, 6), 16);
+//     let a = 1;
+//     if (hex.length === 8) {
+//       a = parseInt(hex.slice(6, 8), 16) / 255;
+//     }
+//     return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
+//   }
+  
+//   function getLuminance(clr) {
+//     if (clr.startsWith('#')) {
+//       clr = hexToRGBA(clr);
+//     }
+    
+//     let rgb = clr.match(/\d+/g).map(Number);
+//     let alpha = rgb.length === 4 ? rgb[3] / 255 : 1;
+    
+//     // Apply alpha blending with white background
+//     rgb = rgb.slice(0, 3).map(c => {
+//       c = c / 255;
+//       return alpha * c + (1 - alpha);
+//     });
+    
+//     // Apply gamma correction
+//     rgb = rgb.map(c => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+    
+//     return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+//   }
+  
+//   function chooseForeground(bkg) {
+//     let relativeLuminance = getLuminance(bkg);
+//     let contrastRatioBlack = (relativeLuminance + 0.05) / 0.05;
+//     let contrastRatioWhite = 1.05 / (relativeLuminance + 0.05);
+//     return (contrastRatioBlack > contrastRatioWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
+//   }
+// //   // Use
+// //   let btnElements = document.getElementsByClassName('btn');
+// //   let autoColorElements = document.getElementsByClassName('auto-color-text');
+  
+// //   let combinedElements = [...btnElements, ...autoColorElements];
+  
+// //   combinedElements.forEach(element => {
+
+// //     let computedStyle = window.getComputedStyle(element);
+// //     let bkgColour = computedStyle.backgroundColor;
+// //     element.style.color = chooseForeground(bkgColour);
+// //   });
+// // });
+
+// function updateElementColor(element) {
+//     let computedStyle = window.getComputedStyle(element);
+//     let bkgColor = computedStyle.backgroundColor;
+//     let textColor = chooseForeground(bkgColor);
+    
+//     const customStylesheet = document.getElementById('custom-css').sheet;
+//     if (!customStylesheet) {
+//         console.error('Stylesheet with ID "custom-css" not found!');
+//         return;
+//     }
+//     const rules = customStylesheet.cssRules || customStylesheet.rules;
+    
+//     // Get the element's ID
+//     let elementId = element.id;
+//     // exception catcher to help development 
+//     if (!elementId) {
+//         console.error('Element does not have an ID:', {
+//             tagName: element.tagName,
+//             classes: Array.from(element.classList),
+//             textContent: element.textContent.slice(0, 50) + (element.textContent.length > 50 ? '...' : ''),
+//             parentId: element.parentElement ? element.parentElement.id : 'No parent ID',
+//             nthChild: Array.from(element.parentElement.children).indexOf(element) + 1
+//         });
+        
+//         // Generate a temporary ID
+//         elementId = 'auto-color-' + Math.random().toString(36).substr(2, 9);
+//         element.id = elementId;
+//         console.warn(`Temporary ID "${elementId}" assigned to element.`);
+//     }
+    
+//     // Look for an existing rule for this element
+//     let existingRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}`);
+    
+//     if (existingRule) {
+//         // Update existing rule
+//         existingRule.style.setProperty('color', textColor);
+//     } else {
+//         // Add new rule
+//         customStylesheet.insertRule(`#${elementId} { color: ${textColor}; }`, rules.length);
+//     }
+    
+//     // Update hover state
+//     let hoverBkgColor = applyBrightnessFilter(bkgColor, 90);
+//     let hoverTextColor = chooseForeground(hoverBkgColor);
+    
+//     let existingHoverRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}:hover`);
+    
+//     if (existingHoverRule) {
+//         existingHoverRule.style.setProperty('color', hoverTextColor);
+//     } else {
+//         customStylesheet.insertRule(`#${elementId}:hover { color: ${hoverTextColor}; filter: brightness(90%); }`, rules.length);
+//     }
+// }
+
+// let autoColorElements = document.getElementsByClassName('auto-color-text');
+
+// Array.from(autoColorElements).forEach(updateElementColor);
+// });
+
+// // Set up MutationObserver for each element
+// const observer = new MutationObserver((mutations) => {
+//     mutations.forEach((mutation) => {
+//         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+//             updateElementColor(mutation.target);
+//         }
+//     });
+// });
+
+// Array.from(autoColorElements).forEach(element => {
+//     observer.observe(element, {
+//         attributes: true,
+//         attributeFilter: ['style']
+//     });
+// });
+
+document.addEventListener('DOMContentLoaded', function(){
+    function hexToRGBA(hex) {
+      hex = hex.replace(/^#/, '');
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      let a = 1;
+      if (hex.length === 8) {
+        a = parseInt(hex.slice(6, 8), 16) / 255;
+      }
+      return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
     }
-}
+    
+    function getLuminance(clr) {
+      if (clr.startsWith('#')) {
+        clr = hexToRGBA(clr);
+      }
+      
+      let rgb = clr.match(/\d+/g).map(Number);
+      let alpha = rgb.length === 4 ? rgb[3] / 255 : 1;
+      
+      // Apply alpha blending with white background
+      rgb = rgb.slice(0, 3).map(c => {
+        c = c / 255;
+        return alpha * c + (1 - alpha);
+      });
+      
+      // Apply gamma correction
+      rgb = rgb.map(c => c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+      
+      return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+    }
+    
+    function chooseForeground(bkg) {
+      let relativeLuminance = getLuminance(bkg);
+      let contrastRatioBlack = (relativeLuminance + 0.05) / 0.05;
+      let contrastRatioWhite = 1.05 / (relativeLuminance + 0.05);
+      return (contrastRatioBlack > contrastRatioWhite) ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
+    }
+  
+    function applyBrightnessFilter(color, brightness) {
+      let rgb = color.match(/\d+/g).map(Number);
+      return `rgb(${rgb.map(c => Math.max(0, Math.min(255, Math.round(c * brightness / 100)))).join(', ')})`;
+    }
+  
+    function updateElementColor(element) {
+      let computedStyle = window.getComputedStyle(element);
+      let bkgColor = computedStyle.backgroundColor;
+      let textColor = chooseForeground(bkgColor);
+      
+      const customStylesheet = document.getElementById('custom-css').sheet;
+      if (!customStylesheet) {
+        console.error('Stylesheet with ID "custom-css" not found!');
+        return;
+      }
+      const rules = customStylesheet.cssRules || customStylesheet.rules;
+      
+      // Get the element's ID
+      let elementId = element.id;
+      // exception catcher to help development 
+      if (!elementId) {
+        console.error('Element does not have an ID:', {
+          tagName: element.tagName,
+          classes: Array.from(element.classList),
+          textContent: element.textContent.slice(0, 50) + (element.textContent.length > 50 ? '...' : ''),
+          parentId: element.parentElement ? element.parentElement.id : 'No parent ID',
+          nthChild: Array.from(element.parentElement.children).indexOf(element) + 1
+        });
+        
+        // Generate a temporary ID
+        elementId = 'auto-color-' + Math.random().toString(36).substr(2, 9);
+        element.id = elementId;
+        console.warn(`Temporary ID "${elementId}" assigned to element.`);
+      }
+      
+      // Look for an existing rule for this element
+      let existingRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}`);
+      
+      if (existingRule) {
+        // Update existing rule
+        existingRule.style.setProperty('color', textColor);
+      } else {
+        // Add new rule
+        customStylesheet.insertRule(`#${elementId} { color: ${textColor}; }`, rules.length);
+      }
+      
+      // Update hover state
+      let hoverBkgColor = applyBrightnessFilter(bkgColor, 90);
+      let hoverTextColor = chooseForeground(hoverBkgColor);
+      
+      let existingHoverRule = Array.from(rules).find(rule => rule.selectorText === `#${elementId}:hover`);
+      
+      if (existingHoverRule) {
+        existingHoverRule.style.setProperty('color', hoverTextColor);
+      } else {
+        customStylesheet.insertRule(`#${elementId}:hover { color: ${hoverTextColor}; filter: brightness(90%); }`, rules.length);
+      }
+    }
+  
+    let autoColorElements = document.getElementsByClassName('auto-color-text');
+  
+    Array.from(autoColorElements).forEach(updateElementColor);
+  
+    // Set up MutationObserver for each element
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          updateElementColor(mutation.target);
+        }
+      });
+    });
+  
+    Array.from(autoColorElements).forEach(element => {
+      observer.observe(element, {
+        attributes: true,
+        attributeFilter: ['style']
+      });
+    });
+  });
+  
+  
+
+
+    

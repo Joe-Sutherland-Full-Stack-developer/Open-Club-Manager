@@ -1,0 +1,94 @@
+.timetable-grid {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.timetable-grid th, .timetable-grid td {
+    
+    padding: 8px;
+    text-align: center;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.timetable-grid th {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #000;
+}
+.time-label{
+    border: 0
+}
+
+.class-instance {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+    border: 2px solid #f2f2f2;
+}
+
+
+
+.timetable-grid th,
+.timetable-grid td {
+    
+    padding: 0px;
+    position: relative;
+    overflow: visible;
+}
+
+.class-instance {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    overflow: hidden;
+}
+.timetable-grid td:hover {
+    filter: brightness(0.8);
+    transition: filter 0.3s ease;
+  }
+  
+
+  /* Tooltip container */
+.infotip {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Tooltip text */
+  .infotip .infotiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    
+    
+    
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .infotip:hover .infotiptext {
+    visibility: visible;
+  }

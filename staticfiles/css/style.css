@@ -1,5 +1,8 @@
+
+ 
  body {
     overflow-x: clip;
+    
 }
 
 li{
@@ -13,15 +16,109 @@ li{
     font-size: 1rem ;
     
 }
-.navbar-toggler {
-    background-color: #007bff; /* Change to your desired color */
+.day-of-week-header{
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+.lighter{
+    filter: brightness(1.02);
+
+}
+.wipe {
+    transition: color 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .wipe:after {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: var(--wipe-color);
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    z-index: 1;
+  }
+  .card-body{
+    z-index: 1;
+  }
+  .wipe:hover {
+    color: var(--wipe-color);
+  }
+  
+  .lft-rgt-wipe:after {
+    transform: translateX(-100%);
+  }
+  
+  .lft-rgt-wipe:hover:after {
+    transform: translateX(0%);
+  }
+  .hover-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+    opacity: 0;
+    transition: opacity 0.15s ;
+    z-index: 3; /* Increased z-index to be above other elements */
+    font-size: 3rem; /* Adjust size as needed */
+    color: #ffffff; /* Adjust color as needed */
+  }
+  .hover-icon i {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+  .hover-icon span {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .event-card:hover .hover-icon {
+    opacity: 1;
+  }
+  
+  /* Ensure card content stays behind the icon */
+  .event-card .card-body {
+    position: relative;
+    z-index: 2;
+  }
+  
+/* .navbar-toggler {
+    background-color: #007bff;
+    
 }
 .navbar-toggler-icon{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-}
+    font-size: 1.25rem;
+    
+} */
+.navbar-toggler {
+    border: 0.5px solid #f8f9fb42;
+    padding: 0.65rem 0.85rem;
+    
+  }
+  
+  .navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
+  .navbar-toggler .fa-bars {
+    
+    font-size: 1.3rem; /* Adjust size as needed */
+  }
+ 
+  .navbar-brand:hover {
+    color: var(--brand-color-2);
+  }
+
 .collapse {
     transition: height 0.35s ease; /* Smooth transition */
 }
@@ -29,21 +126,25 @@ li{
     height: 7.5vh;
     padding: 5px;
     padding-right: 4%;
-    
+    overflow-x: hidden;
 }
 
 #side-panel{
-    
+    flex-shrink: 1;
     font-size:2rem ;
     border-right: 2px solid #0353a43b;
     box-shadow: 5px 0px 5px -2px rgba(26, 76, 184, 0.295);
     z-index: 1;
     
 }
+#sidePanel{
+    height: 92.5vh
+}
 #side-sticky{
     position: sticky;
     top:0;
-    height: 110vh;
+    height: 100%;
+    
 }
 #side-panel-buttons{
     height: 100%;
@@ -68,27 +169,61 @@ li{
     text-decoration: none;
 }
 .accordion-item{
-    
-    font-size: 1.2rem;
+   letter-spacing: 0.1rem;
+    font-size: 0.75rem;
+    overflow-x: hidden;
+    width: 100%;
+    border: 0;
+}
+.accordion-button:not(.collapsed){
+    background-color: var(--brand-color-1);
+    opacity: 100%;
+    color: white;
+    font-weight: 550;
+    border: 0;
+    letter-spacing: 0.075rem;
+    box-shadow: none;
 }
 .accordion-button{
-    font-size: 1.45rem;
+    font-size: 1.35rem;
     min-height: 4.5rem;
+    
 }
+.accordion-button:hover{
+    color: white;
+    font-weight: 550;
+
+}
+
 .accordion-item a{
     text-decoration: none;
     
 }
+.accordion-button:focus{
+    box-shadow: none;
+}
+.accordion-collapse{
+    width: 85%;
+}
+.accordion-body{
+    position: relative;
+}
 .side-nav-link{
     font-size: 1.25rem;
+    
+}
+.side-nav-link:hover{
+    font-weight: 550;
+}
+.side-bar-item{
+    padding: 20px;
 }
 #side-bottom{
     height: auto;
     width: 100%;
    display: flex;
    /* flex-direction: column; */
-   position:sticky;
-   top: 92vh;
+   margin-top: auto;
    justify-content: center;
 }
 #side-bottom a{
@@ -102,11 +237,11 @@ li{
 }
 
 #page-header{
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     font-weight: 600;
 }
 #main-content{
-    background-color:#f8f9fb ;
+    
     color:#061a40
 }
 
@@ -125,21 +260,26 @@ li{
 }
 .nav-tabs .nav-link{
     max-width: 40vw;
+    border: none;
 }
+.nav-item button{
+    padding:inherit;
+    height: 100%;
+  }
 .class-instance-link{
     text-decoration: none;
     color: #061a40;
     display:flex;
     align-items: center;
-    height: 100%;
+    
     width: 100%;
-    min-height: 5vh;
+    
 }   
-.class-instance-link:hover{
+/* .class-instance-link:hover{
     text-decoration: none;
     color:#ffffff;
     background-color: #172d6b46 ;
-}
+} */
 .event-cell {
     border-color: black; 
 }
@@ -157,17 +297,17 @@ li{
 }
 
 .bg-color-light{
-    background-color: #1d4e7c23;
+    background-color: #1d4e7c11;
 }
 .bg-color-dark{
-    background-color: #1d4e7c54; 
+    background-color: #1d4e7c3b; 
 }
 
 /*--------------------------------------------------------------------------Bookings page----------------------------------*/
 #booking-update-time{
     font-size: 0.85rem;
     align-self:flex-end;
-   
+    width: 100%;
     text-align: end;
 }
 
@@ -187,11 +327,62 @@ li{
 #previous-tab{
     font-size: 1.5rem;
     color: #061a408e;
+    border:none;
 }
 
+.bookings-accordion{
+    color: var(--brand-white)
+}
+ .bookings-accordion:hover{
+    font-weight: 500;
+    color: #fff;
+    filter: brightness(70%);
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+ }
+ .bookings-accordion:not(.collapsed){
+    background-color: var(--brand-color-3);
+    opacity: 100%;
+    color: white;
+    font-weight: 500;
+    border: 0;
+    letter-spacing: 0.1rem;
+    box-shadow: none;
+    filter: brightness(125%);
+}
+.bookings-accordion:not(.collapsed):hover{
+    filter: brightness(95%);
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+.bg-soft-red{
+    background-color: #f52c4d;
+    color: var(--brand-white)
+}
+.bg-soft-red:hover {
+    background-color: #cc2440;
+    color:#fff;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+.bg-soft-red:not(.collapsed){
+    background-color: #f52c4d;
+    color: var(--brand-white)
+}
+.bg-soft-red:hover:not(.collapsed) :hover{
+    background-color: #cc2440;
+    color: var(--brand-white);
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
 
+.auto-color-text{
+    color:grey;
 
-
+}
+.auto-color-text:hover {
+    filter: brightness(80%);
+}
 /*-------------------------------------------------------------------------home page*/
 
 
@@ -219,20 +410,170 @@ li{
 #myTab .nav-item  .active{
     font-weight: 600;
     color: #061a40;
+    background-color: var(--brand-white);
+    border-bottom: none;
+}
+#myTabContent{
+    border: none;
+
 }
 #add-participant-btn:hover{
     border: 3px solid #00000073;
 
+}
+.edit-form-input,
+.form-control-plaintext{
+    height:26px;
+}
+.edit-form-input{
+    border: 1px solid var(--brand-color-2);
+    padding-left: 2px;
+    background-color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    
+}
+.form-control-plaintext{
+    padding-left: 3px;
+    
+}
+
+
+.btn-sm:hover,
+.btn:hover{
+    color:#061a40;
+    --bs-btn-hover-bg: none;
+    filter: brightness(0.85);
+}
+.participant-accordion:hover{
+    letter-spacing: 0.075rem;
+}
+.participant-accordion-body{
+    font-size: 1rem;
 }
 
 /*  --------------------------------------------------------Testing area: */
 
 
 /*---------------------------------------------------Media queries---------------------*/
-@media (min-width: 768px) {
 
+@media (min-width: 575px){
     #side-bottom{
-        top: 83vh
+        position: sticky;
+        bottom:0;
+        
     }
 
+    #sidePanel{
+        height: 96vh;
+    }
+    #page-header {
+        font-size: 2.5rem;
+        font-weight: 600;
+      }
+    .nav-item button{
+        padding: 0.5rem 0.75rem;
+        height: 100%;
+      }
+    }
+
+
+@media (min-width: 768px) {
+
+    
+    #sidePanel{
+        position: sticky;
+        top: 0;
+        height: 100vh;
+    }
+}
+@media (min-width: 992px){
+    .accordion-item{
+        letter-spacing: 0.1rem;
+         font-size: 1rem;
+        
+     }
+    de-stcky{
+        position: sticky;
+        top: 0;
+        height: 100%;
+    }
+    #side-bottom{
+        position:sticky;
+        bottom:0;
+    }
+}
+@media (max-height: 768px) and (orientation: landscape) and (min-width:768px){
+    /* Styles for landscape smartphones with limited height */
+    body {
+        font-size: 0.9rem; /* Adjust font size for better readability */
+    }
+    .navbar{
+        display:none;
+    }
+    #mobile-nav{
+        display: block;
+    }
+    #sidePanel {
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+    #welcome{
+        display: none !important;
+    }
+    .side-bar-item{
+        font-size: 1.25rem !important;
+        max-height: 12vh;
+    }
+    
+    .accordion-item {
+        order: 3;
+        transition: order 0.5s ease, transform 0.5s ease;
+    }
+    .accordion-collapse {
+        order:2;
+        margin-top: 0.5rem; /* Add spacing between the button and the content */
+        transition: height 0.3s ease, margin-top 0.3s ease;
+       
+    }
+    .accordion-body{
+        max-height: 18vh;
+        padding: 0.5rem; 
+    }
+    .accordion-body a{
+        max-height: 18vh;
+        font-size: 1rem;
+    }
+    .accordion-button{
+        max-height: 15vh;
+        font-size: 1.2rem;
+    }
+    .accordion-button:not(.collapsed){
+        order:0;
+    }
+    .accordion-item:has(.accordion-button:not(.collapsed)) {
+        order: 1; /* Bring the expanded item to the top */
+    }
+    
+    
+    .card {
+        margin: 0.5rem; /* Reduce card margins */
+    }
+
+    .navbar-toggler {
+        font-size: 0.9rem;
+        padding:
+      0.52rem 0.68rem;
+      }
+      .participant-accordion-body{
+        max-height: fit-content;
+      }
+      .nav-item button{
+        padding:inherit;
+        height: 100%;
+      }
+      #booking-confirmation-container{
+        max-height: fit-content;
+      }
 }
