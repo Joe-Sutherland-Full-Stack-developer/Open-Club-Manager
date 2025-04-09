@@ -128,18 +128,18 @@ document.addEventListener('DOMContentLoaded', function() {
           });
       });
 
- // Handle delete participant confirmation
- const deleteButtons = document.querySelectorAll('.delete-participant-btn');
-
- deleteButtons.forEach(button => {
-     button.addEventListener('click', function (event) {
-         const confirmMessage = button.getAttribute('data-confirm') || 'Are you sure?';
-         if (!confirm(confirmMessage)) {
-             // Prevent form submission if the user cancels
-             event.preventDefault();
-         }
-     });
- });
+      document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-participant-btn');
+        const participantIdInput = document.getElementById('participantIdInput');
+    
+        // Attach event listeners to all delete buttons
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const participantId = button.getAttribute('data-participant-id'); // Get the participant ID
+                participantIdInput.value = participantId; // Set the hidden input value
+            });
+        });
+    });
 
 
 function formatTime(time) {

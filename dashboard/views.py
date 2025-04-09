@@ -400,6 +400,9 @@ def CancelBookingView(request, booking_id):
 
 @login_required
 def account_details(request):
+    participant_forms = []
+    participants = request.user.participants.all()  # Get all participants for the user
+    new_parti_form = NewParticipant()
     if request.method == 'POST':
         if 'participant_id' in request.POST:  
             participant_id = request.POST.get('participant_id')
@@ -410,6 +413,7 @@ def account_details(request):
                                      field_name
                                      )  # Get the value for the specific field
             form = ParticipantForm(request.POST)
+            
             print("Updating participant:", participant_id,
                   "Field:", field_name, "Value:", value)  # Debugging output
             if form.is_valid():
@@ -452,7 +456,7 @@ def account_details(request):
         form = UserEditForm(instance=request.user)
         participants = request.user.participants.all()
         participant_forms = [ParticipantForm(instance=participant) 
-                             for participant in participants]
+                            for participant in participants] if participants.exists() else []
         new_parti_form = NewParticipant()
 
     context = {
@@ -466,14 +470,16 @@ def account_details(request):
 
 
 @login_required
-def delete_participant(request, participant_id):
-    participant = get_object_or_404(Participant,
-                                    id=participant_id,
-                                    user=request.user)
-    participant.delete()
-    messages.success(request, "Participant deleted successfully.")
+def delete_participant(request):
+    if request.method == 'POST':
+        participant_id = request.POST.get('participant_id')  # Get the participant ID from the form
+        try:
+            participant = get_object_or_404(Participant, id=participant_id, user=request.user)
+            participant.delete()
+            messages.success(request, f"Participant {participant.first_name} {participant.last_name} deleted successfully.")
+        except Exception as e:
+            messages.error(request, f"Error deleting participant: {str(e)}")
     return redirect('account_details')
-
 
 def home(request):
     return render(request, 'dashboard/home.html')

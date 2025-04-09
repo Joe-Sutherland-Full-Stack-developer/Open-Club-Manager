@@ -59,6 +59,9 @@
             </div>
             
             <div class="accordion" id="accordionParticipants">
+
+            
+              
                 {% for participant in participants %}
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingParticipants{{ forloop.counter }}">
@@ -97,10 +100,9 @@
                                 <button type="submit" class="btn btn-primary save-all">Save changes</button>
                             </form>
                                 <!-- Delete Button -->
-                                <form method="post" action="{% url 'delete_participant' participant.id %}" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm mt-2" data-confirm="Are you sure you want to delete this participant? If they have an active membership, this may continue to be charged. Proceed?">Delete Participant</button>
-                                </form>
+                                
+                                    <button type="button" class="btn btn-danger btn-sm mt-2 delete-participant-btn" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-participant-id="{{ participant.id }}">Delete Participant</button>
+                                
                             
                             {% endif %}
                             {% endfor %}
@@ -108,6 +110,7 @@
                     </div>
                 </div>
                 {% endfor %}
+            
             </div>
             
         
@@ -139,7 +142,27 @@
     </div>
 </div>
 
-
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this participant?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteParticipantForm" method="post" action="{% url 'delete_participant' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="participant_id" id="participantIdInput" value="">
+                    <button type="submit" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {% endblock innerframe %}

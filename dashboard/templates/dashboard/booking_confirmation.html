@@ -26,13 +26,29 @@
         <div class="d-flex w-100 mx-auto row gap-1">
         <a href="{% url 'booking_confirmation_pdf' booking.id %}" class="col btn btn-secondary mb-3 px-auto"><i class="fa-solid fa-download"></i><br>Download PDF</a>
         <a href="{% url 'dashboard' %}" class=" col btn btn-primary  mb-3 px-auto"><i class="fa-solid fa-home"></i><br>Return to Dashboard</a>
-        <form action="{% url 'cancel_booking' booking.id %}" class="col p-0 mb-3" method="post">
+        <form action="{% url 'cancel_booking' booking.id %}" class="col p-0 mb-3" method="post" id="cancelBookingForm">
             {% csrf_token %}
-            <button type="submit" class=" btn btn-danger d-block px-auto w-100 h-100"><i class="fa-solid fa-xmark"></i><br>Cancel Booking</button>
-          </form>        
+            <button type="submit" class="btn btn-danger d-block px-auto w-100 h-100 cancel-booking-btn" data-confirm="Are you sure you want to cancel this booking?">
+                <i class="fa-solid fa-xmark"></i><br>Cancel Booking
+            </button>
+        </form>  
         </div>
     </div>
     <p id="booking-update-time" class="mt-2">This booking was created/last updated on: {{booking.updated_on}}</p>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const cancelBookingButtons = document.querySelectorAll('.cancel-booking-btn');
 
+    cancelBookingButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            const confirmMessage = button.getAttribute('data-confirm') || 'Are you sure?';
+            if (!confirm(confirmMessage)) {
+                // Prevent form submission if the user cancels
+                event.preventDefault();
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
