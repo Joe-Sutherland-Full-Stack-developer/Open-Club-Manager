@@ -494,26 +494,62 @@ li{
         bottom:0;
     }
 }
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 768px) and (orientation: landscape) and (min-width:768px){
     /* Styles for landscape smartphones with limited height */
     body {
         font-size: 0.9rem; /* Adjust font size for better readability */
     }
-
-    #sidePanel {
-        font-size: 0.5rem;
+    .navbar{
+        display:none;
     }
-
-    #main-content {
-        margin: 0;
-        padding: 1rem; /* Add padding for better spacing */
+    #mobile-nav{
+        display: block;
     }
-
+    #welcome{
+        display: none !important;
+    }
+    .side-bar-item{
+        font-size: 1.25rem !important;
+        max-height: 12vh;
+    }
+    
+    .accordion-item {
+        order: 3;
+        transition: order 0.5s ease, transform 0.5s ease;
+    }
+    .accordion-collapse {
+        order:2;
+        margin-top: 0.5rem; /* Add spacing between the button and the content */
+        transition: height 0.3s ease, margin-top 0.3s ease;
+       
+    }
+    .accordion-body{
+        max-height: 18vh;
+        padding: 0.5rem; 
+    }
+    .accordion-body a{
+        max-height: 18vh;
+        font-size: 1rem;
+    }
+    .accordion-button{
+        max-height: 15vh;
+        font-size: 1.2rem;
+    }
+    .accordion-button:not(.collapsed){
+        order:0;
+    }
+    .accordion-item:has(.accordion-button:not(.collapsed)) {
+        order: 1; /* Bring the expanded item to the top */
+    }
+    
+    
     .card {
         margin: 0.5rem; /* Reduce card margins */
     }
 
     .navbar-toggler {
-        font-size: 1.2rem; /* Adjust navbar toggle size */
-    }
+        font-size: 0.9rem;
+        padding:
+      0.52rem 0.68rem;
+      }
 }

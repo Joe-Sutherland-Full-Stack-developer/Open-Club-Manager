@@ -168,7 +168,7 @@
                       {% endif %} -->
                       {% if this_week_by_day %}
   {% for day, events in this_week_by_day.items %}
-  <div class="{{ day|lower }} p-4 brand-text-2 mt-2">
+  <div class="{{ day|lower }} px-4 brand-text-2 mt-2">
     <div class="day-of-week-header">{{ day }}:</div>
       {% if events %}
         {% for event in events %}
